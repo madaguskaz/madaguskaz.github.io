@@ -101,6 +101,13 @@
 .tab-btn.active{background:#1e56a0;color:#fff}
 .tab-content.hidden-tab{display:none}
 .filter-bar{display:flex;gap:10px;margin-bottom:15px}
+
+#filterDate{
+    min-height:44px;
+    font-size:16px;
+    color:#111827;
+    background:#fff;
+}
 .hidden { display: none; }
         #printArea { display: none; }
 
@@ -378,6 +385,15 @@ function saveOrdersToStorage() {
 
         }
 
+        // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+        const today = new Date().toISOString().split('T')[0];
+
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
+
         renderOrders();
     }
 
@@ -506,6 +522,15 @@ const orderDate = now.toISOString().split('T')[0];
 
         saveOrdersToStorage();
         saveOrdersToStorage();
+        // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+        const today = new Date().toISOString().split('T')[0];
+
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
+
         renderOrders();
         resetForm();
     }
@@ -574,7 +599,16 @@ const orderDate = now.toISOString().split('T')[0];
             ordersDatabase = ordersDatabase.filter(item => item.id !== id);
             saveOrdersToStorage();
             saveOrdersToStorage();
-            renderOrders();
+            // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+        const today = new Date().toISOString().split('T')[0];
+
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
+
+        renderOrders();
         }
     }
 
@@ -590,11 +624,39 @@ const orderDate = now.toISOString().split('T')[0];
     }
 
     function copyToLine(profile, address, payType, amount, remarks, source) {
-        let textFormat = `📦 ออเดอร์ [${source}]\n👤 โปรไฟล์: ${profile}\n📍 ข้อมูลที่อยู่จัดส่ง:\n${address}\n🛒 รายการ: ${remarks}\n💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
-        navigator.clipboard.writeText(textFormat).then(() => {
-            showToast("📋 คัดลอกข้อมูลแล้ว");
-            window.open('https://line.me/R/');
-        });
+
+        let textFormat = `📦 ออเดอร์ [${source}]
+👤 โปรไฟล์: ${profile}
+📍 ข้อมูลที่อยู่จัดส่ง:
+${address}
+🛒 รายการ: ${remarks}
+💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
+
+        const encoded = encodeURIComponent(textFormat);
+
+        // มือถือ
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+
+            // เปิด LINE พร้อมข้อความทันที
+            window.location.href = `https://line.me/R/msg/text/?${encoded}`;
+
+        } else {
+
+            // Desktop
+            window.open(`https://line.me/R/msg/text/?${encoded}`, '_blank');
+
+        }
+
+        // คัดลอกสำรอง
+        if (navigator.clipboard) {
+
+            navigator.clipboard.writeText(textFormat)
+                .then(() => {
+                    showToast("📋 คัดลอกข้อความแล้ว");
+                })
+                .catch(() => {});
+
+        }
     }
 
 function exportOrders() {
@@ -637,7 +699,16 @@ function importOrders(event) {
             );
 
             // render ใหม่
-            renderOrders();
+            // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+        const today = new Date().toISOString().split('T')[0];
+
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
+
+        renderOrders();
 
             // success
             showToast('✅ กู้คืนข้อมูลสำเร็จ');
