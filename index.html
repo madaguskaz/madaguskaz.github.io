@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการออเดอร์ด้วย Gemini AI OCR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e56a0;
+            --primary-hover: #163f75;
+            --success: #27ae60;
+            --success-hover: #1e8449;
+            --line-color: #00b900;
+            --line-hover: #009900;
+            --danger: #e74c3c;
+            --bg-body: #f4f7fa;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 20px; }
+
+        .app-container { display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: #1a202c; }
+
+        /* API Key Setup Config Bar */
+        .api-config { background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #4a5568; }
+        label span { color: var(--danger); }
+        
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px;
+            font-size: 14px; color: var(--text-main); background-color: #fff;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,86,160,0.15); }
+        
+        /* โซนอัปโหลดรูป / สแกน */
+        .upload-zone {
+            border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px; text-align: center;
+            background-color: #f8fafc; cursor: pointer; position: relative; margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .upload-zone:hover { border-color: var(--primary); background-color: #f0f4f8; }
+        .upload-zone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .upload-icon { font-size: 32px; color: #94a3b8; margin-bottom: 8px; }
+        .ocr-badge { position: absolute; top: 12px; right: 12px; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        
+        /* สปินเนอร์ตอนกำลังโหลดของ AI */
+        .loading-overlay { display: none; color: #e67e22; font-weight: bold; margin-top: 8px; font-size: 13px; text-align: center; }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
+        button {
+            padding: 12px 20px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; flex: 1;
+        }
+        .btn-submit { background-color: var(--primary); color: white; }
+        .btn-submit:hover { background-color: var(--primary-hover); }
+        .btn-reset { background-color: #f1f5f9; color: #475569; }
+
+        /* ฝั่งขวา: รายการออเดอร์ */
+        .header-right { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .order-list { display: flex; flex-direction: column; gap: 16px; max-height: 480px; overflow-y: auto; margin-bottom: 20px; }
+        
+        .order-item { border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; background: #fff; }
+        .order-header { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
+        .order-badge-id { background: #e2e8f0; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 13px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 6px; }
+        .badge-line { background: #e6f9ed; color: #15803d; }
+        .badge-fb { background: #e0f2fe; color: #0369a1; }
+        .badge-tel { background: #fef3c7; color: #b45309; }
+        .badge-pay-transfer { background: #dcfce7; color: #15803d; }
+        .badge-pay-cod { background: #ffeeeb; color: #e74c3c; }
+        
+        .order-body-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; font-size: 14px; }
+        .text-muted { color: #64748b; font-size: 12px; margin-bottom: 2px; }
+        .profile-display { font-weight: 700; font-size: 16px; color: #1e293b; margin-bottom: 8px; }
+        .address-display { background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #f1f5f9; white-space: pre-line; line-height: 1.5; }
+        
+        .order-actions { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+        .btn-delete { background: none; color: var(--danger); font-size: 13px; width: auto; }
+        .action-right-btns { display: flex; gap: 8px; }
+        .btn-copy-line { background-color: var(--line-color); color: white; padding: 6px 12px; font-size: 13px; }
+        .btn-copy-line:hover { background-color: var(--line-hover); }
+        .btn-print-slip { background-color: #334155; color: white; padding: 6px 12px; font-size: 13px; }
+
+        /* แผงสรุป */
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+        .summary-box { background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center; }
+        .summary-box .title { font-size: 13px; color: #64748b; }
+        .summary-box .value { font-size: 18px; font-weight: 700; }
+
+        .tab-nav{display:flex;gap:10px;margin-bottom:20px}
+.tab-btn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;cursor:pointer;font-weight:700}
+.tab-btn.active{background:#1e56a0;color:#fff}
+.tab-content.hidden-tab{display:none}
+.filter-bar{display:flex;gap:10px;margin-bottom:15px}
+.hidden { display: none; }
+        #printArea { display: none; }
+
+        /* 🖨️ CSS สำหรับการพิมพ์แบบฟอร์มใบแปะหน้ากล่อง ขนาดใหญ่ ชัดเจน ไม่ปนกับข้อมูลอื่น */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 40px; }
+            .print-box { border: 3px dashed #000; padding: 35px; border-radius: 15px; max-width: 650px; margin: 0 auto; background: #fff; }
+            .print-title { font-size: 18px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; font-weight: bold; }
+            .print-profile { font-size: 30px; font-weight: bold; margin-bottom: 25px; text-align: center; }
+            .print-address { font-size: 24px; line-height: 1.8; white-space: pre-line; }
+        }
+    
+/* Mobile improvements */
+@media (max-width:768px){
+    body{padding:10px;}
+    .api-config{flex-wrap:wrap;}
+    .app-container{display:block !important;}
+    .card{padding:16px;margin-bottom:12px;}
+    .form-row{grid-template-columns:1fr !important;}
+    .summary-grid{grid-template-columns:1fr 1fr !important;}
+    .order-body-grid{grid-template-columns:1fr !important;}
+    .order-actions{flex-direction:column;gap:10px;}
+    .action-right-btns{width:100%;}
+    .action-right-btns button{flex:1;}
+    .tab-nav{display:flex;gap:8px;position:sticky;top:0;background:#f4f7fa;padding-bottom:8px;z-index:10;}
+    .tab-btn{padding:14px 10px;font-size:14px;}
+    .filter-bar{flex-direction:column;}
+    .order-list{max-height:none;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="api-config">
+    <strong>🔑 ตั้งค่าระบบ:</strong>
+    <input type="text" id="apiKeyInput" placeholder="กรอก Gemini API Key ของคุณเพื่อเปิดใช้งานระบบสแกนจริง..." style="flex:1; padding: 6px 12px;">
+    <button onclick="saveApiKey()" style="padding: 6px 15px; font-size: 14px; background:#1e56a0; color:white; flex:none; width:auto;">บันทึกคีย์</button>
+</div>
+
+<div class="app-container">
+    
+    <div class="tab-nav"><button class="tab-btn active" onclick="showTab('addTab',this)">➕ เพิ่มรายการออเดอร์</button><button class="tab-btn" onclick="showTab('listTab',this)">📦 รายการสั่งซื้อ</button></div><div id="addTab" class="tab-content"><div class="card"><div class="card-title">🔵 เพิ่มรายการออเดอร์ใหม่</div>
+        
+        <form id="orderForm" onsubmit="event.preventDefault(); saveOrder();">
+            <div class="form-group">
+                <label>1. แหล่งที่มาของออเดอร์ <span>*</span></label>
+                <div class="form-row">
+                    <select id="sourceType" onchange="handleSourceChange()" required>
+                        <option value="">-- เลือกแหล่งที่มา --</option>
+                        <option value="LINE">LINE</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Telephone">โทรศัพท์</option>
+                    </select>
+                    
+                    <select id="fbPageSelect" class="hidden">
+                        <option value="fogeasy">เพจ fogeasy</option>
+                        <option value="ชั่วการช่าง">เพจ ชั่วการช่าง</option>
+                    </select>
+                    
+                    <input type="text" id="sourcePhoneInput" class="hidden" placeholder="กรอกเบอร์โทรศัพท์ลูกค้า...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>2. แนบไฟล์ภาพสลิป/แคปหน้าจอเพื่อสแกน</label>
+                <div class="upload-zone">
+                    <div class="ocr-badge">✨ Gemini AI 1.5</div>
+                    <div class="upload-icon">📤</div>
+                    <p style="font-size: 13px; font-weight: 600; color: #475569;">คลิกเพื่อเลือกภาพแชท/ที่อยู่ เพื่อสแกนดึงข้อมูล</p>
+                    <input type="file" id="imageInput" accept="image/*" onchange="processImageWithGemini()">
+                </div>
+                <div class="loading-overlay" id="loadingOverlay">⏳ Gemini AI กำลังวิเคราะห์รูปภาพและแยกที่อยู่ กรุณารอสักครู่...</div>
+            </div>
+
+            <div class="form-group">
+                <label>3. ชื่อโปรไฟล์ LINE หรือ Facebook <span>*</span></label>
+                <input type="text" id="profileName" placeholder="ระบบจะดึงชื่อด้านบนสุดมาใส่อัตโนมัติ" required>
+            </div>
+
+            <div class="form-group">
+                <label>4. ชื่อผู้รับสินค้า และที่อยู่ <span>*</span></label>
+                <textarea id="shippingAddress" rows="6" placeholder="ชื่อ นามสกุล&#10;&#10;ที่อยู่จัดส่ง...&#10;&#10;โทร: 08X-XXXXXXX" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>5. ประเภทชำระ <span>*</span></label>
+                    <select id="paymentType" required>
+                        <option value="โอนแล้ว">โอนแล้ว</option>
+                        <option value="cod">cod เก็บเงินปลายทาง</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>6. จำนวนเงิน (บาท) <span>*</span></label>
+                    <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>7. รายการสินค้าที่สั่งซื้อ / หมายเหตุ</label>
+                <textarea id="orderRemarks" rows="2" placeholder="ลูกค้าสั่ง Order อะไรมาบ้าง..."></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-reset" onclick="resetForm()">ล้างฟอร์ม</button>
+                <button type="submit" class="btn-submit">💾 บันทึกรายการ</button>
+            </div>
+        </form></div></div><div id="listTab" class="tab-content hidden-tab"><div class="card">
+        <div class="filter-bar">
+<input type="date" id="filterDate" onchange="renderOrders()">
+<input type="text" id="searchText" placeholder="ค้นหาโปรไฟล์/ที่อยู่" oninput="renderOrders()">
+</div><div class="header-right">
+            <div class="card-title">📦 รายการสั่งซื้อและสรุปยอดของวัน</div>
+        </div>
+
+        <div class="order-list" id="orderListArea">
+            </div>
+
+        <div style="margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 15px;">
+            <div style="font-weight: 700; font-size: 14px; color: #4a5568; margin-bottom: 8px;">สรุปรายการภาพรวมวันนี้</div>
+            <div class="summary-grid">
+                <div class="summary-box"><div class="title">รวมทั้งหมด</div><div class="value" id="summaryCount">0 รายการ</div></div>
+                <div class="summary-box"><div class="title">ยอดโอนเงิน</div><div class="value" style="color: #27ae60;" id="summaryTransfer">0.00 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอด COD</div><div class="value" style="color: #e67e22;" id="summaryCod">0.00 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอดรวมมูลค่า</div><div class="value" style="color: #1e56a0;" id="summaryTotal">0.00 ฿</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin:15px 0;display:flex;gap:10px;">
+<button type="button" onclick="exportOrders()">📥 Backup</button>
+<button type="button" onclick="document.getElementById('importFile').click()">📤 Restore</button>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importOrders(event)">
+</div>
+
+<div id="printArea">
+    <div class="print-box">
+        <div class="print-title">📦 ใบจ่าหน้าพัสดุจัดส่งลูกค้า</div>
+        <div class="print-profile" id="pProfile"></div>
+        <div class="print-address" id="pAddress"></div>
+    </div>
+</div>
+
+<script>
+    let ordersDatabase = [];
+
+    
+function showTab(tabId, btn){
+ document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden-tab'));
+ document.getElementById(tabId).classList.remove('hidden-tab');
+ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+}
+
+function saveOrdersToStorage() {
+        localStorage.setItem('ordersDatabase', JSON.stringify(ordersDatabase));
+    }
+
+    // โหลด API Key ที่เคยบันทึกไว้ในเครื่องขึ้นมาทำงาน
+    window.onload = function() {
+        const savedKey = localStorage.getItem('gemini_api_key');
+        if (savedKey) { document.getElementById('apiKeyInput').value = savedKey; }
+
+        const savedOrders = localStorage.getItem('ordersDatabase');
+        if (savedOrders) {
+            ordersDatabase = JSON.parse(savedOrders);
+        }
+
+        renderOrders();
+    }
+
+    function saveApiKey() {
+        const key = document.getElementById('apiKeyInput').value.trim();
+        localStorage.setItem('gemini_api_key', key);
+        alert("บันทึก API Key เรียบร้อยแล้ว! พร้อมระบบสแกนด้วย AI");
+    }
+
+    function handleSourceChange() {
+        const type = document.getElementById('sourceType').value;
+        const fbSelect = document.getElementById('fbPageSelect');
+        const phoneInput = document.getElementById('sourcePhoneInput');
+
+        fbSelect.classList.add('hidden'); phoneInput.classList.add('hidden');
+        fbSelect.removeAttribute('required'); phoneInput.removeAttribute('required');
+
+        if (type === 'Facebook') { fbSelect.classList.remove('hidden'); fbSelect.setAttribute('required', 'required'); }
+        if (type === 'Telephone') { phoneInput.classList.remove('hidden'); phoneInput.setAttribute('required', 'required'); }
+    }
+
+    // 🧠 ฟังก์ชันสแกนรูปภาพด้วย AI Gemini 1.5 Flash API จริง
+    async function processImageWithGemini() {
+        const apiKey = localStorage.getItem('gemini_api_key');
+        if (!apiKey) {
+            alert("⚠️ กรุณากรอกและบันทึก Gemini API Key ด้านบนก่อนทำการใช้งานฟังก์ชันสแกนด้วย AI ครับ");
+            return;
+        }
+
+        const fileInput = document.getElementById('imageInput');
+        if (fileInput.files.length === 0) return;
+
+        const file = fileInput.files[0];
+        document.getElementById('loadingOverlay').style.display = 'block';
+
+        try {
+            // แปลงรูปภาพเป็น Base64 Data เพื่อส่งไปให้ API
+            const base64Data = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.readAsDataURL(file);
+            });
+
+            // ตั้งคำสั่ง Prompt ควบคุมให้ AI ฉลาด คัดแยก และแปลงค่าข้อมูลส่งกลับมาเป็นรูปแบบโครงสร้าง JSON
+            const promptText = `
+                วิเคราะห์รูปภาพใบสั่งซื้อ/สลิป/แชทจัดส่งสินค้าภาษาไทยนี้ แล้วสรุปข้อมูลออกมาในรูปแบบ JSON Object เท่านั้น ห้ามเขียนคำอธิบายเพิ่มเติมใดๆ โดยห้ามใส่เครื่องหมายปีกกาครอบโค้ดหรือเขียนคีย์เวิร์ด json นอกเหนือวัตถุประสงค์ คัดแยกค่าให้ออกมาตามหัวข้อดังนี้:
+                {
+                    "profileName": "ค้นหาชื่อชื่อโปรไฟล์ของแอคเคาท์ LINE หรือ Facebook ด้านบนสุดของแชท หรือชื่อตัวใหญ่ๆ หนาๆ เด่นๆ ด้านบนภาพมาใส่",
+                    "recipientName": "ชื่อและนามสกุลจริงของผู้รับสินค้า",
+                    "cleanAddress": "ที่อยู่ในการจัดส่งทั้งหมด (ห้ามนำชื่อผู้รับและเบอร์โทรศัพท์มารวมในช่องนี้)",
+                    "phoneNumber": "เบอร์โทรศัพท์ติดต่อ คัดกรองตัวเลขความยาว 9-10 หลักมาให้เรียบร้อย",
+                    "totalAmount": "ยอดจำนวนเงินเป็นตัวเลขทศนิยม (ถ้ามี)",
+                    "payMethod": "ระบุเป็น 'โอนแล้ว' หรือ 'cod' วิเคราะห์ตามบริบทข้อมูลในภาพสลิปหรือประวัติแชท"
+                }
+            `;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: file.type, data: base64Data } }
+                        ]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            let aiTextResult = data.candidates[0].content.parts[0].text.trim();
+            
+            // ลบสัญญลักษณ์มาร์กดาวน์กรณี AI เขียนแถมมาเกินคำสั่ง
+            aiTextResult = aiTextResult.replace(/```json/g, "").replace(/```/g, "").trim();
+            const resultJson = JSON.parse(aiTextResult);
+
+            // 🎯 นำข้อมูลที่ AI ตรวจจับได้จริงมาหยอดลงช่องตารางต่างๆ
+            document.getElementById('profileName').value = resultJson.profileName || "";
+            document.getElementById('amount').value = resultJson.totalAmount || "0.00";
+            if(resultJson.payMethod) { document.getElementById('paymentType').value = resultJson.payMethod; }
+
+            // 📐 จัดเรียงตามเงื่อนไข: ชื่อ นามสกุล เว้นบรรทัดลงมานิดหน่อยเพื่อใส่ที่อยู่ และเบอร์โทรให้ใส่ คำว่าโทร นำหน้า
+            const formattedAddress = `${resultJson.recipientName || ""}\n\nที่อยู่: ${resultJson.cleanAddress || ""}\n\nโทร: ${resultJson.phoneNumber || ""}`;
+            document.getElementById('shippingAddress').value = formattedAddress;
+
+        } catch (error) {
+            console.error(error);
+            alert("เกิดข้อผิดพลาดในการเรียก Gemini API กรุณาตรวจความถูกต้องของคีย์ หรือรูปภาพที่คุณอัปโหลดเข้าไปอีกครั้งครับ");
+        } finally {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+    }
+
+    function saveOrder() {
+        const source = document.getElementById('sourceType').value;
+        let subSource = "";
+        if(source === 'Facebook') subSource = ` (${document.getElementById('fbPageSelect').value})`;
+        if(source === 'Telephone') subSource = ` (เบอร์: ${document.getElementById('sourcePhoneInput').value})`;
+
+        const profile = document.getElementById('profileName').value;
+        const address = document.getElementById('shippingAddress').value;
+        const payType = document.getElementById('paymentType').value;
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+        
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} น.`;
+        const id = 'order-' + Date.now();
+const orderDate = now.toISOString().split('T')[0];
+
+        ordersDatabase.push({ id, orderDate, source, subSource, profile, address, payType, amount, remarks, time: timeStr });
+
+        saveOrdersToStorage();
+        saveOrdersToStorage();
+        renderOrders();
+        resetForm();
+    }
+
+    function renderOrders() {
+        const listArea = document.getElementById('orderListArea');
+        listArea.innerHTML = "";
+        let totalTransfer = 0, totalCod = 0;
+        const selectedDate=document.getElementById('filterDate')?.value||'';
+        const keyword=(document.getElementById('searchText')?.value||'').toLowerCase();
+        let filteredOrders=ordersDatabase.filter(o=>{
+           const dateOk=!selectedDate || o.orderDate===selectedDate;
+           const text=(o.profile+' '+o.address).toLowerCase();
+           const keyOk=!keyword || text.includes(keyword);
+           return dateOk && keyOk;
+        });
+
+        filteredOrders.forEach((order, index) => {
+            let badgeClass = order.source === 'LINE' ? 'badge-line' : (order.source === 'Facebook' ? 'badge-fb' : 'badge-tel');
+            let payClass = order.payType === 'โอนแล้ว' ? 'badge-pay-transfer' : 'badge-pay-cod';
+            
+            if(order.payType === 'โอนแล้ว') totalTransfer += order.amount; else totalCod += order.amount;
+
+            let safeAddress = order.address.replace(/'/g, "\\'").replace(/\n/g, "\\n");
+            let safeRemarks = order.remarks.replace(/'/g, "\\'").replace(/\n/g, "\\n");
+
+            listArea.innerHTML += `
+                <div class="order-item">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-badge-id">${index + 1}</span>
+                            <span class="badge ${badgeClass}">🟢 ${order.source}${order.subSource}</span>
+                            <span class="badge ${payClass}">${order.payType === 'cod' ? 'COD ปลายทาง' : 'โอนเงินแล้ว'}</span>
+                        </div>
+                        <div class="text-muted">${order.time}</div>
+                    </div>
+                    <div class="order-body-grid">
+                        <div>
+                            <div class="text-muted">ชื่อโปรไฟล์:</div><div class="profile-display">${order.profile}</div>
+                            <div class="text-muted">ที่อยู่จัดส่ง:</div><div class="address-display">${order.address}</div>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div><div class="text-muted">ยอดเงิน</div><div style="font-size: 18px; font-weight:700; color:var(--primary);">${order.amount.toFixed(2)} ฿</div></div>
+                            <div class="text-muted">Order: ${order.remarks}</div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️ ลบ</button>
+                        <div class="action-right-btns">
+                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}')">💬 แชร์ไป LINE</button>
+                            <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ ปุ่ม Print</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        document.getElementById('summaryCount').innerText = `${filteredOrders.length} รายการ`;
+        document.getElementById('summaryTransfer').innerText = `${totalTransfer.toFixed(2)} ฿`;
+        document.getElementById('summaryCod').innerText = `${totalCod.toFixed(2)} ฿`;
+        document.getElementById('summaryTotal').innerText = `${(totalTransfer + totalCod).toFixed(2)} ฿`;
+    }
+
+    function deleteOrder(id) {
+        if(confirm("ต้องการลบรายการนี้ใช่ไหม?")) {
+            ordersDatabase = ordersDatabase.filter(item => item.id !== id);
+            saveOrdersToStorage();
+            saveOrdersToStorage();
+            renderOrders();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('orderForm').reset();
+        handleSourceChange();
+    }
+
+    function printLabel(profile, address) {
+        document.getElementById('pProfile').innerText = profile;
+        document.getElementById('pAddress').innerText = address;
+        window.print();
+    }
+
+    function copyToLine(profile, address, payType, amount, remarks, source) {
+        let textFormat = `📦 ออเดอร์ [${source}]\n👤 โปรไฟล์: ${profile}\n📍 ข้อมูลที่อยู่จัดส่ง:\n${address}\n🛒 รายการ: ${remarks}\n💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
+        navigator.clipboard.writeText(textFormat).then(() => {
+            alert("คัดลอกข้อมูลออเดอร์แล้ว! สามารถไปกดปุ่ม 'วาง' ใน LINE ได้เลยครับ");
+            window.open('https://line.me/R/');
+        });
+    }
+
+function exportOrders() {
+    const data = JSON.stringify(ordersDatabase, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'orders-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importOrders(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            ordersDatabase = JSON.parse(e.target.result);
+            localStorage.setItem('ordersDatabase', JSON.stringify(ordersDatabase));
+            renderOrders();
+            alert('กู้คืนข้อมูลสำเร็จ');
+        } catch(err) {
+            alert('ไฟล์ Backup ไม่ถูกต้อง');
+        }
+    };
+    reader.readAsText(file);
+}
+
+</script>
+</body>
+</html>
