@@ -436,10 +436,15 @@
         <div class="form-row">
             <div class="form-group">
                 <label>แหล่งที่มา</label>
-                <select id="editSource">
+                <select id="editSource" onchange="handleEditSourceChange()">
                     <option value="LINE">LINE</option>
                     <option value="Facebook">Facebook</option>
                     <option value="Telephone">โทรศัพท์</option>
+                </select>
+
+                <select id="editFbPageSelect" class="hidden" style="margin-top:10px;">
+                    <option value="fogeasy">เพจ fogeasy</option>
+                    <option value="ชั่วการช่าง">เพจ ชั่วการช่าง</option>
                 </select>
             </div>
 
@@ -967,6 +972,21 @@ function importOrders(event) {
 
 
 
+
+function handleEditSourceChange(){
+
+    const source = document.getElementById('editSource').value;
+
+    const fbSelect = document.getElementById('editFbPageSelect');
+
+    if(source === 'Facebook'){
+        fbSelect.classList.remove('hidden');
+    }else{
+        fbSelect.classList.add('hidden');
+    }
+}
+
+
 function openEditModal(id){
 
     const order = ordersDatabase.find(o=>o.id===id);
@@ -975,6 +995,24 @@ function openEditModal(id){
 
     document.getElementById('editOrderId').value = order.id;
     document.getElementById('editSource').value = order.source;
+
+    const editFbPageSelect = document.getElementById('editFbPageSelect');
+
+    if(order.source === 'Facebook'){
+
+        editFbPageSelect.classList.remove('hidden');
+
+        if(order.subSource){
+            if(order.subSource.includes('ชั่วการช่าง')){
+                editFbPageSelect.value = 'ชั่วการช่าง';
+            }else{
+                editFbPageSelect.value = 'fogeasy';
+            }
+        }
+
+    }else{
+        editFbPageSelect.classList.add('hidden');
+    }
     document.getElementById('editPayType').value = order.payType;
     document.getElementById('editProfile').value = order.profile;
     document.getElementById('editAddress').value = order.address;
@@ -1011,10 +1049,17 @@ function saveEditedOrder(){
         ? new Date(editDateTime)
         : new Date();
 
+    let editSubSource = '';
+
+    if(document.getElementById('editSource').value === 'Facebook'){
+        editSubSource = ' (' + document.getElementById('editFbPageSelect').value + ')';
+    }
+
     ordersDatabase[orderIndex] = {
         ...ordersDatabase[orderIndex],
 
         source: document.getElementById('editSource').value,
+        subSource: editSubSource,
         payType: document.getElementById('editPayType').value,
         profile: document.getElementById('editProfile').value,
         address: document.getElementById('editAddress').value,
