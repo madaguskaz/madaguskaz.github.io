@@ -672,7 +672,12 @@
             </div>
 
             <div class="form-group">
-                <label>4. ชื่อผู้รับสินค้า และที่อยู่ <span>*</span></label>
+                <label>4. ชื่อ-นามสกุลผู้รับ <span>*</span></label>
+                <input type="text" id="consigneeName" placeholder="ชื่อ-นามสกุลผู้รับ" required>
+            </div>
+
+            <div class="form-group">
+                <label>5. ที่อยู่จัดส่ง <span>*</span></label>
                 <textarea id="shippingAddress" rows="6" placeholder="ชื่อ นามสกุล&#10;&#10;ที่อยู่จัดส่ง...&#10;&#10;โทร: 08X-XXXXXXX" required></textarea>
             </div>
 
@@ -849,7 +854,60 @@ function saveOrdersToStorage() {
     }
 
     // โหลด API Key ที่เคยบันทึกไว้ในเครื่องขึ้นมาทำงาน
-    window.onload = function() {
+    
+
+function migrateOldDatabase(){
+
+    ordersDatabase = ordersDatabase.map(order => {
+
+
+        if(order.customerPhone && order.trackingHistory){
+            return order;
+        }
+
+        return {
+            id: order.id || crypto.randomUUID(),
+            customerPhone:
+                order.customerPhone ||
+                '',
+
+            consignee:
+                order.consignee || '',
+
+            profileName:
+                order.profileName ||
+                order.profile ||
+                '',
+
+            address:
+                order.address || '',
+
+            source:
+                order.source || 'Excel',
+
+            trackingHistory:
+                order.trackingHistory ||
+                order.orders ||
+                [{
+                    trackingNumber:
+                        order.trackingNumber || '',
+
+                    timestamp:
+                        order.orderDateTime ||
+                        new Date().toISOString(),
+
+                    amount:
+                        order.amount || 0,
+
+                    payType:
+                        order.payType || 'โอนแล้ว'
+                }]
+        };
+    });
+}
+
+
+window.onload = function() {
 
         // โหลด API KEY
         const savedKey = localStorage.getItem('gemini_api_key');
@@ -921,6 +979,7 @@ function saveOrdersToStorage() {
             dtInput.value = localISO;
         }
 
+        migrateOldDatabase();
         renderOrders();
     }
 
@@ -1020,9 +1079,8 @@ function saveApiKey() {
             document.getElementById('customerPhone').value = resultJson.phoneNumber || "";
             if(resultJson.payMethod) { document.getElementById('paymentType').value = resultJson.payMethod; }
 
-            // 📐 จัดเรียงตามเงื่อนไข: ชื่อ นามสกุล เว้นบรรทัดลงมานิดหน่อยเพื่อใส่ที่อยู่ และเบอร์โทรให้ใส่ คำว่าโทร นำหน้า
-            const formattedAddress = `${resultJson.recipientName || ""}\n\nที่อยู่: ${resultJson.cleanAddress || ""}\n\nโทร: ${resultJson.phoneNumber || ""}`;
-            document.getElementById('shippingAddress').value = formattedAddress;
+            document.getElementById('consigneeName').value = resultJson.recipientName || "";
+            document.getElementById('shippingAddress').value = resultJson.cleanAddress || "";
 
         } catch (error) {
             console.error(error);
@@ -1032,69 +1090,96 @@ function saveApiKey() {
         }
     }
 
-    function saveOrder() {
-    const source = document.getElementById('sourceType').value;
-    let subSource = "";
+    
 
-    if(source === 'Facebook')
-        subSource = ` (${document.getElementById('fbPageSelect').value})`;
+function saveOrder() {
 
-    if(source === 'Tel')
-        subSource = ` (เบอร์: ${document.getElementById('sourcePhoneInput').value})`;
+    const phone =
+        document.getElementById('customerPhone')
+        .value.trim();
 
-    const profile = document.getElementById('profileName').value;
-    const address = document.getElementById('shippingAddress').value;
-    const payType = document.getElementById('paymentType').value;
-    const amount = parseFloat(document.getElementById('amount').value) || 0;
-    const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+    const tracking =
+        document.getElementById('trackingNumber')
+        .value.trim();
 
-    // ✅ เพิ่ม 3 บรรทัดนี้
-    const trackingNumber = document.getElementById('trackingNumber').value || '';
-    const customerPhone = document.getElementById('customerPhone').value || '';
-    const orderDateTime = document.getElementById('orderDateTime').value || '';
+    if(!phone){
 
-    const now = new Date();
+        alert('กรุณากรอกเบอร์โทร');
+        return;
+    }
 
-    const timeStr =
-        `${String(now.getHours()).padStart(2,'0')}:` +
-        `${String(now.getMinutes()).padStart(2,'0')}:` +
-        `${String(now.getSeconds()).padStart(2,'0')} น.`;
+    let customer =
+        ordersDatabase.find(
+            c => c.customerPhone === phone
+        );
 
-    const id = 'order-' + Date.now();
+    if(!customer){
 
-    const orderDate = now.toISOString().split('T')[0];
+        customer = {
 
-    ordersDatabase.unshift({
-        id,
-        orderDate,
-        source,
-        subSource,
-        profile,
-        address,
-        payType,
-        amount,
-        remarks,
-        time: timeStr,
+            id: crypto.randomUUID(),
 
-        // ✅ จะถูกบันทึกแล้ว
-        trackingNumber,
-        customerPhone,
-        orderDateTime
+            customerPhone: phone,
+
+            consignee:
+                document.getElementById('consigneeName')
+                .value,
+
+            profileName:
+                document.getElementById('profileName')
+                .value,
+
+            address:
+                document.getElementById('shippingAddress')
+                .value,
+
+            source:'Manual',
+
+            trackingHistory:[]
+        };
+
+        ordersDatabase.unshift(customer);
+    }
+
+    const exists =
+        customer.trackingHistory.some(
+            t => t.trackingNumber === tracking
+        );
+
+    if(exists){
+
+        showToast('⚠️ Tracking นี้มีแล้ว');
+        return;
+    }
+
+    customer.trackingHistory.unshift({
+
+        trackingNumber: tracking,
+
+        timestamp:
+            document.getElementById('orderDateTime')
+            .value || new Date().toISOString(),
+
+        amount:
+            parseFloat(
+                document.getElementById('amount').value
+            ) || 0,
+
+        payType:
+            document.getElementById('paymentType')
+            .value
     });
 
     saveOrdersToStorage();
 
-    const today = new Date().toISOString().split('T')[0];
-
-    const filterDate = document.getElementById('filterDate');
-
-    if(filterDate){
-        filterDate.value = today;
-    }
-
     renderOrders();
+
     resetForm();
+
+    showToast('✅ บันทึกสำเร็จ');
 }
+
+
     
 
 
@@ -1102,31 +1187,96 @@ function saveApiKey() {
 function renderOrders() {
         const listArea = document.getElementById('orderListArea');
         listArea.innerHTML = "";
+
         let totalTransfer = 0, totalCod = 0;
-        const selectedDate=document.getElementById('filterDate')?.value||'';
-        const keyword=(document.getElementById('searchText')?.value||'').toLowerCase();
-        let filteredOrders=ordersDatabase.filter(o=>{
-           const dateOk=!selectedDate || o.orderDate===selectedDate;
-           const text=(
-    o.profile+' '+
-    o.address+' '+
-    (o.trackingNumber||'')+' '+
-    (o.customerPhone||'')+' '+
-    (o.source||'')+' '+
-    (o.payType||'')
-).toLowerCase();
-           const keyOk=!keyword || text.includes(keyword);
-           return dateOk && keyOk;
-        });
+
+        const selectedDate =
+            document.getElementById('filterDate')?.value || '';
+
+        const keyword =
+            (document.getElementById('searchText')?.value || '')
+            .toLowerCase();
+
+        let filteredOrders = ordersDatabase
+        .map(order=>{
+
+            const matchedTrackingHistory =
+                (order.trackingHistory || []).filter(item=>{
+
+                    // filter วันที่จาก timestamp ของ tracking แต่ละเลข
+                    const itemDate = item.timestamp
+                        ? new Date(item.timestamp)
+                            .toISOString()
+                            .split('T')[0]
+                        : '';
+
+                    const dateOk =
+                        !selectedDate ||
+                        itemDate === selectedDate;
+
+                    const text = (
+                        (order.profile || '') + ' ' +
+                        (order.profileName || '') + ' ' +
+                        (order.address || '') + ' ' +
+                        (item.trackingNumber || '') + ' ' +
+                        (order.customerPhone || '') + ' ' +
+                        (order.source || '') + ' ' +
+                        (item.payType || '')
+                    ).toLowerCase();
+
+                    const keyOk =
+                        !keyword || text.includes(keyword);
+
+                    return dateOk && keyOk;
+                });
+
+            // ถ้าเลือกวันแล้ว แต่ไม่มี tracking ตรงวัน -> ไม่แสดง
+            if(selectedDate && matchedTrackingHistory.length === 0){
+                return null;
+            }
+
+            // ถ้ามี keyword แต่ไม่มี tracking ตรง -> ไม่แสดง
+            if(keyword && matchedTrackingHistory.length === 0){
+                return null;
+            }
+
+            return {
+                ...order,
+                trackingHistory:
+                    matchedTrackingHistory.length > 0
+                    ? matchedTrackingHistory
+                    : (selectedDate || keyword
+                        ? []
+                        : (order.trackingHistory || []))
+            };
+        })
+        .filter(Boolean);
 
         filteredOrders.forEach((order, index) => {
             let badgeClass = order.source === 'LINE' ? 'badge-line' : (order.source === 'Facebook' ? 'badge-fb' : 'badge-tel');
             let payClass = order.payType === 'โอนแล้ว' ? 'badge-pay-transfer' : 'badge-pay-cod';
             
-            if(order.payType === 'โอนแล้ว') totalTransfer += order.amount; else totalCod += order.amount;
+            const latest =
+                (order.trackingHistory || [])[0] || {};
 
-            let safeAddress = order.address.replace(/'/g, "\\'").replace(/\n/g, "\\n");
-            let safeRemarks = order.remarks.replace(/'/g, "\\'").replace(/\n/g, "\\n");
+            const amount =
+                Number(latest.amount || order.amount || 0);
+
+            const payType =
+                latest.payType || order.payType || 'โอนแล้ว';
+
+            if(payType === 'โอนแล้ว')
+                totalTransfer += amount;
+            else
+                totalCod += amount;
+
+            let safeAddress = safeText(order.address)
+                .replace(/'/g, "\\'")
+                .replace(/\n/g, "\\n");
+
+            let safeRemarks = safeText(order.remarks)
+                .replace(/'/g, "\\'")
+                .replace(/\n/g, "\\n");
 
             listArea.innerHTML += `
 <div class="compact-order-card">
@@ -1142,11 +1292,23 @@ function renderOrders() {
                 <div class="compact-user-label">ผู้รับ</div>
 
                 <div class="compact-name">
+        ${order.consignee || '-'}
+    </div>
+
+    <div style="
+font-size:13px;
+color:#64748b;
+margin-top:4px;
+">
+        👤 ${order.profileName || order.profile || '-'}
+    </div>
+
+    <div style="display:none">
         ${(()=>{
 
             // ใช้ consignee จาก Excel ก่อน
-            if(order.profile){
-				return safeText(order.profile);
+            if(order.consignee){
+				return safeText(order.consignee);
 			}
 
             // fallback ดึงชื่อบรรทัดแรกจาก address
@@ -1201,7 +1363,7 @@ function renderOrders() {
 </div>
 
             <div class="pay-badge ${order.payType === 'cod' ? 'badge-cod-custom' : 'badge-transfer-custom'}">
-                ${order.payType === 'cod' ? 'COD' : 'โอน'}
+                ${payType === 'cod' ? 'COD' : 'โอน'}
             </div>
         </div>
 
@@ -1226,7 +1388,34 @@ function renderOrders() {
             </div>
 
             <div class="track-number">
-                ${safeText(order.trackingNumber)}
+                ${(order.trackingHistory || []).map(item => `
+
+<div style="
+margin-bottom:10px;
+padding:8px;
+background:#f8fafc;
+border-radius:10px;
+">
+
+    <div style="
+    font-size:16px;
+    font-weight:700;
+    ">
+        ${item.trackingNumber}
+    </div>
+
+    <div style="
+    font-size:12px;
+    color:#64748b;
+    margin-top:4px;
+    ">
+        🕒 ${new Date(item.timestamp)
+            .toLocaleString('th-TH')}
+    </div>
+
+</div>
+
+`).join('') || '-'}
 
                 <button class="copy-track-btn"
                     onclick="copyTracking('${String(order.trackingNumber || '').replace(/'/g,"\\'")}')">
@@ -1237,11 +1426,11 @@ function renderOrders() {
 
         <div class="cod-box">
             <div class="cod-label">
-                ${order.payType === 'cod' ? 'ยอด COD' : 'ยอดโอน'}
+                ${payType === 'cod' ? 'ยอด COD' : 'ยอดโอน'}
             </div>
 
             <div class="cod-price">
-                ฿${Number(order.amount || 0).toLocaleString()}
+                ฿${Number(amount || 0).toLocaleString()}
             </div>
         </div>
 
@@ -1332,28 +1521,77 @@ function editOrder(id){
     document.getElementById('editOrderId').value = order.id;
 
     document.getElementById('editProfile').value =
-        order.profile || '';
+        order.profileName || order.profile || '';
+
+    document.getElementById('editConsignee').value =
+        order.consignee || '';
+
+    document.getElementById('editSource').value =
+        order.source || 'LINE';
 
     document.getElementById('editAddress').value =
         order.address || '';
 
-    document.getElementById('editTracking').value =
-        order.trackingNumber || '';
+    const trackingContainer =
+        document.getElementById('editTrackingContainer');
+
+    trackingContainer.innerHTML =
+        (order.trackingHistory || []).map((item,index)=>{
+
+            const dt = item.timestamp
+                ? new Date(item.timestamp)
+                : new Date();
+
+            const localISO =
+                new Date(
+                    dt.getTime() - (dt.getTimezoneOffset()*60000)
+                ).toISOString().slice(0,16);
+
+            return `
+            <div style="
+            border:1px solid #e2e8f0;
+            border-radius:12px;
+            padding:12px;
+            margin-bottom:10px;
+            background:#f8fafc;
+            ">
+
+                <div style="margin-bottom:8px;">
+                    <label style="font-size:13px;">Tracking Number</label>
+                    <input type="text"
+                        class="editTrackingNumber"
+                        value="${item.trackingNumber || ''}">
+                </div>
+
+                <div>
+                    <label style="font-size:13px;">
+                        เวลา (Timestamp)
+                    </label>
+
+                    <input type="datetime-local"
+                        class="editTrackingTimestamp"
+                        value="${localISO}">
+                </div>
+
+            </div>
+            `;
+        }).join('');
 
     document.getElementById('editPhone').value =
-        order.customerPhone || '';
+        order.customerPhone
+        || '';
+
+    const latest =
+        order.trackingHistory?.[0] || {};
 
     document.getElementById('editAmount').value =
-        order.amount || 0;
+        latest.amount || order.amount || 0;
 
     document.getElementById('editPayType').value =
-        order.payType || 'โอนแล้ว';
+        latest.payType || order.payType || 'โอนแล้ว';
 
     document.getElementById('editRemarks').value =
         order.remarks || '';
-
-    document.getElementById('editOrderDateTime').value =
-        order.orderDateTime || '';
 
     document.getElementById('editModal').style.display = 'flex';
 }
@@ -1428,17 +1666,56 @@ function saveEditOrder(){
 
     if(!order) return;
 
+    order.profileName =
+        document.getElementById('editProfile').value;
+
     order.profile =
         document.getElementById('editProfile').value;
+
+    order.consignee =
+        document.getElementById('editConsignee').value;
+
+    order.source =
+        document.getElementById('editSource').value;
 
     order.address =
         document.getElementById('editAddress').value;
 
-    order.trackingNumber =
-        document.getElementById('editTracking').value;
-
     order.customerPhone =
         document.getElementById('editPhone').value;
+
+    
+
+    order.remarks =
+        document.getElementById('editRemarks').value;
+
+    const trackingInputs =
+        document.querySelectorAll('.editTrackingNumber');
+
+    const timeInputs =
+        document.querySelectorAll('.editTrackingTimestamp');
+
+    order.trackingHistory =
+        Array.from(trackingInputs).map((input,index)=>({
+            trackingNumber:
+                input.value.trim(),
+
+            timestamp:
+                timeInputs[index]?.value
+                || new Date().toISOString(),
+
+            amount:
+                parseFloat(
+                    document.getElementById('editAmount').value
+                ) || 0,
+
+            payType:
+                document.getElementById('editPayType').value
+        }))
+        .filter(item => item.trackingNumber);
+
+    order.trackingNumber =
+        order.trackingHistory?.[0]?.trackingNumber || '';
 
     order.amount =
         parseFloat(
@@ -1447,12 +1724,6 @@ function saveEditOrder(){
 
     order.payType =
         document.getElementById('editPayType').value;
-
-    order.remarks =
-        document.getElementById('editRemarks').value;
-
-    order.orderDateTime =
-        document.getElementById('editOrderDateTime').value;
 
     saveOrdersToStorage();
 
@@ -1715,10 +1986,30 @@ async function importSpreadsheet(event){
                     row['consignee']
                 ) || 'ไม่ระบุ';
 
-            const phone =
-                safe(
-                    row['phone number']
-                );
+            const phone = (()=>{
+
+                const raw =
+                    row['phone number'];
+
+                // ถ้า Excel ตัด 0 ด้านหน้า
+                if(
+                    typeof raw === 'number'
+                ){
+
+                    let num =
+                        String(raw)
+                        .replace(/\.0+$/,'');
+
+                    if(num.length === 9){
+                        num = '0' + num;
+                    }
+
+                    return num;
+                }
+
+                return safe(raw);
+
+            })();
 
             const address =
                 safe(
@@ -1808,10 +2099,76 @@ async function importSpreadsheet(event){
 
         console.log('IMPORTED:', imported);
 
-        ordersDatabase = [
-            ...imported.reverse(),
-            ...ordersDatabase
-        ];
+        
+imported.forEach(newOrder => {
+
+    const phone =
+        String(newOrder.customerPhone || '')
+        .trim();
+
+    const tracking =
+        String(newOrder.trackingNumber || '')
+        .trim();
+
+    if(!phone) return;
+
+    let customer =
+        ordersDatabase.find(
+            c => c.customerPhone === phone
+        );
+
+    if(!customer){
+
+        customer = {
+
+            id: crypto.randomUUID(),
+
+            customerPhone: phone,
+
+            consignee:
+                newOrder.consignee || '',
+
+            profileName:
+                newOrder.profile || '',
+
+            address:
+                newOrder.address || '',
+
+            source:
+                newOrder.source || 'Excel',
+
+            trackingHistory: []
+        };
+
+        ordersDatabase.unshift(customer);
+    }
+
+    const trackingExists =
+        customer.trackingHistory.some(
+            t => t.trackingNumber === tracking
+        );
+
+    if(trackingExists){
+        return;
+    }
+
+    customer.trackingHistory.unshift({
+
+        trackingNumber: tracking,
+
+        timestamp:
+            newOrder.orderDateTime
+            || new Date().toISOString(),
+
+        amount:
+            newOrder.amount || 0,
+
+        payType:
+            newOrder.payType || 'โอนแล้ว'
+    });
+
+});
+
 
         saveOrdersToStorage();
 
@@ -1916,14 +2273,29 @@ padding:20px;
         </div>
 
         <div class="form-group">
+            <label>ชื่อ-นามสกุลผู้รับ</label>
+            <input type="text" id="editConsignee">
+        </div>
+
+        <div class="form-group">
+            <label>แหล่งที่มาของออเดอร์</label>
+            <select id="editSource">
+                <option value="LINE">LINE</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Tel">Tel</option>
+                <option value="Excel">Excel</option>
+            </select>
+        </div>
+
+        <div class="form-group">
             <label>ที่อยู่</label>
             <textarea id="editAddress" rows="5"></textarea>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label>Tracking</label>
-                <input type="text" id="editTracking">
+                <label>Tracking และเวลาแต่ละรายการ</label>
+                <div id="editTrackingContainer"></div>
             </div>
 
             <div class="form-group">
@@ -1946,11 +2318,6 @@ padding:20px;
                     <option value="cod">cod</option>
                 </select>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label>วันเวลาทำรายการ</label>
-            <input type="datetime-local" id="editOrderDateTime">
         </div>
 
         <div class="form-group">
