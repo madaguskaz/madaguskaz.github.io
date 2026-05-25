@@ -122,26 +122,6 @@
             .print-address { font-size: 24px; line-height: 1.8; white-space: pre-line; }
         }
     
-
-.tracking-display{
-    margin-top:-15px;
-    padding:10px 14px;
-    color:#000;
-    border-radius:10px;
-    font-size:22px;
-    font-weight:500;
-    letter-spacing:1px;
-    text-align:center;
-}
-
-@media (max-width:768px){
-    .tracking-display{
-        font-size:18px;
-        padding:14px;
-        border-radius:12px;
-    }
-}
-
 /* Mobile improvements */
 @media (max-width:768px){
     body{padding:10px;}
@@ -158,6 +138,26 @@
     .tab-btn{padding:14px 10px;font-size:14px;}
     .filter-bar{flex-direction:column;}
     .order-list{max-height:none;}
+}
+
+
+.tracking-display{
+    margin-top:-20px;
+    padding:10px 14px;
+    color:#000;
+    border-radius:10px;
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-align:center;
+}
+
+@media (max-width:768px){
+    .tracking-display{
+        font-size:26px;
+        padding:14px;
+        border-radius:12px;
+    }
 }
 
 </style>
@@ -272,6 +272,11 @@
                 <label>7. รายการสินค้าที่สั่งซื้อ / หมายเหตุ</label>
                 <textarea id="orderRemarks" rows="2" placeholder="ลูกค้าสั่ง Order อะไรมาบ้าง..."></textarea>
             </div>
+            <div class="form-group">
+                <label>8. Tracking Number</label>
+                <input type="text" id="trackingNumber" placeholder="กรอกเลขพัสดุ / Tracking Number">
+            </div>
+
 
             <div class="btn-group">
                 <button type="button" class="btn-reset" onclick="resetForm()">ล้างฟอร์ม</button>
@@ -479,7 +484,8 @@ function saveApiKey() {
                     "cleanAddress": "ที่อยู่ในการจัดส่งทั้งหมด (ห้ามนำชื่อผู้รับและเบอร์โทรศัพท์มารวมในช่องนี้)",
                     "phoneNumber": "เบอร์โทรศัพท์ติดต่อ คัดกรองตัวเลขความยาว 9-10 หลักมาให้เรียบร้อย",
                     "totalAmount": "ยอดจำนวนเงินเป็นตัวเลขทศนิยม (ถ้ามี)",
-                    "payMethod": "ระบุเป็น 'โอนแล้ว' หรือ 'cod' วิเคราะห์ตามบริบทข้อมูลในภาพสลิปหรือประวัติแชท"
+                    "payMethod": "ระบุเป็น 'โอนแล้ว' หรือ 'cod' วิเคราะห์ตามบริบทข้อมูลในภาพสลิปหรือประวัติแชท",
+                    "trackingNumber": "เลขพัสดุหรือ Tracking Number ที่พบในภาพ เช่น TH1234567890 หรือเลขขนส่งอื่นๆ"
                 }
             `;
 
@@ -512,6 +518,7 @@ function saveApiKey() {
             // 📐 จัดเรียงตามเงื่อนไข: ชื่อ นามสกุล เว้นบรรทัดลงมานิดหน่อยเพื่อใส่ที่อยู่ และเบอร์โทรให้ใส่ คำว่าโทร นำหน้า
             const formattedAddress = `${resultJson.recipientName || ""}\n\nที่อยู่: ${resultJson.cleanAddress || ""}\n\nโทร: ${resultJson.phoneNumber || ""}`;
             document.getElementById('shippingAddress').value = formattedAddress;
+            document.getElementById('trackingNumber').value = resultJson.trackingNumber || '';
 
         } catch (error) {
             console.error(error);
@@ -532,13 +539,14 @@ function saveApiKey() {
         const payType = document.getElementById('paymentType').value;
         const amount = parseFloat(document.getElementById('amount').value) || 0;
         const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+        const trackingNumber = document.getElementById('trackingNumber').value || '-';
         
         const now = new Date();
         const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} น.`;
         const id = 'order-' + Date.now();
 const orderDate = now.toISOString().split('T')[0];
 
-        ordersDatabase.push({ id, orderDate, source, subSource, profile, address, payType, amount, remarks, time: timeStr });
+        ordersDatabase.push({ id, orderDate, source, subSource, profile, address, payType, amount, remarks, trackingNumber, time: timeStr });
 
         saveOrdersToStorage();
         saveOrdersToStorage();
@@ -595,13 +603,13 @@ const orderDate = now.toISOString().split('T')[0];
                         <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
                             <div><div class="text-muted">ยอดเงิน</div><div style="font-size: 18px; font-weight:700; color:var(--primary);">${order.amount.toFixed(2)} ฿</div></div>
                             <div class="text-muted">Order: ${order.remarks}</div>
-                            <div class="tracking-display">📦 Tracking: ${order.trackingNumber || '-'}</div>
+                            <div class="tracking-display">📦 ${order.trackingNumber || '-'}</div>
                         </div>
                     </div>
                     <div class="order-actions">
                         <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️ ลบ</button>
                         <div class="action-right-btns">
-                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}')">💬 แชร์ไป LINE</button>
+                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}')">💬 แชร์ไป LINE</button>
                             <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ ปุ่ม Print</button>
                         </div>
                     </div>
@@ -644,13 +652,13 @@ const orderDate = now.toISOString().split('T')[0];
         window.print();
     }
 
-    function copyToLine(profile, address, payType, amount, remarks, source) {
+    function copyToLine(profile, address, payType, amount, remarks, source, trackingNumber='-') {
 
         let textFormat = `📦 ออเดอร์ [${source}]
 👤 โปรไฟล์: ${profile}
 📍 ข้อมูลที่อยู่จัดส่ง:
 ${address}
-🛒 รายการ: ${remarks}
+🛒 รายการ: ${remarks}\n📦 Tracking: ${trackingNumber}
 💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
 
         const encoded = encodeURIComponent(textFormat);
