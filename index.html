@@ -122,144 +122,27 @@
             .print-address { font-size: 24px; line-height: 1.8; white-space: pre-line; }
         }
     
-/* Mobile improvements */
 
-.compact-order-card{
-    background:#fff;
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:14px;
-    border:1px solid #edf2f7;
-}
-
-.compact-user-label{
-    font-size:13px;
-    color:#94a3b8;
-    margin-bottom:6px;
-}
-
-.compact-name{
-    font-size:20px;
-    font-weight:800;
-    color:#1f2937;
-    line-height:1.3;
-}
-
-.compact-phone{
-    margin-top:4px;
-    color:#94a3b8;
-    font-size:13px;
-}
-
-.compact-datetime{
-    margin-top:4px;
-    color:#64748b;
-    font-size:12px;
-}
-
-.compact-name{
-    font-size:18px;
-}
-
-.compact-bottom{
-    margin-top:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.track-label{
-    font-size:13px;
-    color:#94a3b8;
-    margin-bottom:6px;
-}
-
-.track-number{
-    font-size:18px;
-    font-weight:800;
-    color:#1f2937;
-    letter-spacing:1px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.copy-track-btn{
-    border:none;
-    background:#f1f5f9;
-    border-radius:8px;
-    width:34px;
-    height:34px;
-    cursor:pointer;
-}
-
-.cod-box{
-    background:#f0fdf4;
+.tracking-display{
+    margin-top:-15px;
     padding:10px 14px;
+    color:#000;
     border-radius:10px;
-    text-align:right;
-}
-
-.cod-label{
-    color:#22c55e;
-    font-size:13px;
-    font-weight:700;
-}
-
-.cod-price{
-    color:#16a34a;
     font-size:22px;
-    font-weight:800;
+    font-weight:500;
+    letter-spacing:1px;
+    text-align:center;
 }
 
-
-
-
-.gear-btn{
-    border:none;
-    background:#f1f5f9;
-    border-radius:12px;
-    width:42px;
-    height:42px;
-    cursor:pointer;
-    font-size:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#475569;
+@media (max-width:768px){
+    .tracking-display{
+        font-size:18px;
+        padding:14px;
+        border-radius:12px;
+    }
 }
 
-.gear-btn:hover{
-    background:#e2e8f0;
-}
-
-.summary-wrapper{
-    background:#ffffff;
-    border:1px solid #e5e7eb;
-    border-radius:20px;
-    padding:18px;
-    margin-top:20px;
-}
-
-.summary-header{
-    font-size:18px;
-    font-weight:800;
-    color:#111827;
-    margin-bottom:14px;
-}
-
-.summary-grid{
-    gap:14px;
-}
-
-.summary-box{
-    border-radius:18px;
-    background:#f8fafc;
-    padding:18px 12px;
-}
-
-
-
+/* Mobile improvements */
 @media (max-width:768px){
     body{padding:10px;}
     .api-config{flex-wrap:wrap;}
@@ -277,312 +160,7 @@
     .order-list{max-height:none;}
 }
 
-
-/* ===== MODERN ORDER UI PATCH ===== */
-.compact-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:10px;
-    width:100%;
-}
-
-.compact-user-left{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    flex:1;
-    min-width:0;
-}
-
-.gear-btn{
-    flex-shrink:0;
-}
-
-.compact-user-left{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-}
-
-.avatar-circle{
-    width:46px;
-    height:46px;
-    border-radius:50%;
-    background:#ede9fe;
-    color:#6d28d9;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    flex-shrink:0;
-}
-
-.compact-meta-row{
-    margin-top:10px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px 18px;
-    align-items:center;
-}
-
-.status-badges{
-    display:flex;
-    gap:8px;
-}
-
-.source-badge,
-.pay-badge{
-    border-radius:12px;
-    padding:6px 12px;
-    font-size:13px;
-    font-weight:700;
-}
-
-.badge-line-custom{
-    background:#dcfce7;
-    color:#16a34a;
-}
-
-.badge-facebook-custom{
-    background:#dbeafe;
-    color:#2563eb;
-}
-
-.badge-telephone-custom{
-    background:#fee2e2;
-    color:#dc2626;
-}
-
-.badge-excel-custom{
-    background:#217346;
-    color:#FFFFFF;
-}
-
-.badge-cod-custom{
-    background:#fff7ed;
-    color:#ea580c;
-}
-
-.badge-transfer-custom{
-    background:#ecfdf5;
-    color:#15803d;
-}
-
-.track-number{
-    font-size:28px !important;
-}
-
-.cod-price{
-    font-size:34px !important;
-}
-
-
-/* ===== MOBILE COMPACT PATCH ===== */
-
-.compact-order-card{
-    padding:14px !important;
-    border-radius:18px !important;
-}
-
-.compact-top{
-    gap:10px !important;
-}
-
-.avatar-circle{
-    width:36px !important;
-    height:36px !important;
-    font-size:16px !important;
-}
-
-.compact-name{
-    font-size:20px !important;
-    line-height:1.15 !important;
-}
-
-.compact-meta-row{
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    gap:8px !important;
-    margin-top:6px !important;
-    width:100%;
-	margin-left: -50px !important;
-}
-
-.compact-meta-row > *{
-    flex-shrink:0;
-}
-
-.compact-phone,
-.compact-datetime{
-    font-size:12px !important;
-    white-space:nowrap;
-}
-
-.status-badges{
-    gap:5px !important;
-}
-
-.source-badge,
-.pay-badge{
-    padding:4px 8px !important;
-    font-size:11px !important;
-    border-radius:10px !important;
-}
-
-.compact-bottom{
-    margin-top:12px !important;
-    gap:10px !important;
-    align-items:center !important;
-}
-
-.track-label{
-    font-size:11px !important;
-    margin-bottom:4px !important;
-}
-
-.track-number{
-    font-size:18px !important;
-    gap:6px !important;
-    letter-spacing:0 !important;
-    flex-wrap:nowrap !important;
-}
-
-.copy-track-btn{
-    width:30px !important;
-    height:30px !important;
-    font-size:13px !important;
-    border-radius:8px !important;
-}
-
-.cod-box{
-    padding:10px 12px !important;
-    border-radius:14px !important;
-    min-width:95px !important;
-}
-
-.cod-label{
-    font-size:11px !important;
-    margin-bottom:2px !important;
-}
-
-.cod-price{
-    font-size:24px !important;
-}
-
-.gear-btn{
-    width:60px !important;
-    height:60px !important;
-    min-width:60px !important;
-    max-width:60px !important;
-
-    padding:0 !important;
-    border-radius:14px !important;
-
-    display:flex !important;
-    align-items:center;
-    justify-content:center;
-
-    font-size:22px !important;
-    flex:0 0 auto !important;
-}
-
-@media(max-width:768px){
-
-    .compact-order-card{
-        padding:12px !important;
-    }
-
-    .compact-name{
-        font-size:18px !important;
-    }
-
-    .track-number{
-        font-size:16px !important;
-    }
-
-    .cod-price{
-        font-size:20px !important;
-    }
-
-    .compact-phone,
-    .compact-datetime{
-        font-size:11px !important;
-    }
-
-    .compact-bottom{
-        justify-content:space-between !important;
-    }
-}
-
-
-@media(max-width:768px){
-
-    .compact-top{
-        align-items:flex-start !important;
-    }
-
-    .compact-user-left{
-        flex:1;
-        min-width:0;
-    }
-
-    .compact-meta-row{
-        flex-wrap:wrap !important;
-        justify-content:flex-start !important;
-        align-items:flex-start !important;
-        gap:4px 10px !important;
-    }
-
-    .compact-phone,
-    .compact-datetime{
-        text-align:left;
-        justify-content:flex-start;
-    }
-
-    .gear-btn{
-        width:34px !important;
-        height:34px !important;
-        flex-shrink:0;
-        margin-top:2px;
-    }
-}
-
-
-@media(max-width:768px){
-
-    .compact-meta-row{
-        display:flex !important;
-        flex-wrap:nowrap !important;
-        justify-content:flex-start !important;
-        align-items:center !important;
-        gap:6px !important;
-        white-space:nowrap !important;
-        padding-right:4px
-		margin-left: -50px !important;
-    }
-
-    .compact-phone,
-    .compact-datetime,
-    .status-badges{
-        flex-shrink:0 !important;
-    }
-
-    .status-badges{
-        display:flex !important;
-        gap:5px !important;
-        align-items:center !important;
-    }
-}
-
 </style>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-<script>
-// importSpreadsheet moved to main script section below
-</script>
 </head>
 <body>
 
@@ -643,7 +221,7 @@
                         <option value="">-- เลือกแหล่งที่มา --</option>
                         <option value="LINE">LINE</option>
                         <option value="Facebook">Facebook</option>
-                        <option value="Tel">โทรศัพท์</option>
+                        <option value="Telephone">โทรศัพท์</option>
                     </select>
                     
                     <select id="fbPageSelect" class="hidden">
@@ -695,22 +273,6 @@
                 <textarea id="orderRemarks" rows="2" placeholder="ลูกค้าสั่ง Order อะไรมาบ้าง..."></textarea>
             </div>
 
-<div class="form-row">
-    <div class="form-group">
-        <label>8. Tracking Number</label>
-        <input type="text" id="trackingNumber" placeholder="เช่น TH123456789">
-    </div>
-    <div class="form-group">
-        <label>9. เบอร์โทรลูกค้า</label>
-        <input type="text" id="customerPhone" placeholder="08xxxxxxxx">
-    </div>
-</div>
-
-<div class="form-group">
-    <label>10. วันเวลาทำรายการ (ประเทศไทย)</label>
-    <input type="datetime-local" id="orderDateTime">
-</div>
-
             <div class="btn-group">
                 <button type="button" class="btn-reset" onclick="resetForm()">ล้างฟอร์ม</button>
                 <button type="submit" class="btn-submit">💾 บันทึกรายการ</button>
@@ -718,9 +280,7 @@
         </form></div></div><div id="listTab" class="tab-content hidden-tab"><div class="card">
         <div class="filter-bar">
 <input type="date" id="filterDate" onchange="renderOrders()">
-<input type="text" id="searchText" placeholder="ค้นหาโปรไฟล์/ที่อยู่/Tracking/เบอร์โทร" oninput="renderOrders()">
-<button type="button" onclick="document.getElementById('excelImport').click()">📊 Import Excel/CSV</button>
-<input type="file" id="excelImport" accept=".xlsx,.xls,.csv" style="display:none" onchange="importSpreadsheet(event)">
+<input type="text" id="searchText" placeholder="ค้นหาโปรไฟล์/ที่อยู่" oninput="renderOrders()">
 </div><div class="header-right">
             <div class="card-title">📦 รายการสั่งซื้อและสรุปยอดของวัน</div>
         </div>
@@ -728,28 +288,13 @@
         <div class="order-list" id="orderListArea">
             </div>
 
-        <div class="summary-wrapper">
-            <div class="summary-header">📊 สรุปรายการภาพรวมวันนี้</div>
+        <div style="margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 15px;">
+            <div style="font-weight: 700; font-size: 14px; color: #4a5568; margin-bottom: 8px;">สรุปรายการภาพรวมวันนี้</div>
             <div class="summary-grid">
-                <div class="summary-box">
-                    <div class="title">รวมทั้งหมด</div>
-                    <div class="value" id="summaryCount">0 รายการ</div>
-                </div>
-
-                <div class="summary-box">
-                    <div class="title">ยอดโอน</div>
-                    <div class="value" style="color: #27ae60;" id="summaryTransfer">0.00 ฿</div>
-                </div>
-
-                <div class="summary-box">
-                    <div class="title">ยอด COD</div>
-                    <div class="value" style="color: #e67e22;" id="summaryCod">0.00 ฿</div>
-                </div>
-
-                <div class="summary-box">
-                    <div class="title">ยอดรวมทั้งหมด</div>
-                    <div class="value" style="color: #1e56a0;" id="summaryTotal">0.00 ฿</div>
-                </div>
+                <div class="summary-box"><div class="title">รวมทั้งหมด</div><div class="value" id="summaryCount">0 รายการ</div></div>
+                <div class="summary-box"><div class="title">ยอดโอนเงิน</div><div class="value" style="color: #27ae60;" id="summaryTransfer">0.00 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอด COD</div><div class="value" style="color: #e67e22;" id="summaryCod">0.00 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอดรวมมูลค่า</div><div class="value" style="color: #1e56a0;" id="summaryTotal">0.00 ฿</div></div>
             </div>
         </div>
     </div>
@@ -793,40 +338,10 @@ function showTab(tabId, btn){
     localStorage.setItem('activeTab', tabId);
 }
 
-function safeText(val){
-
-    if(val === null || val === undefined || val === '') return '-';
-
-    if(typeof val === 'object'){
-
-        // SheetJS formats
-        if(val.text) return String(val.text);
-        if(val.w) return String(val.w);
-        if(val.v) return String(val.v);
-
-        // generic object
-        const values = Object.values(val)
-            .filter(v => v !== null && v !== undefined && v !== '');
-
-        if(values.length > 0){
-            return String(values[0]);
-        }
-
-        return '-';
-    }
-
-    return String(val);
-}
 
 function showToast(message){
 
     const toast = document.getElementById('toast');
-
-    if(!toast){
-        console.warn('Toast element not found');
-        alert(message);
-        return;
-    }
 
     toast.innerText = message;
 
@@ -862,28 +377,7 @@ function saveOrdersToStorage() {
         const savedOrders = localStorage.getItem('ordersDatabase');
 
         if (savedOrders) {
-            ordersDatabase = JSON.parse(savedOrders).map(order => ({
-
-				...order,
-
-				profile:
-					safeText(order.profile),
-
-				consignee:
-					safeText(order.consignee),
-
-				address:
-					safeText(order.address),
-
-				trackingNumber:
-					safeText(order.trackingNumber),
-
-				customerPhone:
-					safeText(order.customerPhone),
-
-				remarks:
-					safeText(order.remarks)
-			}));
+            ordersDatabase = JSON.parse(savedOrders);
         }
 
         // โหลดแทบล่าสุด
@@ -912,13 +406,12 @@ function saveOrdersToStorage() {
         }
 
         // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
-        const thailandNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
-        const today = thailandNow.toISOString().split('T')[0];
+        const today = new Date().toISOString().split('T')[0];
 
-        const dtInput = document.getElementById('orderDateTime');
-        if(dtInput){
-            const localISO = new Date(thailandNow.getTime() - (thailandNow.getTimezoneOffset()*60000)).toISOString().slice(0,16);
-            dtInput.value = localISO;
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
         }
 
         renderOrders();
@@ -952,7 +445,7 @@ function saveApiKey() {
         fbSelect.removeAttribute('required'); phoneInput.removeAttribute('required');
 
         if (type === 'Facebook') { fbSelect.classList.remove('hidden'); fbSelect.setAttribute('required', 'required'); }
-        if (type === 'Tel') { phoneInput.classList.remove('hidden'); phoneInput.setAttribute('required', 'required'); }
+        if (type === 'Telephone') { phoneInput.classList.remove('hidden'); phoneInput.setAttribute('required', 'required'); }
     }
 
     // 🧠 ฟังก์ชันสแกนรูปภาพด้วย AI Gemini 1.5 Flash API จริง
@@ -986,9 +479,7 @@ function saveApiKey() {
                     "cleanAddress": "ที่อยู่ในการจัดส่งทั้งหมด (ห้ามนำชื่อผู้รับและเบอร์โทรศัพท์มารวมในช่องนี้)",
                     "phoneNumber": "เบอร์โทรศัพท์ติดต่อ คัดกรองตัวเลขความยาว 9-10 หลักมาให้เรียบร้อย",
                     "totalAmount": "ยอดจำนวนเงินเป็นตัวเลขทศนิยม (ถ้ามี)",
-                    "payMethod": "ระบุเป็น 'โอนแล้ว' หรือ 'cod' วิเคราะห์ตามบริบทข้อมูลในภาพสลิปหรือประวัติแชท",
-                    "trackingNumber": "เลข Tracking Number ถ้ามี",
-                    "phoneNumber": "เบอร์โทรศัพท์ลูกค้า"
+                    "payMethod": "ระบุเป็น 'โอนแล้ว' หรือ 'cod' วิเคราะห์ตามบริบทข้อมูลในภาพสลิปหรือประวัติแชท"
                 }
             `;
 
@@ -1016,8 +507,6 @@ function saveApiKey() {
             // 🎯 นำข้อมูลที่ AI ตรวจจับได้จริงมาหยอดลงช่องตารางต่างๆ
             document.getElementById('profileName').value = resultJson.profileName || "";
             document.getElementById('amount').value = resultJson.totalAmount || "0.00";
-            document.getElementById('trackingNumber').value = resultJson.trackingNumber || "";
-            document.getElementById('customerPhone').value = resultJson.phoneNumber || "";
             if(resultJson.payMethod) { document.getElementById('paymentType').value = resultJson.payMethod; }
 
             // 📐 จัดเรียงตามเงื่อนไข: ชื่อ นามสกุล เว้นบรรทัดลงมานิดหน่อยเพื่อใส่ที่อยู่ และเบอร์โทรให้ใส่ คำว่าโทร นำหน้า
@@ -1033,73 +522,40 @@ function saveApiKey() {
     }
 
     function saveOrder() {
-    const source = document.getElementById('sourceType').value;
-    let subSource = "";
+        const source = document.getElementById('sourceType').value;
+        let subSource = "";
+        if(source === 'Facebook') subSource = ` (${document.getElementById('fbPageSelect').value})`;
+        if(source === 'Telephone') subSource = ` (เบอร์: ${document.getElementById('sourcePhoneInput').value})`;
 
-    if(source === 'Facebook')
-        subSource = ` (${document.getElementById('fbPageSelect').value})`;
+        const profile = document.getElementById('profileName').value;
+        const address = document.getElementById('shippingAddress').value;
+        const payType = document.getElementById('paymentType').value;
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+        
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} น.`;
+        const id = 'order-' + Date.now();
+const orderDate = now.toISOString().split('T')[0];
 
-    if(source === 'Tel')
-        subSource = ` (เบอร์: ${document.getElementById('sourcePhoneInput').value})`;
+        ordersDatabase.push({ id, orderDate, source, subSource, profile, address, payType, amount, remarks, time: timeStr });
 
-    const profile = document.getElementById('profileName').value;
-    const address = document.getElementById('shippingAddress').value;
-    const payType = document.getElementById('paymentType').value;
-    const amount = parseFloat(document.getElementById('amount').value) || 0;
-    const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+        saveOrdersToStorage();
+        saveOrdersToStorage();
+        // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
+        const today = new Date().toISOString().split('T')[0];
 
-    // ✅ เพิ่ม 3 บรรทัดนี้
-    const trackingNumber = document.getElementById('trackingNumber').value || '';
-    const customerPhone = document.getElementById('customerPhone').value || '';
-    const orderDateTime = document.getElementById('orderDateTime').value || '';
+        const filterDate = document.getElementById('filterDate');
 
-    const now = new Date();
+        if(filterDate){
+            filterDate.value = today;
+        }
 
-    const timeStr =
-        `${String(now.getHours()).padStart(2,'0')}:` +
-        `${String(now.getMinutes()).padStart(2,'0')}:` +
-        `${String(now.getSeconds()).padStart(2,'0')} น.`;
-
-    const id = 'order-' + Date.now();
-
-    const orderDate = now.toISOString().split('T')[0];
-
-    ordersDatabase.unshift({
-        id,
-        orderDate,
-        source,
-        subSource,
-        profile,
-        address,
-        payType,
-        amount,
-        remarks,
-        time: timeStr,
-
-        // ✅ จะถูกบันทึกแล้ว
-        trackingNumber,
-        customerPhone,
-        orderDateTime
-    });
-
-    saveOrdersToStorage();
-
-    const today = new Date().toISOString().split('T')[0];
-
-    const filterDate = document.getElementById('filterDate');
-
-    if(filterDate){
-        filterDate.value = today;
+        renderOrders();
+        resetForm();
     }
 
-    renderOrders();
-    resetForm();
-}
-    
-
-
-
-function renderOrders() {
+    function renderOrders() {
         const listArea = document.getElementById('orderListArea');
         listArea.innerHTML = "";
         let totalTransfer = 0, totalCod = 0;
@@ -1107,14 +563,7 @@ function renderOrders() {
         const keyword=(document.getElementById('searchText')?.value||'').toLowerCase();
         let filteredOrders=ordersDatabase.filter(o=>{
            const dateOk=!selectedDate || o.orderDate===selectedDate;
-           const text=(
-    o.profile+' '+
-    o.address+' '+
-    (o.trackingNumber||'')+' '+
-    (o.customerPhone||'')+' '+
-    (o.source||'')+' '+
-    (o.payType||'')
-).toLowerCase();
+           const text=(o.profile+' '+o.address).toLowerCase();
            const keyOk=!keyword || text.includes(keyword);
            return dateOk && keyOk;
         });
@@ -1129,137 +578,41 @@ function renderOrders() {
             let safeRemarks = order.remarks.replace(/'/g, "\\'").replace(/\n/g, "\\n");
 
             listArea.innerHTML += `
-<div class="compact-order-card">
-
-    <div class="compact-top">
-
-        <div class="compact-user-left">
-
-            <div class="avatar-circle">👤</div>
-
-            <div>
-
-                <div class="compact-user-label">ผู้รับ</div>
-
-                <div class="compact-name">
-        ${(()=>{
-
-            // ใช้ consignee จาก Excel ก่อน
-            if(order.profile){
-				return safeText(order.profile);
-			}
-
-            // fallback ดึงชื่อบรรทัดแรกจาก address
-            if(order.address){
-
-                const firstLine =
-                    String(order.address)
-                    .split('\n')
-                    .find(v=>v.trim());
-
-                if(firstLine){
-                    return firstLine;
-                }
-            }
-
-            return String(order.profile || '-');
-
-        })()}
-    </div>
-
-    <div class="compact-meta-row">
-
-        <div class="compact-phone">
-            📞 ${safeText(order.customerPhone)}
-        </div>
-
-        <div class="compact-datetime">
-            🕒 ${safeText(order.orderDateTime || '-')}
-        </div>
-
-        <div class="status-badges">
-            <div class="source-badge ${
-	order.source === 'LINE'
-		? 'badge-line-custom'
-		: order.source === 'Facebook'
-			? 'badge-facebook-custom'
-			: order.source === 'Excel'
-				? 'badge-excel-custom'
-				: 'badge-telephone-custom'
-}">
-    ${
-        order.source === 'LINE'
-			? 'LINE'
-			: order.source === 'Facebook'
-				? 'facebook'
-				: order.source === 'Excel'
-					? 'Excel'
-					: order.source === 'Tel'
-						? 'Tel'
-						: order.source
-    }
-</div>
-
-            <div class="pay-badge ${order.payType === 'cod' ? 'badge-cod-custom' : 'badge-transfer-custom'}">
-                ${order.payType === 'cod' ? 'COD' : 'โอน'}
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-</div>
-
-<button class="gear-btn"
-    onclick="editOrder('${order.id}')">
-    ⚙️
-</button>
-
-</div>
-
-<div class="compact-bottom">
-
-        <div>
-            <div class="track-label">
-                📦 รหัสพัสดุ (Tracking)
-            </div>
-
-            <div class="track-number">
-                ${safeText(order.trackingNumber)}
-
-                <button class="copy-track-btn"
-                    onclick="copyTracking('${String(order.trackingNumber || '').replace(/'/g,"\\'")}')">
-                    📋
-                </button>
-            </div>
-        </div>
-
-        <div class="cod-box">
-            <div class="cod-label">
-                ${order.payType === 'cod' ? 'ยอด COD' : 'ยอดโอน'}
-            </div>
-
-            <div class="cod-price">
-                ฿${Number(order.amount || 0).toLocaleString()}
-            </div>
-        </div>
-
-    </div>
-
-</div>
-`;
+                <div class="order-item">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-badge-id">${index + 1}</span>
+                            <span class="badge ${badgeClass}">🟢 ${order.source}${order.subSource}</span>
+                            <span class="badge ${payClass}">${order.payType === 'cod' ? 'COD ปลายทาง' : 'โอนเงินแล้ว'}</span>
+                        </div>
+                        <div class="text-muted">${order.time}</div>
+                    </div>
+                    <div class="order-body-grid">
+                        <div>
+                            <div class="text-muted">ชื่อโปรไฟล์:</div><div class="profile-display">${order.profile}</div>
+                            <div class="text-muted">ที่อยู่จัดส่ง:</div><div class="address-display">${order.address}</div>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div><div class="text-muted">ยอดเงิน</div><div style="font-size: 18px; font-weight:700; color:var(--primary);">${order.amount.toFixed(2)} ฿</div></div>
+                            <div class="text-muted">Order: ${order.remarks}</div>
+                            <div class="tracking-display">📦 Tracking: ${order.trackingNumber || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️ ลบ</button>
+                        <div class="action-right-btns">
+                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}')">💬 แชร์ไป LINE</button>
+                            <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ ปุ่ม Print</button>
+                        </div>
+                    </div>
+                </div>
+            `;
         });
 
         document.getElementById('summaryCount').innerText = `${filteredOrders.length} รายการ`;
-        document.getElementById('summaryTransfer').innerText =
-            `${Number(totalTransfer).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} ฿`;
-
-        document.getElementById('summaryCod').innerText =
-            `${Number(totalCod).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} ฿`;
-
-        document.getElementById('summaryTotal').innerText =
-            `${Number(totalTransfer + totalCod).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} ฿`;
+        document.getElementById('summaryTransfer').innerText = `${totalTransfer.toFixed(2)} ฿`;
+        document.getElementById('summaryCod').innerText = `${totalCod.toFixed(2)} ฿`;
+        document.getElementById('summaryTotal').innerText = `${(totalTransfer + totalCod).toFixed(2)} ฿`;
     }
 
     function deleteOrder(id) {
@@ -1269,6 +622,12 @@ function renderOrders() {
             saveOrdersToStorage();
             // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
         const today = new Date().toISOString().split('T')[0];
+
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
 
         renderOrders();
         }
@@ -1321,150 +680,6 @@ ${address}
         }
     }
 
-
-
-function editOrder(id){
-
-    const order = ordersDatabase.find(o => o.id === id);
-
-    if(!order) return;
-
-    document.getElementById('editOrderId').value = order.id;
-
-    document.getElementById('editProfile').value =
-        order.profile || '';
-
-    document.getElementById('editAddress').value =
-        order.address || '';
-
-    document.getElementById('editTracking').value =
-        order.trackingNumber || '';
-
-    document.getElementById('editPhone').value =
-        order.customerPhone || '';
-
-    document.getElementById('editAmount').value =
-        order.amount || 0;
-
-    document.getElementById('editPayType').value =
-        order.payType || 'โอนแล้ว';
-
-    document.getElementById('editRemarks').value =
-        order.remarks || '';
-
-    document.getElementById('editOrderDateTime').value =
-        order.orderDateTime || '';
-
-    document.getElementById('editModal').style.display = 'flex';
-}
-
-function closeEditModal(){
-
-    document.getElementById('editModal').style.display = 'none';
-}
-
-async function copyTracking(tracking){
-
-    if(!tracking || tracking === '-'){
-        showToast('❌ ไม่มี Tracking');
-        return;
-    }
-
-    try{
-
-        await navigator.clipboard.writeText(tracking);
-
-        showToast('📋 คัดลอก Tracking แล้ว');
-
-    }catch(err){
-
-        const textarea = document.createElement('textarea');
-
-        textarea.value = tracking;
-
-        document.body.appendChild(textarea);
-
-        textarea.select();
-
-        document.execCommand('copy');
-
-        textarea.remove();
-
-        showToast('📋 คัดลอก Tracking แล้ว');
-    }
-}
-
-
-function deleteCurrentEditingOrder(){
-
-    const id =
-        document.getElementById('editOrderId').value;
-
-    if(!id) return;
-
-    if(confirm('ต้องการลบรายการนี้ใช่ไหม?')){
-
-        ordersDatabase =
-            ordersDatabase.filter(o => o.id !== id);
-
-        saveOrdersToStorage();
-
-        renderOrders();
-
-        closeEditModal();
-
-        showToast('🗑️ ลบรายการแล้ว');
-    }
-}
-
-
-function saveEditOrder(){
-
-    const id =
-        document.getElementById('editOrderId').value;
-
-    const order =
-        ordersDatabase.find(o => o.id === id);
-
-    if(!order) return;
-
-    order.profile =
-        document.getElementById('editProfile').value;
-
-    order.address =
-        document.getElementById('editAddress').value;
-
-    order.trackingNumber =
-        document.getElementById('editTracking').value;
-
-    order.customerPhone =
-        document.getElementById('editPhone').value;
-
-    order.amount =
-        parseFloat(
-            document.getElementById('editAmount').value
-        ) || 0;
-
-    order.payType =
-        document.getElementById('editPayType').value;
-
-    order.remarks =
-        document.getElementById('editRemarks').value;
-
-    order.orderDateTime =
-        document.getElementById('editOrderDateTime').value;
-
-    saveOrdersToStorage();
-
-    renderOrders();
-
-    closeEditModal();
-
-    showToast('✅ บันทึกการแก้ไขแล้ว');
-}
-
-
-
 function exportOrders() {
     const data = JSON.stringify(ordersDatabase, null, 2);
     const blob = new Blob([data], {type:'application/json'});
@@ -1508,6 +723,12 @@ function importOrders(event) {
             // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
         const today = new Date().toISOString().split('T')[0];
 
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+            filterDate.value = today;
+        }
+
         renderOrders();
 
             // success
@@ -1526,487 +747,6 @@ function importOrders(event) {
 }
 
 
-
-async function importSpreadsheet(event){
-
-    const file = event.target.files?.[0];
-
-    if(!file) return;
-
-    try{
-
-        const data = await file.arrayBuffer();
-
-        const workbook = XLSX.read(data,{
-            type:'array',
-            cellDates:true,
-            cellText:true
-        });
-
-        const sheet =
-            workbook.Sheets[
-                workbook.SheetNames[0]
-            ];
-
-        const rows = XLSX.utils.sheet_to_json(sheet,{
-            raw:true,
-            defval:'',
-            cellText:true
-        });
-
-        console.log('Excel rows:', rows);
-
-        // normalize key -> lowercase
-        const normalizedRows = rows.map(row => {
-
-            const cleanRow = {};
-
-            Object.keys(row).forEach(key => {
-
-                const cleanKey =
-                    String(key)
-                    .trim()
-                    .toLowerCase();
-
-                cleanRow[cleanKey] = row[key];
-            });
-
-            return cleanRow;
-        });
-
-        console.log('NORMALIZED:', normalizedRows);
-
-        // safe parser
-        const safe = (v)=>{
-
-            if(v === null || v === undefined)
-                return '';
-
-            // Excel object / rich text
-            if(typeof v === 'object'){
-
-                // formatted text
-                if(v.w)
-                    return String(v.w).trim();
-
-                // raw value
-                if(v.v)
-                    return String(v.v).trim();
-
-                // richText array
-                if(Array.isArray(v.r)){
-
-                    return v.r
-                        .map(x => x.t || '')
-                        .join('')
-                        .trim();
-                }
-
-                // fallback generic object
-                const values =
-                    Object.values(v)
-                    .filter(x =>
-                        x !== null &&
-                        x !== undefined &&
-                        x !== ''
-                    );
-
-                if(values.length > 0){
-                    return String(values[0]).trim();
-                }
-
-                return '';
-            }
-
-            return String(v).trim();
-        };
-
-        // parse date
-        const parseDate = (value)=>{
-
-            const str = safe(value);
-
-            if(!str){
-
-                return new Date()
-                    .toISOString()
-                    .split('T')[0];
-            }
-
-            // YYYY-MM-DD
-            if(/^\d{4}-\d{2}-\d{2}/.test(str)){
-
-                return str.substring(0,10);
-            }
-
-            // YYYY/MM/DD
-            if(/^\d{4}\/\d{2}\/\d{2}/.test(str)){
-
-                return str
-                    .replaceAll('/','-')
-                    .substring(0,10);
-            }
-
-            // DD/MM/YYYY
-            if(/^\d{2}\/\d{2}\/\d{4}/.test(str)){
-
-                const [d,m,y] = str.split('/');
-
-                return `${y}-${m}-${d}`;
-            }
-
-            // DD-MM-YYYY
-            if(/^\d{2}-\d{2}-\d{4}/.test(str)){
-
-                const [d,m,y] = str.split('-');
-
-                return `${y}-${m}-${d}`;
-            }
-
-            return new Date()
-                .toISOString()
-                .split('T')[0];
-        };
-
-        // กัน tracking ซ้ำ
-        const existingTracking =
-            new Set(
-                ordersDatabase.map(
-                    o => String(
-                        o.trackingNumber || ''
-                    ).trim()
-                )
-            );
-
-        const imported = normalizedRows
-
-        // filter เฉพาะ row จริง
-        .filter((row)=>{
-
-            const pickup =
-                safe(row['pickup date']);
-
-            return pickup &&
-                (
-                    /^\d{4}[-/]\d{2}[-/]\d{2}/
-                    .test(pickup)
-
-                    ||
-
-                    /^\d{2}[-/]\d{2}[-/]\d{4}/
-                    .test(pickup)
-                );
-        })
-
-        .map((row,index)=>{
-
-            const pickupDate =
-                safe(
-                    row['pickup date']
-                );
-
-            const trackingNumber =
-                safe(
-                    row['tracking number']
-                );
-
-            const consignee =
-                safe(
-                    row['consignee']
-                ) || 'ไม่ระบุ';
-
-            const phone =
-                safe(
-                    row['phone number']
-                );
-
-            const address =
-                safe(
-                    row['address']
-                );
-
-            return {
-
-                id:
-                    crypto.randomUUID(),
-
-                orderDate:
-                    parseDate(pickupDate),
-
-                source:'Excel',
-
-                subSource:'',
-
-                profile:
-					String(consignee || ''),
-
-				consignee:
-					String(consignee || ''),
-
-				address:
-					String(address || ''),
-
-				trackingNumber:
-					String(trackingNumber || ''),
-
-				customerPhone:
-					String(phone || ''),
-
-                payType:'โอนแล้ว',
-
-                amount:0,
-
-                remarks:
-                    'นำเข้าจากไฟล์ Excel/CSV',
-
-                time:
-                    new Date()
-                    .toLocaleTimeString('th-TH'),
-
-                orderDateTime:(()=>{
-
-                    // 2026-05-24 14:21:16
-                    // -> 2026-05-24T14:21
-
-                    if(
-                        pickupDate &&
-                        /^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}/
-                        .test(pickupDate)
-                    ){
-
-                        return pickupDate
-                            .replace(/\s+/,'T')
-                            .substring(0,16);
-                    }
-
-                    return pickupDate;
-
-                })()
-            };
-        })
-
-        // กัน Tracking ซ้ำ
-        .filter(order=>{
-
-            if(!order.trackingNumber)
-                return true;
-
-            if(
-                existingTracking.has(
-                    order.trackingNumber
-                )
-            ){
-                return false;
-            }
-
-            existingTracking.add(
-                order.trackingNumber
-            );
-
-            return true;
-        });
-
-        console.log('IMPORTED:', imported);
-
-        ordersDatabase = [
-            ...imported.reverse(),
-            ...ordersDatabase
-        ];
-
-        saveOrdersToStorage();
-
-        // แสดงทั้งหมดหลัง import
-        const filterDate =
-            document.getElementById('filterDate');
-
-        if(filterDate){
-            filterDate.value = '';
-        }
-
-        renderOrders();
-
-        showToast(
-            '✅ นำเข้าข้อมูลสำเร็จ '
-            + imported.length
-            + ' รายการ'
-        );
-
-    }catch(err){
-
-        console.error(
-            'IMPORT ERROR:',
-            err
-        );
-
-        alert(
-            '❌ ไม่สามารถอ่านไฟล์ Excel/CSV ได้\n'
-            + err.message
-        );
-    }
-
-    event.target.value='';
-}
-
 </script>
-
-<div id="toast" style="
-position:fixed;
-bottom:20px;
-right:20px;
-background:#111827;
-color:white;
-padding:12px 18px;
-border-radius:12px;
-font-weight:700;
-z-index:9999;
-display:none;
-transition:opacity .3s;
-box-shadow:0 4px 12px rgba(0,0,0,.2);
-"></div>
-
-
-<!-- EDIT POPUP -->
-<div id="editModal" style="
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-z-index:99999;
-justify-content:center;
-align-items:center;
-padding:20px;
-">
-
-    <div style="
-    background:#fff;
-    width:100%;
-    max-width:650px;
-    border-radius:20px;
-    padding:22px;
-    max-height:90vh;
-    overflow:auto;
-    ">
-
-        <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:18px;
-        ">
-            <h2 style="font-size:22px;">✏️ แก้ไขรายการ</h2>
-
-            <button onclick="closeEditModal()" style="
-            border:none;
-            background:#f1f5f9;
-            width:40px;
-            height:40px;
-            border-radius:10px;
-            cursor:pointer;
-            font-size:18px;
-            ">
-                ✕
-            </button>
-        </div>
-
-        <input type="hidden" id="editOrderId">
-
-        <div class="form-group">
-            <label>ชื่อโปรไฟล์</label>
-            <input type="text" id="editProfile">
-        </div>
-
-        <div class="form-group">
-            <label>ที่อยู่</label>
-            <textarea id="editAddress" rows="5"></textarea>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>Tracking</label>
-                <input type="text" id="editTracking">
-            </div>
-
-            <div class="form-group">
-                <label>เบอร์โทร</label>
-                <input type="text" id="editPhone">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>ยอดเงิน</label>
-                <input type="number" id="editAmount">
-            </div>
-
-            <div class="form-group">
-                <label>ประเภทชำระ</label>
-
-                <select id="editPayType">
-                    <option value="โอนแล้ว">โอนแล้ว</option>
-                    <option value="cod">cod</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>วันเวลาทำรายการ</label>
-            <input type="datetime-local" id="editOrderDateTime">
-        </div>
-
-        <div class="form-group">
-            <label>หมายเหตุ</label>
-            <textarea id="editRemarks" rows="3"></textarea>
-        </div>
-
-        <div style="
-        display:flex;
-        gap:10px;
-        margin-top:20px;
-        flex-wrap:wrap;
-        ">
-            <button onclick="closeEditModal()" style="
-            flex:1;
-            background:#e2e8f0;
-            color:#111827;
-            border:none;
-            border-radius:12px;
-            padding:14px;
-            font-weight:700;
-            min-width:140px;
-            ">
-                ยกเลิก
-            </button>
-
-            <button onclick="deleteCurrentEditingOrder()" style="
-            flex:1;
-            background:#fee2e2;
-            color:#dc2626;
-            border:none;
-            border-radius:12px;
-            padding:14px;
-            font-weight:700;
-            min-width:140px;
-            ">
-                🗑️ ลบรายการ
-            </button>
-
-            <button onclick="saveEditOrder()" style="
-            flex:1;
-            background:#1e56a0;
-            color:white;
-            border:none;
-            border-radius:12px;
-            padding:14px;
-            font-weight:700;
-            min-width:140px;
-            ">
-                💾 บันทึกการแก้ไข
-            </button>
-        </div>
-
-    </div>
-
-</div>
-
 </body>
 </html>
