@@ -160,6 +160,103 @@
     }
 }
 
+
+/* EDIT MODAL */
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:15px;
+}
+
+.modal-box{
+    background:#fff;
+    width:100%;
+    max-width:700px;
+    border-radius:18px;
+    padding:22px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-close{
+    background:#ef4444;
+    color:#fff;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.btn-edit{
+    background:#f59e0b;
+    color:#fff;
+    padding:6px 12px;
+    font-size:13px;
+}
+
+.btn-save-edit{
+    background:#1e56a0;
+    color:#fff;
+}
+
+
+/* Prevent overflow on mobile */
+@media (max-width:768px){
+
+    body,
+    .card,
+    .order-item,
+    .order-body-grid,
+    .address-display,
+    .profile-display,
+    .tracking-display,
+    .text-muted,
+    button,
+    input,
+    textarea,
+    select{
+        min-width:0;
+        overflow-wrap:anywhere;
+        word-break:break-word;
+    }
+
+    .order-item{
+        overflow:hidden;
+    }
+
+    .address-display,
+    .profile-display,
+    .tracking-display{
+        white-space:pre-wrap;
+    }
+
+    .action-right-btns{
+        flex-wrap:wrap;
+    }
+
+    .action-right-btns button{
+        min-width:0;
+    }
+
+    .tracking-display{
+        font-size:20px;
+        line-height:1.4;
+    }
+}
+
 </style>
 </head>
 <body>
@@ -276,6 +373,11 @@
                 <label>8. Tracking Number</label>
                 <input type="text" id="trackingNumber" placeholder="กรอกเลขพัสดุ / Tracking Number">
             </div>
+            <div class="form-group">
+                <label>9. วันเวลาทำรายการ (ประเทศไทย)</label>
+                <input type="datetime-local" id="orderDateTime">
+            </div>
+
 
 
             <div class="btn-group">
@@ -319,6 +421,77 @@
         <div class="print-address" id="pAddress"></div>
     </div>
 </div>
+
+
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>✏️ แก้ไขข้อมูลออเดอร์</h2>
+            <button class="modal-close" onclick="closeEditModal()">✕</button>
+        </div>
+
+        <input type="hidden" id="editOrderId">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>แหล่งที่มา</label>
+                <select id="editSource">
+                    <option value="LINE">LINE</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Telephone">โทรศัพท์</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>ประเภทชำระ</label>
+                <select id="editPayType">
+                    <option value="โอนแล้ว">โอนแล้ว</option>
+                    <option value="cod">cod เก็บเงินปลายทาง</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>ชื่อโปรไฟล์</label>
+            <input type="text" id="editProfile">
+        </div>
+
+        <div class="form-group">
+            <label>ที่อยู่</label>
+            <textarea id="editAddress" rows="5"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>จำนวนเงิน</label>
+                <input type="number" id="editAmount">
+            </div>
+
+            <div class="form-group">
+                <label>Tracking</label>
+                <input type="text" id="editTracking">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>รายการสินค้า / หมายเหตุ</label>
+            <textarea id="editRemarks" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>วันเวลาทำรายการ</label>
+            <input type="datetime-local" id="editDateTime">
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn-reset" onclick="closeEditModal()">ยกเลิก</button>
+            <button type="button" class="btn-save-edit" onclick="saveEditedOrder()">💾 บันทึกการแก้ไข</button>
+        </div>
+
+    </div>
+</div>
+
 
 <script>
     let ordersDatabase = [];
@@ -378,6 +551,23 @@ function saveOrdersToStorage() {
             document.getElementById('apiKeyInput').value = savedKey;
         }
 
+        
+        const thailandNow = new Date(
+            new Date().toLocaleString('en-US', {
+                timeZone:'Asia/Bangkok'
+            })
+        );
+
+        const isoLocal = new Date(
+            thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
+        ).toISOString().slice(0,16);
+
+        const orderDateTime = document.getElementById('orderDateTime');
+
+        if(orderDateTime){
+            orderDateTime.value = isoLocal;
+        }
+
         // โหลด orders
         const savedOrders = localStorage.getItem('ordersDatabase');
 
@@ -410,13 +600,11 @@ function saveOrdersToStorage() {
 
         }
 
-        // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
-        const today = new Date().toISOString().split('T')[0];
-
+        // default = ไม่เลือกวัน เพื่อแสดงทุกวัน
         const filterDate = document.getElementById('filterDate');
 
         if(filterDate){
-            filterDate.value = today;
+            filterDate.value = '';
         }
 
         renderOrders();
@@ -541,22 +729,43 @@ function saveApiKey() {
         const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
         const trackingNumber = document.getElementById('trackingNumber').value || '-';
         
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')} น.`;
         const id = 'order-' + Date.now();
-const orderDate = now.toISOString().split('T')[0];
 
-        ordersDatabase.push({ id, orderDate, source, subSource, profile, address, payType, amount, remarks, trackingNumber, time: timeStr });
+        let selectedDateTime = '';
+
+        const dateInput = document.getElementById('orderDateTime');
+
+        if(dateInput){
+            selectedDateTime = dateInput.value;
+        }
+
+        let now;
+
+        if(selectedDateTime && !isNaN(new Date(selectedDateTime).getTime())){
+            now = new Date(selectedDateTime);
+        }else{
+            now = new Date();
+        }
+
+        const orderDate = now.toISOString().split('T')[0];
+
+        const timeStr = now.toLocaleTimeString('th-TH', {
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit'
+        });
+
+        const fullDateTime = now.toISOString();
+
+        ordersDatabase.push({ id, orderDate, fullDateTime, source, subSource, profile, address, payType, amount, remarks, trackingNumber, time: timeStr });
 
         saveOrdersToStorage();
         saveOrdersToStorage();
-        // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
-        const today = new Date().toISOString().split('T')[0];
-
+        // default = ไม่เลือกวัน เพื่อแสดงทุกวัน
         const filterDate = document.getElementById('filterDate');
 
         if(filterDate){
-            filterDate.value = today;
+            filterDate.value = '';
         }
 
         renderOrders();
@@ -609,6 +818,10 @@ const orderDate = now.toISOString().split('T')[0];
                     <div class="order-actions">
                         <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️ ลบ</button>
                         <div class="action-right-btns">
+                            <button class="btn-edit"
+                            onclick="openEditModal('${order.id}')">
+                            ✏️ แก้ไข
+                            </button>
                             <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}')">💬 แชร์ไป LINE</button>
                             <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ ปุ่ม Print</button>
                         </div>
@@ -628,15 +841,6 @@ const orderDate = now.toISOString().split('T')[0];
             ordersDatabase = ordersDatabase.filter(item => item.id !== id);
             saveOrdersToStorage();
             saveOrdersToStorage();
-            // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
-        const today = new Date().toISOString().split('T')[0];
-
-        const filterDate = document.getElementById('filterDate');
-
-        if(filterDate){
-            filterDate.value = today;
-        }
-
         renderOrders();
         }
     }
@@ -644,6 +848,22 @@ const orderDate = now.toISOString().split('T')[0];
     function resetForm() {
         document.getElementById('orderForm').reset();
         handleSourceChange();
+
+        const thailandNow = new Date(
+            new Date().toLocaleString('en-US', {
+                timeZone:'Asia/Bangkok'
+            })
+        );
+
+        const isoLocal = new Date(
+            thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
+        ).toISOString().slice(0,16);
+
+        const orderDateTime = document.getElementById('orderDateTime');
+
+        if(orderDateTime){
+            orderDateTime.value = isoLocal;
+        }
     }
 
     function printLabel(profile, address) {
@@ -728,15 +948,6 @@ function importOrders(event) {
             );
 
             // render ใหม่
-            // ตั้งค่าวันที่ปัจจุบันอัตโนมัติ
-        const today = new Date().toISOString().split('T')[0];
-
-        const filterDate = document.getElementById('filterDate');
-
-        if(filterDate){
-            filterDate.value = today;
-        }
-
         renderOrders();
 
             // success
@@ -754,6 +965,82 @@ function importOrders(event) {
     fileInput.value = ''; 
 }
 
+
+
+function openEditModal(id){
+
+    const order = ordersDatabase.find(o=>o.id===id);
+
+    if(!order) return;
+
+    document.getElementById('editOrderId').value = order.id;
+    document.getElementById('editSource').value = order.source;
+    document.getElementById('editPayType').value = order.payType;
+    document.getElementById('editProfile').value = order.profile;
+    document.getElementById('editAddress').value = order.address;
+    document.getElementById('editAmount').value = order.amount;
+    document.getElementById('editTracking').value = order.trackingNumber || '';
+    document.getElementById('editRemarks').value = order.remarks || '';
+
+    const dt = order.fullDateTime
+        ? order.fullDateTime.slice(0,16)
+        : '';
+
+    document.getElementById('editDateTime').value = dt;
+
+    document.getElementById('editModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal(){
+    document.getElementById('editModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function saveEditedOrder(){
+
+    const id = document.getElementById('editOrderId').value;
+
+    const orderIndex = ordersDatabase.findIndex(o=>o.id===id);
+
+    if(orderIndex === -1) return;
+
+    const editDateTime = document.getElementById('editDateTime').value;
+
+    const dt = editDateTime
+        ? new Date(editDateTime)
+        : new Date();
+
+    ordersDatabase[orderIndex] = {
+        ...ordersDatabase[orderIndex],
+
+        source: document.getElementById('editSource').value,
+        payType: document.getElementById('editPayType').value,
+        profile: document.getElementById('editProfile').value,
+        address: document.getElementById('editAddress').value,
+        amount: parseFloat(document.getElementById('editAmount').value) || 0,
+        trackingNumber: document.getElementById('editTracking').value,
+        remarks: document.getElementById('editRemarks').value,
+
+        orderDate: dt.toISOString().split('T')[0],
+
+        fullDateTime: dt.toISOString(),
+
+        time: dt.toLocaleTimeString('th-TH', {
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit'
+        })
+    };
+
+    saveOrdersToStorage();
+
+    renderOrders();
+
+    closeEditModal();
+
+    alert('✅ แก้ไขข้อมูลเรียบร้อย');
+}
 
 </script>
 </body>
