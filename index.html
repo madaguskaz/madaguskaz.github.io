@@ -863,10 +863,10 @@ ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
                         <div class="action-right-btns" style="width:100%;display:flex;gap:8px;flex-wrap:wrap;">
                             <button class="btn-edit"
                             onclick="openEditModal('${order.id}')">
-                            ✏️ แก้ไข
+                            ✏️ 
                             </button>
-                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}', '${order.fullDateTime || ''}')">💬 แชร์ไป LINE</button>
-                            <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ ปุ่ม Print</button>
+                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}', '${order.fullDateTime || ''}')">LINE</button>
+                            <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ </button>
                             <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️ ลบ</button>
                         </div>
                     </div>
