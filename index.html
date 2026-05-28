@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการออเดอร์ด้วย Gemini AI OCR</title>
+    <title>ใบจ่าหน้าพัสดุจัดส่งลูกค้า</title>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -112,15 +112,158 @@
         #printArea { display: none; }
 
         /* 🖨️ CSS สำหรับการพิมพ์แบบฟอร์มใบแปะหน้ากล่อง ขนาดใหญ่ ชัดเจน ไม่ปนกับข้อมูลอื่น */
-        @media print {
-            body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 40px; }
-            .print-box { border: 3px dashed #000; padding: 35px; border-radius: 15px; max-width: 650px; margin: 0 auto; background: #fff; }
-            .print-title { font-size: 18px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; font-weight: bold; }
-            .print-profile { font-size: 30px; font-weight: bold; margin-bottom: 25px; text-align: center; }
-            .print-address { font-size: 24px; line-height: 1.8; white-space: pre-line; }
-        }
+        
+@media print {
+
+    body {
+        background: #fff !important;
+        margin: 0;
+        padding: 0;
+        font-family: 'Sarabun', sans-serif;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #printArea,
+    #printArea * {
+        visibility: visible;
+    }
+
+    #printArea{
+        display:block !important;
+        position:absolute;
+        left:0;
+        top:0;
+        width:100%;
+        padding:10px 28px;
+        background:#fff !important;
+        color:#000;
+    }
+
+    .print-paper{
+        width:100%;
+    }
+
+    
+
+    
+
+    .print-main-title{
+        font-size:28px;
+        font-weight:700;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:8px;
+    }
+
+    .print-divider{
+        border-bottom:4px solid #000;
+        margin-bottom:18px;
+        width:78%;
+    }
+
+    .print-address-box{
+        border:3px dashed #000;
+        border-radius:18px;
+        padding:18px 20px;
+        font-size:15px;
+        line-height:1.7;
+        white-space:pre-line;
+        margin-bottom:20px;
+        width:50%;
+    }
+
+    .print-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:14px;
+        margin-bottom:16px;
+        width:78%;
+    }
+
+    .print-card{
+        padding:14px;
+        min-height:72px;
+        display:flex;
+        align-items:center;
+        gap:12px;
+		width:250px;
+        background:#fff !important;
+    }
+
+    .print-card-label{
+        font-size:28px;
+        font-weight:700;
+    }
+
+    .print-amount-box{
+        padding:14px;
+        display:flex;
+        align-items:center;
+        gap:18px;
+        min-height:82px;
+        background:#fff !important;
+    }
+
+    
+.print-amount-text{
+    font-size:16px;
+    margin-top:6px;
+    font-weight:600;
+    color:#666;
+	width:300px;
+    letter-spacing:.5px;
+}
+
+
+.print-amount{
+        font-size:42px;
+        font-weight:700;
+    }
+
+    
+.print-paid{
+    border:6px solid #16a34a;
+    color:#16a34a;
+    border-radius:10px;
+    padding:12px 22px;
+    font-size:34px;
+    font-weight:900;
+    display:inline-block;
+    background:#fff;
+    letter-spacing:1px;
+}
+
+
+    .print-order-box{
+        padding:16px;
+        display:flex;
+        align-items:center;
+        gap:12px;
+        min-height:70px;
+        font-size:28px;
+        margin-top:14px;
+        width:78%;
+        background:#fff !important;
+    }
+
+    .icon-circle{
+        width:46px;
+        height:46px;
+        border-radius:50%;
+        border:1px solid #ddd;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+        font-weight:700;
+    }
+
+}
+
     
 /* Mobile improvements */
 @media (max-width:768px){
@@ -432,11 +575,75 @@
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importOrders(event)">
 </div>
 
+
 <div id="printArea">
-    <div class="print-box">
-        <div class="print-title">📦 ใบจ่าหน้าพัสดุจัดส่งลูกค้า</div>
-        <div class="print-profile" id="pProfile"></div>
+    <div class="print-paper">
+
+        <div class="print-main-title">
+            📦 ผู้รับ
+        </div>
+
+        <div class="print-divider"></div>
+
+        <div class="print-address-box" id="pAddress"></div>
+
+        <div class="print-grid">
+            <div class="print-card">
+                <div class="icon-circle">💬</div>
+                <div class="print-card-label" id="pSource"></div>
+            </div>
+
+            <div class="print-card">
+                <div class="icon-circle">👤</div>
+                <div class="print-card-label" id="pProfile"></div>
+            </div>
+        </div>
+
+        <div class="print-grid">
+            <div class="print-amount-box">
+                <div class="icon-circle">฿</div>
+                
+<div>
+    <div class="print-amount" id="pAmount"></div>
+    <div class="print-amount-text" id="pAmountText"></div>
+</div>
+
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:center;">
+                <div class="print-paid" id="pPay"></div>
+            </div>
+        </div>
+
+        <div class="print-order-box">
+            <div class="icon-circle">📄</div>
+            <div id="pOrder"></div>
+        </div>
+
+    </div>
+</div>
+
+
         <div class="print-address" id="pAddress"></div>
+
+        <div class="print-bottom-row">
+
+            <div class="print-amount-wrap">
+                <div class="print-label">ยอดเงิน</div>
+                
+<div>
+    <div class="print-amount" id="pAmount"></div>
+    <div class="print-amount-text" id="pAmountText"></div>
+</div>
+
+            </div>
+
+            <div class="print-order" id="pOrder"></div>
+
+        </div>
+
+        <div class="print-tracking" id="pTracking"></div>
+
     </div>
 </div>
 
@@ -787,7 +994,21 @@ Math.round(resultJson.totalAmount || 0);
 
         const fullDateTime = now.toISOString();
 
-        ordersDatabase.push({ id, orderDate, fullDateTime, source, subSource, profile, address, payType, amount, remarks, trackingNumber, time: timeStr });
+        ordersDatabase.push({
+            id,
+            orderDate,
+            fullDateTime,
+            source,
+            subSource,
+            profile,
+            address,
+            payType,
+            amount,
+            remarks,
+            trackingNumber,
+            time: timeStr,
+            printcount: 0
+        });
 
         saveOrdersToStorage();
         saveOrdersToStorage();
@@ -866,7 +1087,9 @@ ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
                             ✏️ 
                             </button>
                             <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}', '${order.fullDateTime || ''}')">LINE</button>
-                            <button class="btn-print-slip" onclick="printLabel('${order.profile}', '${safeAddress}')">🖨️ </button>
+                            <button class="btn-print-slip" onclick="printLabel('${order.id}')">
+🖨️ ${order.printcount > 0 ? order.printcount : ''}
+</button>
                             <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️</button>
                         </div>
                     </div>
@@ -913,11 +1136,148 @@ ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
         }
     }
 
-    function printLabel(profile, address) {
-        document.getElementById('pProfile').innerText = profile;
-        document.getElementById('pAddress').innerText = address;
-        window.print();
+    
+
+
+function numberToThaiText(number) {
+
+    number = parseFloat(number).toFixed(2);
+
+    if (Number(number) === 0) {
+        return "ศูนย์บาท";
     }
+
+    const txtNumArr = [
+        "ศูนย์","หนึ่ง","สอง","สาม","สี่",
+        "ห้า","หก","เจ็ด","แปด","เก้า"
+    ];
+
+    const txtDigitArr = [
+        "","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"
+    ];
+
+    function readNumber(numStr) {
+
+        let result = "";
+        let len = numStr.length;
+
+        for(let i=0; i<len; i++){
+
+            let n = parseInt(numStr.charAt(i));
+            let pos = len - i - 1;
+
+            if(n !== 0){
+
+                if(pos === 0 && n === 1 && len > 1){
+                    result += "เอ็ด";
+                }
+                else if(pos === 1 && n === 2){
+                    result += "ยี่";
+                }
+                else if(pos === 1 && n === 1){
+                    result += "";
+                }
+                else{
+                    result += txtNumArr[n];
+                }
+
+                result += txtDigitArr[pos];
+            }
+        }
+
+        return result;
+    }
+
+    let [integerPart, decimalPart] = number.split(".");
+
+    let bahtText = "";
+
+    // รองรับหลักล้าน
+    const millions = [];
+
+    while(integerPart.length > 6){
+        millions.unshift(integerPart.slice(-6));
+        integerPart = integerPart.slice(0, -6);
+    }
+
+    millions.unshift(integerPart);
+
+    millions.forEach((part, index) => {
+
+        if(part !== "000000"){
+
+            bahtText += readNumber(part);
+
+            if(index < millions.length - 1){
+                bahtText += "ล้าน";
+            }
+        }
+    });
+
+    bahtText += "บาท";
+
+    // สตางค์
+    if(decimalPart === "00"){
+        bahtText += "";
+    }else{
+        bahtText += readNumber(decimalPart) + "สตางค์";
+    }
+
+    return bahtText;
+}
+
+function printLabel(orderId) {
+
+    const order = ordersDatabase.find(o => o.id === orderId);
+
+    if(!order) return;
+
+    // เพิ่มจำนวนครั้งที่ปริ๊น
+    order.printcount = (order.printcount || 0) + 1;
+
+    saveOrdersToStorage();
+
+    renderOrders();
+
+    document.getElementById('pSource').innerText =
+        order.source + order.subSource;
+
+    document.getElementById('pProfile').innerText =
+        order.profile;
+
+    document.getElementById('pAddress').innerText =
+        order.address;
+
+    document.getElementById('pAmount').innerText =
+        Number(order.amount).toLocaleString('en-US') + ' บาท';
+
+    document.getElementById('pAmountText').innerText =
+        numberToThaiText(order.amount);
+
+    const payElement = document.getElementById('pPay');
+
+    if(order.payType === 'cod'){
+
+        payElement.innerText = 'COD';
+
+        payElement.style.borderColor = '#dc2626';
+        payElement.style.color = '#dc2626';
+
+    }else{
+
+        payElement.innerText = 'โอนแล้ว';
+
+        payElement.style.borderColor = '#16a34a';
+        payElement.style.color = '#16a34a';
+    }
+
+    document.getElementById('pOrder').innerText =
+        'Order: ' + order.remarks;
+
+    window.print();
+}
+
+
 
     function copyToLine(profile, address, payType, amount, remarks, source, trackingNumber='-', fullDateTime='') {
 
