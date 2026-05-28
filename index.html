@@ -227,16 +227,19 @@
     }
 
     
-.print-paid{
-    border:6px solid #16a34a;
-    color:#16a34a;
-    border-radius:10px;
-    padding:12px 22px;
-    font-size:84px;
-    font-weight:900;
-    display:inline-block;
-    background:#fff;
-    letter-spacing:1px;
+.print-paid {
+    position: absolute;
+    border: 6px solid #16a34a;
+    color: #16a34a;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-size: 84px;
+    font-weight: 900;
+    display: inline-block;
+    letter-spacing: 1px;
+
+    /* แก้ไขตรงนี้: โปร่งใสเคลียร์ 100% */
+    background: transparent; 
 }
 
 
@@ -266,6 +269,36 @@
 
 }
 
+.top-row{
+    position:relative;
+    width:100%;
+    min-height:60px;
+}
+
+/* ซ้าย */
+.badge-group{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+	white-space:nowrap;
+}
+
+/* ขวา */
+.amount-box{
+    position:absolute;
+    top:0;
+    right:0;
+
+    text-align:right;
+    white-space:nowrap;
+}
+
+.amount-price{
+    font-size:18px;
+    font-weight:700;
+    color:var(--primary);
+}
     
 /* Mobile improvements */
 @media (max-width:768px){
@@ -299,7 +332,7 @@
 
 .tracking-display{
     margin-top:-20px;
-    padding:10px 14px;
+    padding:40px 14px;
     color:#000;
     border-radius:10px;
     font-size:22px;
@@ -311,7 +344,7 @@
 @media (max-width:768px){
     .tracking-display{
         font-size:26px;
-        padding:14px;
+        padding:20px;
         border-radius:12px;
     }
 }
@@ -563,14 +596,14 @@
             <div class="summary-grid"> 
                 <div class="summary-box"><div class="title">รวมทั้งหมด</div><div class="value" id="summaryCount">0 รายการ</div></div>
                 <div class="summary-box"><div style="display:flex;align-items:center;justify-content:center;gap:6px;">
-					<div class="title">ยอดโอนเงิน</div>
+					<div class="title">โอนเงิน</div>
 					<div class="title" id="transferCounttext"></div>
 				</div><div class="value" style="color: #27ae60;" id="summaryTransfer">0 ฿</div></div>
                 <div class="summary-box"><div style="display:flex;align-items:center;justify-content:center;gap:6px;">
-					<div class="title">ยอด COD</div>
+					<div class="title">COD</div>
 					<div class="title" id="codCounttext"></div>
 				</div><div class="value" style="color: #e67e22;" id="summaryCod">0 ฿</div></div>
-                <div class="summary-box"><div class="title">ยอดรวมมูลค่า</div><div class="value" style="color: #1e56a0;" id="summaryTotal">0 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอดรวม</div><div class="value" style="color: #1e56a0;" id="summaryTotal">0 ฿</div></div>
             </div>
         </div>
     </div>
@@ -627,7 +660,7 @@
         </div>
 		<div style="display:flex;align-items:center;justify-content:center;">
                 <div class="print-paid" id="pPay"></div>
-            </div>
+        </div>
 
     </div>
 </div>
@@ -1075,12 +1108,8 @@ Math.round(resultJson.totalAmount || 0);
             listArea.innerHTML += `
                 <div class="order-item">
                     <div class="order-header">
-                        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                            <span class="order-badge-id">${index + 1}</span>
-                            <span class="badge ${badgeClass}">🟢 ${order.source}${order.subSource}</span>
-                            <span class="badge ${payClass}">${order.payType === 'cod' ? 'COD ปลายทาง' : 'โอนเงินแล้ว'}</span>
-                        </div>
-                        <div class="text-muted">
+					<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="order-badge-id">${index + 1}</span></div>
+                        <div class="text-muted" style="width: 80px;">
 ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
 </div>
                     </div>
@@ -1090,8 +1119,32 @@ ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
                             <div class="text-muted">ที่อยู่จัดส่ง:</div><div class="address-display">${order.address}</div>
                         </div>
                         <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
-                            <div><div class="text-muted">ยอดเงิน</div><div style="font-size: 18px; font-weight:700; color:var(--primary);">${Math.round(order.amount)} ฿</div></div>
-                            <div class="text-muted">Order: ${order.remarks}</div>
+<div><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+<div class="top-row">
+
+    <div class="badge-group">
+        <span class="badge ${badgeClass}">
+            ${order.source}${order.subSource}
+        </span>
+
+        <span class="badge ${payClass}">
+            ${order.payType === 'cod'
+                ? 'COD ปลายทาง'
+                : 'โอนเงินแล้ว'}
+        </span>
+    </div>
+
+    <div class="amount-box">
+        <div class="text-muted">ยอดเงิน</div>
+
+        <div class="amount-price">
+            ${Math.round(order.amount)} ฿
+        </div>
+    </div>
+
+</div>
+</div></div>
+                            <div class="text-muted" style="text-align:left;">Order: ${order.remarks}</div>
                             <div class="tracking-display">📦 ${order.trackingNumber || '-'}</div>
                         </div>
                     </div>
@@ -1113,8 +1166,8 @@ ${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
         });
 
         document.getElementById('summaryCount').innerText = `${filteredOrders.length} รายการ`;
-		document.getElementById('transferCounttext').innerText = `(${transferCount} รายการ)`;
-		document.getElementById('codCounttext').innerText = `(${codCount} รายการ)`;
+		document.getElementById('transferCounttext').innerText = `(${transferCount})`;
+		document.getElementById('codCounttext').innerText = `(${codCount})`;
         document.getElementById('summaryTransfer').innerText = `${Math.round(totalTransfer)} ฿`;
         document.getElementById('summaryCod').innerText = `${Math.round(totalCod)} ฿`;
         document.getElementById('summaryTotal').innerText =
