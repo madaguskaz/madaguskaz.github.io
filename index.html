@@ -115,6 +115,11 @@
         
 @media print {
 
+	@page{
+		size:A4;
+		margin:5mm;
+	}
+
     html, body {
         height: 100%;
         overflow: hidden;
@@ -131,19 +136,22 @@
     }
 
     #printArea{
-        display:block !important;
-        position:absolute;
-        left:0;
-        top:0;
-        width:100%;
-        padding:10px 28px;
-        background:#fff !important;
-        color:#000;
-    }
+		display:block !important;
+		position:fixed;
+		inset:0;
+		width:100%;
+		height:100vh;
+		padding:5px 10px;
+		background:#fff !important;
+		color:#000;
+		overflow:hidden;
+	}
 
-    .print-paper{
+	.print-paper{
 		position:relative;
-		min-height:100vh;
+		height:100vh;
+		overflow:hidden;
+		page-break-after:avoid !important;
 	}
 
 	.print-paid-wrap{
@@ -154,7 +162,7 @@
 		display:flex;
 		justify-content:center;
 	}
-    
+		
 
     
 
@@ -663,35 +671,13 @@
             <div class="icon-circle">📄</div>
             <div id="pOrder"></div>
         </div>
-		<div class="print-paid-wrap">
+		<div class="print-paid-wrap" style="transform:translate(180px,-400px);">
 			<div class="print-paid" id="pPay"></div>
 		</div>
 
     </div>
 </div>
 
-
-        <div class="print-address" id="pAddress"></div>
-
-        <div class="print-bottom-row">
-
-            <div class="print-amount-wrap">
-                
-			<div>
-				<div class="print-amount" id="pAmount"></div>
-				<div class="print-amount-text" id="pAmountText"></div>
-			</div>
-
-            </div>
-
-            <div class="print-order" id="pOrder"></div>
-
-        </div>
-
-        <div class="print-tracking" id="pTracking"></div>
-
-    </div>
-</div>
 
 
 <div class="modal-overlay" id="editModal">
