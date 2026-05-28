@@ -115,11 +115,10 @@
         
 @media print {
 
-    body {
-        background: #fff !important;
-        margin: 0;
-        padding: 0;
-        font-family: 'Sarabun', sans-serif;
+    html, body {
+        height: 100%;
+        overflow: hidden;
+        page-break-inside: avoid;
     }
 
     body * {
@@ -142,8 +141,11 @@
         color:#000;
     }
 
-    .print-paper{
-        width:100%;
+    .print-paper {
+        page-break-inside: avoid;
+        page-break-after: avoid;
+        margin: 0 !important;
+        padding-bottom: 0 !important;
     }
 
     
