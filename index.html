@@ -141,13 +141,19 @@
         color:#000;
     }
 
-    .print-paper {
-        page-break-inside: avoid;
-        page-break-after: avoid;
-        margin: 0 !important;
-        padding-bottom: 0 !important;
-    }
+    .print-paper{
+		position:relative;
+		min-height:100vh;
+	}
 
+	.print-paid-wrap{
+		position:absolute;
+		bottom:40px;
+		left:0;
+		width:100%;
+		display:flex;
+		justify-content:center;
+	}
     
 
     
@@ -228,7 +234,6 @@
 
     
 .print-paid {
-    position: absolute;
     border: 6px solid #16a34a;
     color: #16a34a;
     border-radius: 10px;
@@ -658,9 +663,9 @@
             <div class="icon-circle">📄</div>
             <div id="pOrder"></div>
         </div>
-		<div style="display:flex;align-items:center;justify-content:center;">
-                <div class="print-paid" id="pPay"></div>
-        </div>
+		<div class="print-paid-wrap">
+			<div class="print-paid" id="pPay"></div>
+		</div>
 
     </div>
 </div>
