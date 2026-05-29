@@ -777,6 +777,31 @@
 <script>
     let ordersDatabase = [];
 
+function getThailandDateString(){
+    return new Intl.DateTimeFormat('en-CA',{
+        timeZone:'Asia/Bangkok',
+        year:'numeric',
+        month:'2-digit',
+        day:'2-digit'
+    }).format(new Date());
+}
+
+function getThailandDateTimeLocal(){
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('sv-SE',{
+        timeZone:'Asia/Bangkok',
+        year:'numeric',
+        month:'2-digit',
+        day:'2-digit',
+        hour:'2-digit',
+        minute:'2-digit',
+        second:'2-digit',
+        hour12:false
+    }).format(now);
+    return parts.replace(' ','T').slice(0,16);
+}
+
+
     
 function showTab(tabId, btn){
 
@@ -833,15 +858,7 @@ function saveOrdersToStorage() {
         }
 
         
-        const thailandNow = new Date(
-            new Date().toLocaleString('en-US', {
-                timeZone:'Asia/Bangkok'
-            })
-        );
-
-        const isoLocal = new Date(
-            thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
-        ).toISOString().slice(0,16);
+        const isoLocal = getThailandDateTimeLocal();
 
         const orderDateTime = document.getElementById('orderDateTime');
 
@@ -892,9 +909,7 @@ function saveOrdersToStorage() {
 				})
 			);
 
-			filterDate.value = thailandNow
-				.toISOString()
-				.split('T')[0];
+			filterDate.value = getThailandDateString();
 		}
 
         const sortOrder = document.getElementById('sortOrder');
@@ -1048,7 +1063,7 @@ Math.round(resultJson.totalAmount || 0);
             now.getTime() - now.getTimezoneOffset() * 60000
         );
 
-        const orderDate = localNow.toISOString().split('T')[0];
+        const orderDate = selectedDateTime ? selectedDateTime.slice(0,10) : getThailandDateString();
 
         const timeStr = now.toLocaleTimeString('th-TH', {
             hour:'2-digit',
@@ -1056,7 +1071,7 @@ Math.round(resultJson.totalAmount || 0);
             second:'2-digit'
         });
 
-        const fullDateTime = localNow.toISOString();
+        const fullDateTime = selectedDateTime ? selectedDateTime : getThailandDateTimeLocal();
 
         ordersDatabase.push({
             id,
@@ -1087,9 +1102,7 @@ Math.round(resultJson.totalAmount || 0);
 				})
 			);
 
-			filterDate.value = thailandNow
-				.toISOString()
-				.split('T')[0];
+			filterDate.value = getThailandDateString();
 		}
 
         renderOrders();
@@ -1219,15 +1232,7 @@ ${new Date((order.fullDateTime || order.orderDate).replace('Z','')).toLocaleDate
         document.getElementById('orderForm').reset();
         handleSourceChange();
 
-        const thailandNow = new Date(
-            new Date().toLocaleString('en-US', {
-                timeZone:'Asia/Bangkok'
-            })
-        );
-
-        const isoLocal = new Date(
-            thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
-        ).toISOString().slice(0,16);
+        const isoLocal = getThailandDateTimeLocal();
 
         const orderDateTime = document.getElementById('orderDateTime');
 
@@ -1428,9 +1433,7 @@ function exportOrders() {
         })
     );
 
-    const exportDate = new Date(
-        thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
-    ).toISOString().slice(0,10);
+    const exportDate = getThailandDateString();
 
     a.download = 'orders-backup-' + exportDate + '.json';
     a.click();
@@ -1584,9 +1587,9 @@ function saveEditedOrder(){
         trackingNumber: document.getElementById('editTracking').value,
         remarks: document.getElementById('editRemarks').value,
 
-        orderDate: localDate.toISOString().split('T')[0],
+        orderDate: editDateTime ? editDateTime.slice(0,10) : getThailandDateString(),
 
-        fullDateTime: localDate.toISOString(),
+        fullDateTime: editDateTime || getThailandDateTimeLocal(),
 
         time: dt.toLocaleTimeString('th-TH', {
             hour:'2-digit',
