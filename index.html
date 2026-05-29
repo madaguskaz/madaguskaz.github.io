@@ -153,15 +153,18 @@
 	.print-paper{
 		position:relative;
 		width:100%;
-		height:297mm; /* ความสูง A4 */
+		height:auto;
+		min-height:260mm;
+
 		overflow:hidden;
-		padding-bottom:140px; /* กันเนื้อหาทับ PAID */
 		box-sizing:border-box;
+
+		padding-bottom:20px; /* ลดลง */
 	}
 
 	.print-paid-wrap{
 		position:absolute;
-		bottom:30mm; /* ล็อกตำแหน่งจริง */
+		bottom:0mm; /* ล็อกตำแหน่งจริง */
 		left:50%;
 		transform:translateX(-50%);
 		z-index:999;
