@@ -135,32 +135,36 @@
         visibility: visible;
     }
 
-    #printArea{
+	#printArea{
 		display:block !important;
-		position:fixed;
-		inset:0;
+		position:absolute; /* เปลี่ยนจาก fixed */
+		left:0;
+		top:0;
 		width:100%;
-		height:100vh;
+		min-height:100%;
 		padding:5px 10px;
 		background:#fff !important;
 		color:#000;
-		overflow:hidden;
+
+		overflow:visible !important; /* เปลี่ยนจาก hidden */
+		height:auto !important; /* ห้ามใช้ 100vh */
 	}
 
 	.print-paper{
 		position:relative;
-		height:100vh;
+		width:100%;
+		height:297mm; /* ความสูง A4 */
 		overflow:hidden;
-		page-break-after:avoid !important;
+		padding-bottom:140px; /* กันเนื้อหาทับ PAID */
+		box-sizing:border-box;
 	}
 
 	.print-paid-wrap{
 		position:absolute;
-		bottom:40px;
-		left:0;
-		width:100%;
-		display:flex;
-		justify-content:center;
+		bottom:30mm; /* ล็อกตำแหน่งจริง */
+		left:50%;
+		transform:translateX(-50%);
+		z-index:999;
 	}
 		
 
@@ -683,7 +687,7 @@
             <div class="icon-circle">📄</div>
             <div id="pOrder"></div>
         </div>
-		<div class="print-paid-wrap" style="transform:translate(-100px,0px);">
+		<div class="print-paid-wrap">
 			<div class="print-paid" id="pPay"></div>
 		</div>
 
@@ -878,8 +882,17 @@ function saveOrdersToStorage() {
         const filterDate = document.getElementById('filterDate');
 
         if(filterDate){
-            filterDate.value = '';
-        }
+
+			const thailandNow = new Date(
+				new Date().toLocaleString('en-US', {
+					timeZone:'Asia/Bangkok'
+				})
+			);
+
+			filterDate.value = thailandNow
+				.toISOString()
+				.split('T')[0];
+		}
 
         const sortOrder = document.getElementById('sortOrder');
 
@@ -1059,9 +1072,18 @@ Math.round(resultJson.totalAmount || 0);
         // default = ไม่เลือกวัน เพื่อแสดงทุกวัน
         const filterDate = document.getElementById('filterDate');
 
-        if(filterDate){
-            filterDate.value = '';
-        }
+		if(filterDate){
+
+			const thailandNow = new Date(
+				new Date().toLocaleString('en-US', {
+					timeZone:'Asia/Bangkok'
+				})
+			);
+
+			filterDate.value = thailandNow
+				.toISOString()
+				.split('T')[0];
+		}
 
         renderOrders();
         resetForm();
