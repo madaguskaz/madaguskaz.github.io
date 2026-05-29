@@ -1044,7 +1044,11 @@ Math.round(resultJson.totalAmount || 0);
             now = new Date();
         }
 
-        const orderDate = now.toISOString().split('T')[0];
+        const localNow = new Date(
+            now.getTime() - now.getTimezoneOffset() * 60000
+        );
+
+        const orderDate = localNow.toISOString().split('T')[0];
 
         const timeStr = now.toLocaleTimeString('th-TH', {
             hour:'2-digit',
@@ -1052,7 +1056,7 @@ Math.round(resultJson.totalAmount || 0);
             second:'2-digit'
         });
 
-        const fullDateTime = now.toISOString();
+        const fullDateTime = localNow.toISOString();
 
         ordersDatabase.push({
             id,
@@ -1138,7 +1142,7 @@ Math.round(resultJson.totalAmount || 0);
                     <div class="order-header">
 					<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="order-badge-id">${index + 1}</span></div>
                         <div class="text-muted" style="width: 80px;">
-${new Date(order.fullDateTime || order.orderDate).toLocaleDateString('th-TH')}
+${new Date((order.fullDateTime || order.orderDate).replace('Z','')).toLocaleDateString('th-TH')}
 </div>
                     </div>
                     <div class="order-body-grid">
@@ -1381,7 +1385,7 @@ function printLabel(orderId) {
 👤 โปรไฟล์: ${profile}
 📍 ข้อมูลที่อยู่จัดส่ง:
 ${address}
-🗓️ วันเวลาทำรายการ: ${fullDateTime ? new Date(fullDateTime).toLocaleString('th-TH') : '-'}
+🗓️ วันเวลาทำรายการ: ${fullDateTime ? new Date(fullDateTime.replace('Z','')).toLocaleString('th-TH') : '-'}
 🛒 รายการ: ${remarks}\n📦 Tracking: ${trackingNumber}
 💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
 
@@ -1418,7 +1422,17 @@ function exportOrders() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'orders-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    const thailandNow = new Date(
+        new Date().toLocaleString('en-US', {
+            timeZone:'Asia/Bangkok'
+        })
+    );
+
+    const exportDate = new Date(
+        thailandNow.getTime() - thailandNow.getTimezoneOffset()*60000
+    ).toISOString().slice(0,10);
+
+    a.download = 'orders-backup-' + exportDate + '.json';
     a.click();
     URL.revokeObjectURL(url);
 }
@@ -1554,6 +1568,10 @@ function saveEditedOrder(){
         editSubSource = ' (' + document.getElementById('editFbPageSelect').value + ')';
     }
 
+    const localDate = new Date(
+        dt.getTime() - dt.getTimezoneOffset() * 60000
+    );
+
     ordersDatabase[orderIndex] = {
         ...ordersDatabase[orderIndex],
 
@@ -1566,9 +1584,9 @@ function saveEditedOrder(){
         trackingNumber: document.getElementById('editTracking').value,
         remarks: document.getElementById('editRemarks').value,
 
-        orderDate: dt.toISOString().split('T')[0],
+        orderDate: localDate.toISOString().split('T')[0],
 
-        fullDateTime: dt.toISOString(),
+        fullDateTime: localDate.toISOString(),
 
         time: dt.toLocaleTimeString('th-TH', {
             hour:'2-digit',
