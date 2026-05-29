@@ -177,35 +177,35 @@
 
     .print-divider{
         border-bottom:4px solid #000;
-        margin-bottom:18px;
+        margin-bottom:8px;
         width:78%;
     }
 
     .print-address-box{
         border:3px dashed #000;
         border-radius:18px;
-        padding:18px 20px;
+        padding:12px 16px; /* เดิม 18px 20px */
         font-size:15px;
-        line-height:1.7;
+        line-height:1.4;
         white-space:pre-line;
-        margin-bottom:20px;
+        margin-bottom:8px;
         width:50%;
     }
 
     .print-grid{
         display:grid;
         grid-template-columns:1fr 1fr;
-        gap:14px;
-        margin-bottom:16px;
+        gap:4px;
+        margin-bottom:4px;
         width:78%;
     }
 
     .print-card{
-        padding:14px;
-        min-height:72px;
+        padding:8px 14px;
+        min-height:48px;
         display:flex;
         align-items:center;
-        gap:12px;
+        gap:8px;
 		width:550px;
         background:#fff !important;
     }
@@ -216,21 +216,22 @@
     }
 
     .print-amount-box{
-        padding:14px;
+        padding:8px 14px;
         display:flex;
         align-items:center;
-        gap:18px;
-        min-height:82px;
+        gap:10px;
+        min-height:56px;
         background:#fff !important;
     }
 
     
 .print-amount-text{
     font-size:16px;
-    margin-top:6px;
+     margin-top:0;
     font-weight:600;
     color:#666;
 	width:300px;
+	line-height:1.2;
     letter-spacing:.5px;
 }
 
@@ -257,14 +258,15 @@
 
 
     .print-order-box{
-        padding:16px;
+        padding:8px 14px;
         display:flex;
         align-items:center;
         gap:12px;
-        min-height:70px;
+        min-height:auto;
         font-size:28px;
-        margin-top:14px;
+        margin-top:2px;
         width:78%;
+		line-height:1.1;
         background:#fff !important;
     }
 
@@ -280,6 +282,16 @@
         font-weight:700;
     }
 
+}
+
+#printArea p,
+#printArea h1,
+#printArea h2,
+#printArea h3,
+#printArea h4,
+#printArea h5,
+#printArea h6{
+    margin:0;
 }
 
 .top-row{
@@ -671,7 +683,7 @@
             <div class="icon-circle">📄</div>
             <div id="pOrder"></div>
         </div>
-		<div class="print-paid-wrap" style="transform:translate(180px,-400px);">
+		<div class="print-paid-wrap" style="transform:translate(-100px,0px);">
 			<div class="print-paid" id="pPay"></div>
 		</div>
 
