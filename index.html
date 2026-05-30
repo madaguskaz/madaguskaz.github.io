@@ -77,6 +77,9 @@
         .badge-tel { background: #fef3c7; color: #b45309; }
         .badge-pay-transfer { background: #dcfce7; color: #15803d; }
         .badge-pay-cod { background: #ffeeeb; color: #e74c3c; }
+        .badge-pay-pending { background:#fef08a; color:#854d0e; }
+        .badge-pay-follow { background:#dbeafe; color:#1d4ed8; }
+        .badge-pay-booking { background:#fed7aa; color:#ea580c; }
         
         .order-body-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; font-size: 14px; }
         .text-muted { color: #64748b; font-size: 12px; margin-bottom: 2px; }
@@ -578,6 +581,9 @@
                     <select id="paymentType" required>
                         <option value="โอนแล้ว">โอนแล้ว</option>
                         <option value="cod">cod เก็บเงินปลายทาง</option>
+                        <option value="รอโอน">รอโอน</option>
+                        <option value="ส่งตาม">ส่งตาม</option>
+                        <option value="จอง">จอง</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -729,6 +735,9 @@
                 <select id="editPayType">
                     <option value="โอนแล้ว">โอนแล้ว</option>
                     <option value="cod">cod เก็บเงินปลายทาง</option>
+                    <option value="รอโอน">รอโอน</option>
+                    <option value="ส่งตาม">ส่งตาม</option>
+                    <option value="จอง">จอง</option>
                 </select>
             </div>
         </div>
@@ -1137,7 +1146,20 @@ Math.round(resultJson.totalAmount || 0);
 
         filteredOrders.forEach((order, index) => {
             let badgeClass = order.source === 'LINE' ? 'badge-line' : (order.source === 'Facebook' ? 'badge-fb' : 'badge-tel');
-            let payClass = order.payType === 'โอนแล้ว' ? 'badge-pay-transfer' : 'badge-pay-cod';
+            let payClass = 'badge-pay-cod';
+
+            if(order.payType === 'โอนแล้ว'){
+                payClass = 'badge-pay-transfer';
+            }
+            else if(order.payType === 'รอโอน'){
+                payClass = 'badge-pay-pending';
+            }
+            else if(order.payType === 'ส่งตาม'){
+                payClass = 'badge-pay-follow';
+            }
+            else if(order.payType === 'จอง'){
+                payClass = 'badge-pay-booking';
+            }
             
             if(order.payType === 'โอนแล้ว') {
                 totalTransfer += order.amount;
@@ -1173,9 +1195,19 @@ ${new Date((order.fullDateTime || order.orderDate).replace('Z','')).toLocaleDate
         </span>
 
         <span class="badge ${payClass}">
-            ${order.payType === 'cod'
-                ? 'COD ปลายทาง'
-                : 'โอนเงินแล้ว'}
+            ${
+    order.payType === 'cod'
+        ? 'COD ปลายทาง'
+    : order.payType === 'โอนแล้ว'
+        ? 'โอนเงินแล้ว'
+    : order.payType === 'รอโอน'
+        ? 'รอโอน'
+    : order.payType === 'ส่งตาม'
+        ? 'ส่งตาม'
+    : order.payType === 'จอง'
+        ? 'จอง'
+    : order.payType
+}
         </span>
     </div>
 
