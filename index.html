@@ -481,6 +481,29 @@
     }
 }
 
+
+.filter-chip{
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:700;
+    margin:4px;
+}
+.filter-chip.active{
+    outline:3px solid #111827;
+    transform:scale(1.03);
+}
+.filter-transfer{background:#dcfce7;color:#15803d;}
+.filter-cod{background:#ffeeeb;color:#e74c3c;}
+.filter-pending{background:#fef08a;color:#854d0e;}
+.filter-follow{background:#dbeafe;color:#1d4ed8;}
+.filter-booking{background:#fed7aa;color:#ea580c;}
+.filter-line{background:#e6f9ed;color:#15803d;}
+.filter-fb{background:#e0f2fe;color:#0369a1;}
+.filter-tel{background:#fef3c7;color:#b45309;}
+
 </style>
 </head>
 <body>
@@ -621,6 +644,7 @@
 </div>
 <div class="filter-bar">
 <input type="text" id="searchText" placeholder="ค้นหาโปรไฟล์/ที่อยู่" oninput="renderOrders()">
+<button type="button" onclick="openFilterModal()">🔍 ฟิลเตอร์</button>
 </div>
 <div class="header-right">
             <div class="card-title">📦 รายการสั่งซื้อและสรุปยอดของวัน</div>
@@ -705,6 +729,47 @@
 
 
 
+
+<div class="modal-overlay" id="filterModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>🔍 ฟิลเตอร์เพิ่มเติม</h2>
+            <button class="modal-close" onclick="closeFilterModal()">✕</button>
+        </div>
+
+        
+<h3>ประเภทชำระ</h3>
+<button type="button" class="filter-chip filter-transfer filter-pay-btn" data-value="โอนแล้ว">โอนแล้ว</button>
+<button type="button" class="filter-chip filter-cod filter-pay-btn" data-value="cod">COD</button>
+<button type="button" class="filter-chip filter-pending filter-pay-btn" data-value="รอโอน">รอโอน</button>
+<button type="button" class="filter-chip filter-follow filter-pay-btn" data-value="ส่งตาม">ส่งตาม</button>
+<button type="button" class="filter-chip filter-booking filter-pay-btn" data-value="จอง">จอง</button>
+
+<hr style="margin:15px 0;">
+
+<h3>แหล่งที่มา</h3>
+<button type="button" class="filter-chip filter-line filter-source-btn" data-value="LINE">LINE</button>
+<button type="button" class="filter-chip filter-fb filter-source-btn" data-value="Facebook">Facebook</button>
+<button type="button" class="filter-chip filter-tel filter-source-btn" data-value="Telephone">โทรศัพท์</button>
+
+<hr style="margin:15px 0;">
+
+<h3>Tracking</h3>
+<button type="button" class="filter-chip" id="filterNoTrackingBtn">ไม่มี Tracking</button>
+
+<hr style="margin:15px 0;">
+
+<h3>การพิมพ์</h3>
+<button type="button" class="filter-chip" id="filterNeverPrintBtn">ยังไม่เคย Print</button>
+
+<div class="btn-group">
+
+            <button type="button" class="btn-reset" onclick="clearFilters()">ล้างฟิลเตอร์</button>
+            <button type="button" class="btn-save-edit" onclick="applyFilters()">ใช้งาน</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="editModal">
     <div class="modal-box">
 
@@ -785,6 +850,13 @@
 
 <script>
     let ordersDatabase = [];
+
+let activeFilters = {
+    payTypes: [],
+    sources: [],
+    noTracking: false,
+    neverPrint: false
+};
 
 function getThailandDateString(){
     return new Intl.DateTimeFormat('en-CA',{
@@ -1118,7 +1190,79 @@ Math.round(resultJson.totalAmount || 0);
         resetForm();
     }
 
-    function renderOrders() {
+    
+function openFilterModal(){
+
+    document.querySelectorAll('.filter-pay-btn').forEach(btn=>{
+        btn.classList.toggle('active', activeFilters.payTypes.includes(btn.dataset.value));
+    });
+
+    document.querySelectorAll('.filter-source-btn').forEach(btn=>{
+        btn.classList.toggle('active', activeFilters.sources.includes(btn.dataset.value));
+    });
+
+    document.getElementById('filterNoTrackingBtn')
+        .classList.toggle('active', activeFilters.noTracking);
+
+    const np=document.getElementById('filterNeverPrintBtn');
+    if(np){
+        np.classList.toggle('active', activeFilters.neverPrint);
+    }
+
+    document.getElementById('filterModal').style.display='flex';
+}
+
+function closeFilterModal(){
+    document.getElementById('filterModal').style.display='none';
+}
+
+function applyFilters(){
+    activeFilters.payTypes=[...document.querySelectorAll('.filter-pay-btn.active')].map(el=>el.dataset.value);
+    activeFilters.sources=[...document.querySelectorAll('.filter-source-btn.active')].map(el=>el.dataset.value);
+    activeFilters.noTracking=document.getElementById('filterNoTrackingBtn').classList.contains('active');
+    activeFilters.neverPrint=document.getElementById('filterNeverPrintBtn').classList.contains('active');
+    closeFilterModal();
+    renderOrders();
+}
+
+function clearFilters(){
+    document.querySelectorAll('.filter-chip').forEach(el=>el.classList.remove('active'));
+    activeFilters={payTypes:[],sources:[],noTracking:false};
+    renderOrders();
+}
+
+
+
+document.addEventListener('click',function(e){
+
+    if(e.target.classList.contains('filter-pay-btn')){
+
+        const wasActive = e.target.classList.contains('active');
+
+        document.querySelectorAll('.filter-pay-btn').forEach(btn=>btn.classList.remove('active'));
+
+        if(!wasActive){
+            e.target.classList.add('active');
+        }
+    }
+
+    if(e.target.classList.contains('filter-source-btn')){
+
+        const wasActive = e.target.classList.contains('active');
+
+        document.querySelectorAll('.filter-source-btn').forEach(btn=>btn.classList.remove('active'));
+
+        if(!wasActive){
+            e.target.classList.add('active');
+        }
+    }
+
+    if(e.target.id==='filterNoTrackingBtn' || e.target.id==='filterNeverPrintBtn'){
+        e.target.classList.toggle('active');
+    }
+});
+
+function renderOrders() {
         const listArea = document.getElementById('orderListArea');
         listArea.innerHTML = "";
         let totalTransfer = 0, totalCod = 0;
@@ -1129,7 +1273,13 @@ Math.round(resultJson.totalAmount || 0);
            const dateOk=!selectedDate || o.orderDate===selectedDate;
            const text=(o.profile+' '+o.address).toLowerCase();
            const keyOk=!keyword || text.includes(keyword);
-           return dateOk && keyOk;
+
+           const payOk=activeFilters.payTypes.length===0 || activeFilters.payTypes.includes(o.payType);
+           const sourceOk=activeFilters.sources.length===0 || activeFilters.sources.includes(o.source);
+           const trackingOk=!activeFilters.noTracking || !o.trackingNumber || o.trackingNumber==='-';
+           const printOk=!activeFilters.neverPrint || !o.printcount || o.printcount===0;
+
+           return dateOk && keyOk && payOk && sourceOk && trackingOk && printOk;
         });
 
         const sortOrder = document.getElementById('sortOrder')?.value || 'desc';
