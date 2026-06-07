@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบจ่าหน้าพัสดุจัดส่งลูกค้า</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e56a0;
+            --primary-hover: #163f75;
+            --success: #27ae60;
+            --success-hover: #1e8449;
+            --line-color: #00b900;
+            --line-hover: #009900;
+            --danger: #e74c3c;
+            --bg-body: #f4f7fa;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 20px; }
+
+        .app-container { display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; color: #1a202c; }
+
+        /* API Key Setup Config Bar */
+        .api-config { background: #fff3cd; border: 1px solid #ffeeba; padding: 12px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #4a5568; }
+        label span { color: var(--danger); }
+        
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px;
+            font-size: 14px; color: var(--text-main); background-color: #fff;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,86,160,0.15); }
+        
+        /* โซนอัปโหลดรูป / สแกน */
+        .upload-zone {
+            border: 2px dashed #cbd5e1; border-radius: 12px; padding: 25px; text-align: center;
+            background-color: #f8fafc; cursor: pointer; position: relative; margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .upload-zone:hover { border-color: var(--primary); background-color: #f0f4f8; }
+        .upload-zone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .upload-icon { font-size: 32px; color: #94a3b8; margin-bottom: 8px; }
+        .ocr-badge { position: absolute; top: 12px; right: 12px; background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        
+        /* สปินเนอร์ตอนกำลังโหลดของ AI */
+        .loading-overlay { display: none; color: #e67e22; font-weight: bold; margin-top: 8px; font-size: 13px; text-align: center; }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
+        button {
+            padding: 12px 20px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; flex: 1;
+        }
+        .btn-submit { background-color: var(--primary); color: white; }
+        .btn-submit:hover { background-color: var(--primary-hover); }
+        .btn-reset { background-color: #f1f5f9; color: #475569; }
+
+        /* ฝั่งขวา: รายการออเดอร์ */
+        .header-right { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .order-list { display: flex; flex-direction: column; gap: 16px; max-height: 480px; overflow-y: auto; margin-bottom: 20px; }
+        
+        .order-item { border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; background: #fff; }
+        .order-header { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
+        .order-badge-id { background: #e2e8f0; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; font-size: 13px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-left: 6px; }
+        .badge-line { background: #e6f9ed; color: #15803d; }
+        .badge-fb { background: #e0f2fe; color: #0369a1; }
+        .badge-tel { background: #fef3c7; color: #b45309; }
+        .badge-pay-transfer { background: #dcfce7; color: #15803d; }
+        .badge-pay-cod { background: #ffeeeb; color: #e74c3c; }
+        .badge-pay-pending { background:#fef08a; color:#854d0e; }
+        .badge-pay-follow { background:#dbeafe; color:#1d4ed8; }
+        .badge-pay-booking { background:#fed7aa; color:#ea580c; }
+        
+        .order-body-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; font-size: 14px; }
+        .text-muted { color: #64748b; font-size: 12px; margin-bottom: 2px; }
+        .profile-display { font-weight: 700; font-size: 16px; color: #1e293b; margin-bottom: 8px; }
+        .address-display { background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #f1f5f9; white-space: pre-line; line-height: 1.5; }
+        
+        .order-actions { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+        .btn-delete { background: none; color: var(--danger); font-size: 13px; width: auto; }
+        .action-right-btns { display: flex; gap: 8px; }
+        .btn-copy-line { background-color: var(--line-color); color: white; padding: 6px 12px; font-size: 13px; }
+        .btn-copy-line:hover { background-color: var(--line-hover); }
+        .btn-print-slip { background-color: #334155; color: white; padding: 6px 12px; font-size: 13px; }
+
+        /* แผงสรุป */
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+        .summary-box { background: #f8fafc; border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center; }
+        .summary-box .title { font-size: 13px; color: #64748b; }
+        .summary-box .value { font-size: 18px; font-weight: 700; }
+
+        .tab-nav{display:flex;gap:10px;margin-bottom:20px}
+.tab-btn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;cursor:pointer;font-weight:700}
+.tab-btn.active{background:#1e56a0;color:#fff}
+.tab-content.hidden-tab{display:none}
+.filter-bar{display:flex;gap:10px;margin-bottom:15px}
+
+#filterDate{
+    min-height:44px;
+    font-size:16px;
+    color:#111827;
+    background:#fff;
+}
+.hidden { display: none; }
+        #printArea { display: none; }
+
+        /* 🖨️ CSS สำหรับการพิมพ์แบบฟอร์มใบแปะหน้ากล่อง ขนาดใหญ่ ชัดเจน ไม่ปนกับข้อมูลอื่น */
+        
+@media print {
+
+	@page{
+		size:A4;
+		margin:5mm;
+	}
+
+    html, body {
+        height: 100%;
+        overflow: hidden;
+        page-break-inside: avoid;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #printArea,
+    #printArea * {
+        visibility: visible;
+    }
+
+	#printArea{
+		display:block !important;
+		position:absolute; /* เปลี่ยนจาก fixed */
+		left:0;
+		top:0;
+		width:100%;
+		min-height:100%;
+		padding:5px 10px;
+		background:#fff !important;
+		color:#000;
+
+		overflow:visible !important; /* เปลี่ยนจาก hidden */
+		height:auto !important; /* ห้ามใช้ 100vh */
+	}
+
+	.print-paper{
+		position:relative;
+		width:100%;
+		height:auto;
+		min-height:260mm;
+
+		overflow:hidden;
+		box-sizing:border-box;
+
+		padding-bottom:20px; /* ลดลง */
+	}
+
+	.print-paid-wrap{
+		position:absolute;
+		bottom:0mm; /* ล็อกตำแหน่งจริง */
+		left:50%;
+		transform:translateX(-50%);
+		z-index:999;
+	}
+		
+
+    
+
+    .print-main-title{
+        font-size:28px;
+        font-weight:700;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:8px;
+    }
+
+    .print-divider{
+        border-bottom:4px solid #000;
+        margin-bottom:8px;
+        width:78%;
+    }
+
+    .print-address-box{
+        border:3px dashed #000;
+        border-radius:18px;
+        padding:12px 16px; /* เดิม 18px 20px */
+        font-size:15px;
+        line-height:1.4;
+        white-space:pre-line;
+        margin-bottom:8px;
+        width:50%;
+    }
+
+    .print-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:4px;
+        margin-bottom:4px;
+        width:78%;
+    }
+
+    .print-card{
+        padding:8px 14px;
+        min-height:48px;
+        display:flex;
+        align-items:center;
+        gap:8px;
+		width:550px;
+        background:#fff !important;
+    }
+
+    .print-card-label{
+        font-size:28px;
+        font-weight:700;
+    }
+
+    .print-amount-box{
+        padding:8px 14px;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        min-height:56px;
+        background:#fff !important;
+    }
+
+    
+.print-amount-text{
+    font-size:16px;
+     margin-top:0;
+    font-weight:600;
+    color:#666;
+	width:300px;
+	line-height:1.2;
+    letter-spacing:.5px;
+}
+
+
+.print-amount{
+        font-size:42px;
+        font-weight:700;
+    }
+
+    
+.print-paid {
+    border: 6px solid #16a34a;
+    color: #16a34a;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-size: 84px;
+    font-weight: 900;
+    display: inline-block;
+    letter-spacing: 1px;
+
+    /* แก้ไขตรงนี้: โปร่งใสเคลียร์ 100% */
+    background: transparent; 
+}
+
+
+    .print-order-box{
+        padding:8px 14px;
+        display:flex;
+        align-items:center;
+        gap:12px;
+        min-height:auto;
+        font-size:28px;
+        margin-top:2px;
+        width:78%;
+		line-height:1.1;
+        background:#fff !important;
+    }
+
+    .icon-circle{
+        width:46px;
+        height:46px;
+        border-radius:50%;
+        border:1px solid #ddd;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+        font-weight:700;
+    }
+
+}
+
+#printArea p,
+#printArea h1,
+#printArea h2,
+#printArea h3,
+#printArea h4,
+#printArea h5,
+#printArea h6{
+    margin:0;
+}
+
+.top-row{
+    position:relative;
+    width:100%;
+    min-height:60px;
+}
+
+/* ซ้าย */
+.badge-group{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+	white-space:nowrap;
+}
+
+/* ขวา */
+.amount-box{
+    position:absolute;
+    top:0;
+    right:0;
+
+    text-align:right;
+    white-space:nowrap;
+}
+
+.amount-price{
+    font-size:18px;
+    font-weight:700;
+    color:var(--primary);
+}
+    
+/* Mobile improvements */
+@media (max-width:768px){
+    body{padding:10px;}
+    .api-config{flex-wrap:wrap;}
+    .app-container{display:block !important;}
+    .card{padding:16px;margin-bottom:12px;}
+    .form-row{grid-template-columns:1fr !important;}
+    .summary-grid{grid-template-columns:1fr 1fr !important;}
+    .order-body-grid{grid-template-columns:1fr !important;}
+    .order-actions{flex-direction:column;gap:10px;}
+    .action-right-btns{width:100%;}
+    .action-right-btns button{flex:1;}
+    .tab-nav{display:flex;gap:8px;position:sticky;top:0;background:#f4f7fa;padding-bottom:8px;z-index:10;}
+    .tab-btn{padding:14px 10px;font-size:14px;}
+    .filter-bar{
+        flex-direction:row;
+        align-items:center;
+    }
+
+    .filter-bar input,
+    .filter-bar select,
+    .filter-bar button{
+        flex:1;
+        min-width:0;
+    }
+
+    .order-list{max-height:none;}
+}
+
+
+.tracking-display{
+    margin-top:-20px;
+    padding:40px 14px;
+    color:#000;
+    border-radius:10px;
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-align:center;
+}
+
+@media (max-width:768px){
+    .tracking-display{
+        font-size:26px;
+        padding:20px;
+        border-radius:12px;
+    }
+}
+
+
+/* EDIT MODAL */
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:15px;
+}
+
+.modal-box{
+    background:#fff;
+    width:100%;
+    max-width:700px;
+    border-radius:18px;
+    padding:22px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-close{
+    background:#ef4444;
+    color:#fff;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.btn-edit{
+    background:#f59e0b;
+    color:#fff;
+    padding:6px 12px;
+    font-size:13px;
+}
+
+.btn-save-edit{
+    background:#1e56a0;
+    color:#fff;
+}
+
+
+/* Prevent overflow on mobile */
+@media (max-width:768px){
+
+    body,
+    .card,
+    .order-item,
+    .order-body-grid,
+    .address-display,
+    .profile-display,
+    .tracking-display,
+    .text-muted,
+    button,
+    input,
+    textarea,
+    select{
+        min-width:0;
+        overflow-wrap:anywhere;
+        word-break:break-word;
+    }
+
+    .order-item{
+        overflow:hidden;
+    }
+
+    .address-display,
+    .profile-display,
+    .tracking-display{
+        white-space:pre-wrap;
+    }
+
+    .action-right-btns{
+        flex-wrap:wrap;
+    }
+
+    .action-right-btns button{
+        min-width:0;
+    }
+
+    .tracking-display{
+        font-size:20px;
+        line-height:1.4;
+    }
+}
+
+
+.filter-chip{
+    border:none;
+    border-radius:999px;
+    padding:8px 14px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:700;
+    margin:4px;
+}
+.filter-chip.active{
+    outline:3px solid #111827;
+    transform:scale(1.03);
+}
+.filter-transfer{background:#dcfce7;color:#15803d;}
+.filter-cod{background:#ffeeeb;color:#e74c3c;}
+.filter-pending{background:#fef08a;color:#854d0e;}
+.filter-follow{background:#dbeafe;color:#1d4ed8;}
+.filter-booking{background:#fed7aa;color:#ea580c;}
+.filter-line{background:#e6f9ed;color:#15803d;}
+.filter-fb{background:#e0f2fe;color:#0369a1;}
+.filter-tel{background:#fef3c7;color:#b45309;}
+
+
+.scroll-bottom-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(4px);
+    color:#fff;
+    font-size:24px;
+    font-weight:700;
+    cursor:pointer;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    transition:.2s;
+}
+.scroll-bottom-btn:hover{
+    background:rgba(0,0,0,.75);
+}
+.scroll-bottom-btn.show{
+    display:flex;
+}
+
+</style>
+</head>
+<body>
+
+
+<div class="api-config">
+
+    <strong>🔑 ตั้งค่าระบบ:</strong>
+
+    <input
+        type="text"
+        id="apiKeyInput"
+        placeholder="กรอก Gemini API Key..."
+        style="flex:1; padding: 6px 12px;"
+        oninput="hideSaveStatus()"
+    >
+
+    <button
+        onclick="saveApiKey()"
+        style="
+        padding: 6px 15px;
+        font-size: 14px;
+        background:#1e56a0;
+        color:white;
+        flex:none;
+        width:auto;
+        ">
+        บันทึกคีย์
+    </button>
+
+    <div id="saveStatus"
+    style="
+    display:none;
+    background:#dcfce7;
+    color:#15803d;
+    padding:8px 14px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:700;
+    white-space:nowrap;
+    align-items:center;
+    gap:6px;
+    ">
+        ✅ บันทึกแล้ว
+    </div>
+
+</div>
+
+<div class="app-container">
+
+    
+    <div class="tab-nav"><button class="tab-btn active" onclick="showTab('addTab',this)">➕ เพิ่มรายการออเดอร์</button><button class="tab-btn" onclick="showTab('listTab',this)">📦 รายการสั่งซื้อ</button></div><div id="addTab" class="tab-content"><div class="card"><div class="card-title">🔵 เพิ่มรายการออเดอร์ใหม่</div>
+        
+        <form id="orderForm" onsubmit="event.preventDefault(); saveOrder();">
+            <div class="form-group">
+                <label>1. แหล่งที่มาของออเดอร์ <span>*</span></label>
+                <div class="form-row">
+                    <select id="sourceType" onchange="handleSourceChange()" required>
+                        <option value="">-- เลือกแหล่งที่มา --</option>
+                        <option value="LINE">LINE</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Telephone">โทรศัพท์</option>
+                    </select>
+                    
+                    <select id="fbPageSelect" class="hidden">
+                        <option value="fogeasy">เพจ fogeasy</option>
+                        <option value="ชั่วการช่าง">เพจ ชั่วการช่าง</option>
+                    </select>
+                    
+                    <input type="text" id="sourcePhoneInput" class="hidden" placeholder="กรอกเบอร์โทรศัพท์ลูกค้า...">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>2. แนบไฟล์ภาพสลิป/แคปหน้าจอเพื่อสแกน</label>
+                <div class="upload-zone">
+                    <div class="ocr-badge">✨ Gemini AI 1.5</div>
+                    <div class="upload-icon">📤</div>
+                    <p style="font-size: 13px; font-weight: 600; color: #475569;">คลิกเพื่อเลือกภาพแชท/ที่อยู่ เพื่อสแกนดึงข้อมูล</p>
+                    <input type="file" id="imageInput" accept="image/*" onchange="processImageWithGemini()">
+                </div>
+                <div class="loading-overlay" id="loadingOverlay">⏳ Gemini AI กำลังวิเคราะห์รูปภาพและแยกที่อยู่ กรุณารอสักครู่...</div>
+            </div>
+
+            <div class="form-group">
+                <label>3. ชื่อโปรไฟล์ LINE หรือ Facebook <span>*</span></label>
+                <input type="text" id="profileName" placeholder="ระบบจะดึงชื่อด้านบนสุดมาใส่อัตโนมัติ" required>
+            </div>
+
+            <div class="form-group">
+                <label>4. ชื่อผู้รับสินค้า และที่อยู่ <span>*</span></label>
+                <textarea id="shippingAddress" rows="6" placeholder="ชื่อ นามสกุล&#10;&#10;ที่อยู่จัดส่ง...&#10;&#10;โทร: 08X-XXXXXXX" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>5. ประเภทชำระ <span>*</span></label>
+                    <select id="paymentType" required>
+                        <option value="โอนแล้ว">โอนแล้ว</option>
+                        <option value="cod">cod เก็บเงินปลายทาง</option>
+                        <option value="รอโอน">รอโอน</option>
+                        <option value="ส่งตาม">ส่งตาม</option>
+                        <option value="จอง">จอง</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>6. จำนวนเงิน (บาท) <span>*</span></label>
+                    <input type="number" id="amount" step="1" placeholder="0" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>7. รายการสินค้าที่สั่งซื้อ / หมายเหตุ</label>
+                <textarea id="orderRemarks" rows="2" placeholder="ลูกค้าสั่ง Order อะไรมาบ้าง..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>8. Tracking Number</label>
+                <input type="text" id="trackingNumber" placeholder="กรอกเลขพัสดุ / Tracking Number">
+            </div>
+            <div class="form-group">
+                <label>9. วันเวลาทำรายการ (ประเทศไทย)</label>
+                <input type="datetime-local" id="orderDateTime">
+            </div>
+
+
+
+            <div class="btn-group">
+                <button type="button" class="btn-reset" onclick="resetForm()">ล้างฟอร์ม</button>
+                <button type="submit" class="btn-submit">💾 บันทึกรายการ</button>
+            </div>
+        </form></div></div><div id="listTab" class="tab-content hidden-tab"><div class="card">
+        <div class="filter-bar">
+<select id="dateFilterMode" onchange="toggleDateFilterMode();renderOrders()" style="max-width:140px;">
+<option value="day">รายวัน</option>
+<option value="month">รายเดือน</option>
+</select>
+<input type="date" id="filterDate" onchange="renderOrders()">
+<input type="month" id="filterMonth" onchange="renderOrders()" style="display:none;">
+<select id="sortOrder" onchange="renderOrders()" style="max-width:220px;">
+<option value="desc">🕒 เรียงวันเวลามาก → น้อย</option>
+<option value="asc">🕒 เรียงวันเวลาน้อย → มาก</option>
+</select>
+</div>
+<div class="filter-bar">
+<input type="text" id="searchText" placeholder="ค้นหาโปรไฟล์/ที่อยู่" oninput="renderOrders()">
+<button type="button" onclick="openFilterModal()">🔍 ฟิลเตอร์</button>
+</div>
+<div class="header-right">
+            <div class="card-title">📦 รายการสั่งซื้อและสรุปยอดของวัน</div>
+        </div>
+
+        <div class="order-list" id="orderListArea">
+            </div>
+
+        <div style="margin-top: 20px; border-top: 2px dashed var(--border-color); padding-top: 15px;">
+            <div style="font-weight: 700; font-size: 14px; color: #4a5568; margin-bottom: 8px;">สรุปรายการตามวันที่/การค้นหาที่เลือก</div>
+            <div class="summary-grid"> 
+                <div class="summary-box"><div class="title">รวมทั้งหมด</div><div class="value" id="summaryCount">0 รายการ</div></div>
+                <div class="summary-box"><div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+					<div class="title">โอนเงิน</div>
+					<div class="title" id="transferCounttext"></div>
+				</div><div class="value" style="color: #27ae60;" id="summaryTransfer">0 ฿</div></div>
+                <div class="summary-box"><div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+					<div class="title">COD</div>
+					<div class="title" id="codCounttext"></div>
+				</div><div class="value" style="color: #e67e22;" id="summaryCod">0 ฿</div></div>
+                <div class="summary-box"><div class="title">ยอดรวม</div><div class="value" style="color: #1e56a0;" id="summaryTotal">0 ฿</div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin:15px 0;display:flex;gap:10px;">
+<button type="button" onclick="exportOrders()">📥 Backup</button>
+<button type="button" onclick="document.getElementById('importFile').click()">📤 Restore</button>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importOrders(event)">
+</div>
+
+
+<div id="printArea">
+    <div class="print-paper">
+
+        <div class="print-main-title">
+            📦 ผู้รับ
+        </div>
+
+        <div class="print-divider"></div>
+
+        <div class="print-address-box" id="pAddress"></div>
+
+        <div class="print-grid">
+            <div class="print-card">
+                <div class="icon-circle">💬</div>
+                <div class="print-card-label" id="pSource"></div>
+            </div>
+        </div>
+		<div class="print-grid">
+			<div class="print-card">
+                <div class="icon-circle">👤</div>
+                <div class="print-card-label" id="pProfile"></div>
+            </div> 
+		</div>
+        <div class="print-grid">
+            <div class="print-amount-box">
+                <div class="icon-circle">฿</div>
+                
+			<div>
+				<div class="print-amount" id="pAmount"></div>
+				<div class="print-amount-text" id="pAmountText"></div>
+			</div>
+
+            </div>
+
+            
+        </div>
+
+        <div class="print-order-box">
+            <div class="icon-circle">📄</div>
+            <div id="pOrder"></div>
+        </div>
+		<div class="print-paid-wrap">
+			<div class="print-paid" id="pPay"></div>
+		</div>
+
+    </div>
+</div>
+
+
+
+
+<div class="modal-overlay" id="filterModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2>🔍 ฟิลเตอร์เพิ่มเติม</h2>
+            <button class="modal-close" onclick="closeFilterModal()">✕</button>
+        </div>
+
+        
+<h3>ประเภทชำระ</h3>
+<button type="button" class="filter-chip filter-transfer filter-pay-btn" data-value="โอนแล้ว">โอนแล้ว</button>
+<button type="button" class="filter-chip filter-cod filter-pay-btn" data-value="cod">COD</button>
+<button type="button" class="filter-chip filter-pending filter-pay-btn" data-value="รอโอน">รอโอน</button>
+<button type="button" class="filter-chip filter-follow filter-pay-btn" data-value="ส่งตาม">ส่งตาม</button>
+<button type="button" class="filter-chip filter-booking filter-pay-btn" data-value="จอง">จอง</button>
+
+<hr style="margin:15px 0;">
+
+<h3>แหล่งที่มา</h3>
+<button type="button" class="filter-chip filter-line filter-source-btn" data-value="LINE">LINE</button>
+<button type="button" class="filter-chip filter-fb filter-source-btn" data-value="Facebook">Facebook</button>
+<button type="button" class="filter-chip filter-tel filter-source-btn" data-value="Telephone">โทรศัพท์</button>
+
+<hr style="margin:15px 0;">
+
+<h3>Tracking</h3>
+<button type="button" class="filter-chip" id="filterNoTrackingBtn">ไม่มี Tracking</button>
+
+<hr style="margin:15px 0;">
+
+<h3>การพิมพ์</h3>
+<button type="button" class="filter-chip" id="filterNeverPrintBtn">ยังไม่เคย Print</button>
+
+<div class="btn-group">
+
+            <button type="button" class="btn-reset" onclick="clearFilters()">ล้างฟิลเตอร์</button>
+            <button type="button" class="btn-save-edit" onclick="applyFilters()">ใช้งาน</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>✏️ แก้ไขข้อมูลออเดอร์</h2>
+            <button class="modal-close" onclick="closeEditModal()">✕</button>
+        </div>
+
+        <input type="hidden" id="editOrderId">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>แหล่งที่มา</label>
+                <select id="editSource" onchange="handleEditSourceChange()">
+                    <option value="LINE">LINE</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Telephone">โทรศัพท์</option>
+                </select>
+
+                <select id="editFbPageSelect" class="hidden" style="margin-top:10px;">
+                    <option value="fogeasy">เพจ fogeasy</option>
+                    <option value="ชั่วการช่าง">เพจ ชั่วการช่าง</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>ประเภทชำระ</label>
+                <select id="editPayType">
+                    <option value="โอนแล้ว">โอนแล้ว</option>
+                    <option value="cod">cod เก็บเงินปลายทาง</option>
+                    <option value="รอโอน">รอโอน</option>
+                    <option value="ส่งตาม">ส่งตาม</option>
+                    <option value="จอง">จอง</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>ชื่อโปรไฟล์</label>
+            <input type="text" id="editProfile">
+        </div>
+
+        <div class="form-group">
+            <label>ที่อยู่</label>
+            <textarea id="editAddress" rows="5"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>จำนวนเงิน</label>
+                <input type="number" id="editAmount">
+            </div>
+
+            <div class="form-group">
+                <label>Tracking</label>
+                <input type="text" id="editTracking">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>รายการสินค้า / หมายเหตุ</label>
+            <textarea id="editRemarks" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>วันเวลาทำรายการ</label>
+            <input type="datetime-local" id="editDateTime">
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn-reset" onclick="closeEditModal()">ยกเลิก</button>
+            <button type="button" class="btn-save-edit" onclick="saveEditedOrder()">💾 บันทึกการแก้ไข</button>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    let ordersDatabase = [];
+
+let activeFilters = {
+    payTypes: [],
+    sources: [],
+    noTracking: false,
+    neverPrint: false
+};
+
+function getThailandDateString(){
+    return new Intl.DateTimeFormat('en-CA',{
+        timeZone:'Asia/Bangkok',
+        year:'numeric',
+        month:'2-digit',
+        day:'2-digit'
+    }).format(new Date());
+}
+
+function getThailandDateTimeLocal(){
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('sv-SE',{
+        timeZone:'Asia/Bangkok',
+        year:'numeric',
+        month:'2-digit',
+        day:'2-digit',
+        hour:'2-digit',
+        minute:'2-digit',
+        second:'2-digit',
+        hour12:false
+    }).format(now);
+    return parts.replace(' ','T').slice(0,16);
+}
+
+
+    
+function showTab(tabId, btn){
+
+    document.querySelectorAll('.tab-content').forEach(t=>{
+        t.classList.add('hidden-tab');
+    });
+
+    document.getElementById(tabId)
+        .classList.remove('hidden-tab');
+
+    document.querySelectorAll('.tab-btn').forEach(b=>{
+        b.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+
+    // จำแทบล่าสุด
+    localStorage.setItem('activeTab', tabId);
+}
+
+
+function showToast(message){
+
+    const toast = document.getElementById('toast');
+
+    toast.innerText = message;
+
+    toast.style.display = 'block';
+    toast.style.opacity = '1';
+
+    setTimeout(()=>{
+
+        toast.style.opacity = '0';
+
+        setTimeout(()=>{
+            toast.style.display = 'none';
+        },300);
+
+    },2200);
+}
+
+function saveOrdersToStorage() {
+        localStorage.setItem('ordersDatabase', JSON.stringify(ordersDatabase));
+    }
+
+    // โหลด API Key ที่เคยบันทึกไว้ในเครื่องขึ้นมาทำงาน
+    window.onload = function() {
+
+        // โหลด API KEY
+        const savedKey = localStorage.getItem('gemini_api_key');
+
+        if (savedKey) {
+            document.getElementById('apiKeyInput').value = savedKey;
+        }
+
+        
+        const isoLocal = getThailandDateTimeLocal();
+
+        const orderDateTime = document.getElementById('orderDateTime');
+
+        if(orderDateTime){
+            orderDateTime.value = isoLocal;
+        }
+
+        // โหลด orders
+        const savedOrders = localStorage.getItem('ordersDatabase');
+
+        if (savedOrders) {
+            ordersDatabase = JSON.parse(savedOrders);
+        }
+
+        // โหลดแทบล่าสุด
+        const activeTab = localStorage.getItem('activeTab');
+
+        const tabButtons = document.querySelectorAll('.tab-btn');
+
+        if(activeTab){
+
+            document.querySelectorAll('.tab-content')
+                .forEach(t=>t.classList.add('hidden-tab'));
+
+            document.getElementById(activeTab)
+                ?.classList.remove('hidden-tab');
+
+            tabButtons.forEach(btn=>{
+                btn.classList.remove('active');
+            });
+
+            if(activeTab === 'addTab'){
+                tabButtons[0].classList.add('active');
+            }else{
+                tabButtons[1].classList.add('active');
+            }
+
+        }
+
+        // default = ไม่เลือกวัน เพื่อแสดงทุกวัน
+        const filterDate = document.getElementById('filterDate');
+
+        if(filterDate){
+
+			const thailandNow = new Date(
+				new Date().toLocaleString('en-US', {
+					timeZone:'Asia/Bangkok'
+				})
+			);
+
+			filterDate.value = getThailandDateString();
+		}
+
+        const sortOrder = document.getElementById('sortOrder');
+
+        if(sortOrder){
+            sortOrder.value = 'desc';
+        }
+
+        renderOrders();
+    }
+
+    
+function hideSaveStatus(){
+
+    document.getElementById('saveStatus')
+        .style.display = 'none';
+}
+
+function saveApiKey() {
+
+    const key = document.getElementById('apiKeyInput')
+        .value.trim();
+
+    localStorage.setItem('gemini_api_key', key);
+
+    const saveStatus = document.getElementById('saveStatus');
+
+    saveStatus.style.display = 'flex';
+}
+
+    function handleSourceChange() {
+        const type = document.getElementById('sourceType').value;
+        const fbSelect = document.getElementById('fbPageSelect');
+        const phoneInput = document.getElementById('sourcePhoneInput');
+
+        fbSelect.classList.add('hidden'); phoneInput.classList.add('hidden');
+        fbSelect.removeAttribute('required'); phoneInput.removeAttribute('required');
+
+        if (type === 'Facebook') { fbSelect.classList.remove('hidden'); fbSelect.setAttribute('required', 'required'); }
+        if (type === 'Telephone') { phoneInput.classList.remove('hidden'); phoneInput.setAttribute('required', 'required'); }
+    }
+
+    // 🧠 ฟังก์ชันสแกนรูปภาพด้วย AI Gemini 1.5 Flash API จริง
+    async function processImageWithGemini() {
+        const apiKey = localStorage.getItem('gemini_api_key');
+        if (!apiKey) {
+            alert("⚠️ กรุณากรอกและบันทึก Gemini API Key ด้านบนก่อนทำการใช้งานฟังก์ชันสแกนด้วย AI ครับ");
+            return;
+        }
+
+        const fileInput = document.getElementById('imageInput');
+        if (fileInput.files.length === 0) return;
+
+        const file = fileInput.files[0];
+        document.getElementById('loadingOverlay').style.display = 'block';
+
+        try {
+            // แปลงรูปภาพเป็น Base64 Data เพื่อส่งไปให้ API
+            const base64Data = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.readAsDataURL(file);
+            });
+
+            // ตั้งคำสั่ง Prompt ควบคุมให้ AI ฉลาด คัดแยก และแปลงค่าข้อมูลส่งกลับมาเป็นรูปแบบโครงสร้าง JSON
+            const promptText = `
+                วิเคราะห์รูปภาพใบสั่งซื้อ/สลิป/แชทจัดส่งสินค้าภาษาไทยนี้
+
+                ให้ตรวจสอบแหล่งที่มาของภาพก่อน โดยจำแนกได้เพียง:
+                1. LINE
+                2. Messenger ชั่วการช่าง
+                3. Messenger Fogeasy
+
+                ใช้ Feature ต่อไปนี้เป็นหลัก (ไม่จำเป็นต้องครบทุกข้อ)
+
+                LINE:
+                - Bubble สีเขียว
+
+                Messenger ชั่วการช่าง:
+                - Bubble สีน้ำเงิน
+                - Home Icon
+                - Info Icon (i)
+                - Toolbar ปกติ (กล้อง, รูปภาพ, ไมค์, กระเป๋า)
+
+                Messenger Fogeasy:
+                - Bubble สีน้ำเงิน
+                - B Icon
+                - เมนู 3 จุด
+				- Toolbar ปกติ (กล้อง, รูปภาพ, ไมค์, ฟองคำพูด)
+
+                สรุปผลออกมาเป็น JSON Object เท่านั้น ห้ามเขียนคำอธิบายเพิ่มเติม
+
+                {
+                    "sourceType":"LINE หรือ Facebook",
+                    "fbPage":"ชั่วการช่าง หรือ fogeasy หรือเว้นว่าง",
+                    "profileName": "ค้นหาชื่อชื่อโปรไฟล์ของแอคเคาท์ LINE หรือ Facebook ด้านบนสุดของแชท หรือชื่อตัวใหญ่ๆ หนาๆ เด่นๆ ด้านบนภาพมาใส่",
+                    "recipientName": "ชื่อและนามสกุลจริงของผู้รับสินค้า",
+                    "cleanAddress": "ที่อยู่ในการจัดส่งทั้งหมด (ห้ามนำชื่อผู้รับและเบอร์โทรศัพท์มารวมในช่องนี้)",
+                    "phoneNumber": "เบอร์โทรศัพท์ติดต่อ คัดกรองตัวเลขความยาว 9-10 หลักมาให้เรียบร้อย",
+                    "totalAmount": "ยอดจำนวนเงินเป็นตัวเลขทศนิยม (ถ้ามี)",
+                    "payMethod": "ระบุเป็น โอนแล้ว หรือ cod หรือ รอโอน",
+                    "trackingNumber": "เลขพัสดุหรือ Tracking Number ที่พบในภาพ"
+                }
+            `
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: file.type, data: base64Data } }
+                        ]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            let aiTextResult = data.candidates[0].content.parts[0].text.trim();
+            
+            // ลบสัญญลักษณ์มาร์กดาวน์กรณี AI เขียนแถมมาเกินคำสั่ง
+            aiTextResult = aiTextResult.replace(/```json/g, "").replace(/```/g, "").trim();
+            const resultJson = JSON.parse(aiTextResult);
+
+if(resultJson.sourceType){
+    const sourceEl = document.getElementById('sourceType');
+    if(sourceEl){
+        sourceEl.value = resultJson.sourceType;
+        if(typeof handleSourceChange === 'function'){
+            handleSourceChange();
+        }
+    }
+
+    if(resultJson.sourceType === 'Facebook' && resultJson.fbPage){
+        const fbEl = document.getElementById('fbPageSelect');
+        if(fbEl){
+            fbEl.value = resultJson.fbPage;
+        }
+    }
+}
+
+            // 🎯 นำข้อมูลที่ AI ตรวจจับได้จริงมาหยอดลงช่องตารางต่างๆ
+            document.getElementById('profileName').value = resultJson.profileName || "";
+            document.getElementById('amount').value =
+Math.round(resultJson.totalAmount || 0);
+            if(resultJson.payMethod) { document.getElementById('paymentType').value = resultJson.payMethod; }
+
+            // 📐 จัดเรียงตามเงื่อนไข: ชื่อ นามสกุล เว้นบรรทัดลงมานิดหน่อยเพื่อใส่ที่อยู่ และเบอร์โทรให้ใส่ คำว่าโทร นำหน้า
+            const formattedAddress = `${resultJson.recipientName || ""}\n\nที่อยู่: ${resultJson.cleanAddress || ""}\n\nโทร: ${resultJson.phoneNumber || ""}`;
+            document.getElementById('shippingAddress').value = formattedAddress;
+            document.getElementById('trackingNumber').value = resultJson.trackingNumber || '';
+
+        } catch (error) {
+            console.error(error);
+            alert("เกิดข้อผิดพลาดในการเรียก Gemini API กรุณาตรวจความถูกต้องของคีย์ หรือรูปภาพที่คุณอัปโหลดเข้าไปอีกครั้งครับ");
+        } finally {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+    }
+
+    function saveOrder() {
+        const source = document.getElementById('sourceType').value;
+        let subSource = "";
+        if(source === 'Facebook') subSource = ` (${document.getElementById('fbPageSelect').value})`;
+        if(source === 'Telephone') subSource = ` (เบอร์: ${document.getElementById('sourcePhoneInput').value})`;
+
+        const profile = document.getElementById('profileName').value;
+        const address = document.getElementById('shippingAddress').value;
+        const payType = document.getElementById('paymentType').value;
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const remarks = document.getElementById('orderRemarks').value || "ไม่ระบุ";
+        const trackingNumber = document.getElementById('trackingNumber').value || '-';
+        
+        const id = 'order-' + Date.now();
+
+        let selectedDateTime = '';
+
+        const dateInput = document.getElementById('orderDateTime');
+
+        if(dateInput){
+            selectedDateTime = dateInput.value;
+        }
+
+        let now;
+
+        if(selectedDateTime && !isNaN(new Date(selectedDateTime).getTime())){
+            now = new Date(selectedDateTime);
+        }else{
+            now = new Date();
+        }
+
+        const localNow = new Date(
+            now.getTime() - now.getTimezoneOffset() * 60000
+        );
+
+        const orderDate = selectedDateTime ? selectedDateTime.slice(0,10) : getThailandDateString();
+
+        const timeStr = now.toLocaleTimeString('th-TH', {
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit'
+        });
+
+        const fullDateTime = selectedDateTime ? selectedDateTime : getThailandDateTimeLocal();
+
+        ordersDatabase.push({
+            id,
+            orderDate,
+            fullDateTime,
+            source,
+            subSource,
+            profile,
+            address,
+            payType,
+            amount,
+            remarks,
+            trackingNumber,
+            time: timeStr,
+            printcount: 0
+        });
+
+        saveOrdersToStorage();
+        saveOrdersToStorage();
+        // default = ไม่เลือกวัน เพื่อแสดงทุกวัน
+        const filterDate = document.getElementById('filterDate');
+
+		if(filterDate){
+
+			const thailandNow = new Date(
+				new Date().toLocaleString('en-US', {
+					timeZone:'Asia/Bangkok'
+				})
+			);
+
+			filterDate.value = getThailandDateString();
+		}
+
+        renderOrders();
+        resetForm();
+    }
+
+    
+function openFilterModal(){
+
+    document.querySelectorAll('.filter-pay-btn').forEach(btn=>{
+        btn.classList.toggle('active', activeFilters.payTypes.includes(btn.dataset.value));
+    });
+
+    document.querySelectorAll('.filter-source-btn').forEach(btn=>{
+        btn.classList.toggle('active', activeFilters.sources.includes(btn.dataset.value));
+    });
+
+    document.getElementById('filterNoTrackingBtn')
+        .classList.toggle('active', activeFilters.noTracking);
+
+    const np=document.getElementById('filterNeverPrintBtn');
+    if(np){
+        np.classList.toggle('active', activeFilters.neverPrint);
+    }
+
+    document.getElementById('filterModal').style.display='flex';
+}
+
+function closeFilterModal(){
+    document.getElementById('filterModal').style.display='none';
+}
+
+function applyFilters(){
+    activeFilters.payTypes=[...document.querySelectorAll('.filter-pay-btn.active')].map(el=>el.dataset.value);
+    activeFilters.sources=[...document.querySelectorAll('.filter-source-btn.active')].map(el=>el.dataset.value);
+    activeFilters.noTracking=document.getElementById('filterNoTrackingBtn').classList.contains('active');
+    activeFilters.neverPrint=document.getElementById('filterNeverPrintBtn').classList.contains('active');
+    closeFilterModal();
+    renderOrders();
+}
+
+function clearFilters(){
+    document.querySelectorAll('.filter-chip').forEach(el=>el.classList.remove('active'));
+    activeFilters={payTypes:[],sources:[],noTracking:false};
+    renderOrders();
+}
+
+
+
+document.addEventListener('click',function(e){
+
+    if(e.target.classList.contains('filter-pay-btn')){
+
+        const wasActive = e.target.classList.contains('active');
+
+        document.querySelectorAll('.filter-pay-btn').forEach(btn=>btn.classList.remove('active'));
+
+        if(!wasActive){
+            e.target.classList.add('active');
+        }
+    }
+
+    if(e.target.classList.contains('filter-source-btn')){
+
+        const wasActive = e.target.classList.contains('active');
+
+        document.querySelectorAll('.filter-source-btn').forEach(btn=>btn.classList.remove('active'));
+
+        if(!wasActive){
+            e.target.classList.add('active');
+        }
+    }
+
+    if(e.target.id==='filterNoTrackingBtn' || e.target.id==='filterNeverPrintBtn'){
+        e.target.classList.toggle('active');
+    }
+});
+
+
+function toggleDateFilterMode(){
+    const mode=document.getElementById('dateFilterMode')?.value||'day';
+    const d=document.getElementById('filterDate');
+    const m=document.getElementById('filterMonth');
+
+    if(mode==='month'){
+        if(d) d.style.display='none';
+        if(m) m.style.display='block';
+    }else{
+        if(d) d.style.display='block';
+        if(m) m.style.display='none';
+    }
+}
+
+function renderOrders() {
+        const listArea = document.getElementById('orderListArea');
+        listArea.innerHTML = "";
+        let totalTransfer = 0, totalCod = 0;
+        let transferCount = 0, codCount = 0;
+        const selectedDate=document.getElementById('filterDate')?.value||'';
+        const selectedMonth=document.getElementById('filterMonth')?.value||'';
+        const mode=document.getElementById('dateFilterMode')?.value||'day';
+        const keyword=(document.getElementById('searchText')?.value||'').toLowerCase();
+        let filteredOrders=ordersDatabase.filter(o=>{
+           let dateOk=true;
+
+           if(mode==='month'){
+               dateOk=!selectedMonth || (o.orderDate||'').startsWith(selectedMonth);
+           }else{
+               dateOk=!selectedDate || o.orderDate===selectedDate;
+           }
+           const text=(o.profile+' '+o.address).toLowerCase();
+           const keyOk=!keyword || text.includes(keyword);
+
+           const payOk=activeFilters.payTypes.length===0 || activeFilters.payTypes.includes(o.payType);
+           const sourceOk=activeFilters.sources.length===0 || activeFilters.sources.includes(o.source);
+           const trackingOk=!activeFilters.noTracking || !o.trackingNumber || o.trackingNumber==='-';
+           const printOk=!activeFilters.neverPrint || !o.printcount || o.printcount===0;
+
+           return dateOk && keyOk && payOk && sourceOk && trackingOk && printOk;
+        });
+
+        const sortOrder = document.getElementById('sortOrder')?.value || 'desc';
+
+        filteredOrders.sort((a,b)=>{
+
+            const dateA = new Date(a.fullDateTime || a.orderDate).getTime();
+            const dateB = new Date(b.fullDateTime || b.orderDate).getTime();
+
+            return sortOrder === 'asc'
+                ? dateA - dateB
+                : dateB - dateA;
+        });
+
+        filteredOrders.forEach((order, index) => {
+            let badgeClass = order.source === 'LINE' ? 'badge-line' : (order.source === 'Facebook' ? 'badge-fb' : 'badge-tel');
+            let payClass = 'badge-pay-cod';
+
+            if(order.payType === 'โอนแล้ว'){
+                payClass = 'badge-pay-transfer';
+            }
+            else if(order.payType === 'รอโอน'){
+                payClass = 'badge-pay-pending';
+            }
+            else if(order.payType === 'ส่งตาม'){
+                payClass = 'badge-pay-follow';
+            }
+            else if(order.payType === 'จอง'){
+                payClass = 'badge-pay-booking';
+            }
+            
+            if(order.payType === 'โอนแล้ว') {
+                totalTransfer += order.amount;
+                transferCount++;
+            } else {
+                totalCod += order.amount;
+                codCount++;
+            }
+
+            let safeAddress = order.address.replace(/'/g, "\\'").replace(/\n/g, "\\n");
+            let safeRemarks = order.remarks.replace(/'/g, "\\'").replace(/\n/g, "\\n");
+
+            listArea.innerHTML += `
+                <div class="order-item">
+                    <div class="order-header">
+					<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="order-badge-id">${index + 1}</span></div>
+                        <div class="text-muted" style="width: 80px;">
+${new Date((order.fullDateTime || order.orderDate).replace('Z','')).toLocaleDateString('th-TH')}
+</div>
+                    </div>
+                    <div class="order-body-grid">
+                        <div>
+                            <div class="text-muted">ชื่อโปรไฟล์:</div><div class="profile-display">${order.profile}</div>
+                            <div class="text-muted">ที่อยู่จัดส่ง:</div><div class="address-display">${order.address}</div>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
+<div><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+<div class="top-row">
+
+    <div class="badge-group">
+        <span class="badge ${badgeClass}">
+            ${order.source}${order.subSource}
+        </span>
+
+        <span class="badge ${payClass}">
+            ${
+    order.payType === 'cod'
+        ? 'COD ปลายทาง'
+    : order.payType === 'โอนแล้ว'
+        ? 'โอนเงินแล้ว'
+    : order.payType === 'รอโอน'
+        ? 'รอโอน'
+    : order.payType === 'ส่งตาม'
+        ? 'ส่งตาม'
+    : order.payType === 'จอง'
+        ? 'จอง'
+    : order.payType
+}
+        </span>
+    </div>
+
+    <div class="amount-box">
+        <div class="text-muted">ยอดเงิน</div>
+
+        <div class="amount-price">
+            ${Math.round(order.amount)} ฿
+        </div>
+    </div>
+
+</div>
+</div></div>
+                            <div class="text-muted" style="text-align:left;">Order: ${order.remarks}</div>
+                            <div class="tracking-display">📦 ${order.trackingNumber || '-'}</div>
+                        </div>
+                    </div>
+                    <div class="order-actions">
+                        <div class="action-right-btns" style="width:100%;display:flex;gap:8px;flex-wrap:wrap;">
+                            <button class="btn-edit"
+                            onclick="openEditModal('${order.id}')">
+                            ✏️ 
+                            </button>
+                            <button class="btn-copy-line" onclick="copyToLine('${order.profile}', '${safeAddress}', '${order.payType}', '${order.amount}', '${safeRemarks}', '${order.source}', '${order.trackingNumber || '-'}', '${order.fullDateTime || ''}')">LINE</button>
+                            <button class="btn-print-slip" onclick="printLabel('${order.id}')">
+🖨️ ${order.printcount > 0 ? order.printcount : ''}
+</button>
+                            <button class="btn-delete" onclick="deleteOrder('${order.id}')">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        document.getElementById('summaryCount').innerText = `${filteredOrders.length} รายการ`;
+		document.getElementById('transferCounttext').innerText = `(${transferCount})`;
+		document.getElementById('codCounttext').innerText = `(${codCount})`;
+        document.getElementById('summaryTransfer').innerText = `${Math.round(totalTransfer)} ฿`;
+        document.getElementById('summaryCod').innerText = `${Math.round(totalCod)} ฿`;
+        document.getElementById('summaryTotal').innerText =
+`${Math.round(totalTransfer + totalCod)} ฿`;
+    }
+
+    function deleteOrder(id) {
+        if(confirm("ต้องการลบรายการนี้ใช่ไหม?")) {
+            ordersDatabase = ordersDatabase.filter(item => item.id !== id);
+            saveOrdersToStorage();
+            saveOrdersToStorage();
+        renderOrders();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('orderForm').reset();
+        handleSourceChange();
+
+        const isoLocal = getThailandDateTimeLocal();
+
+        const orderDateTime = document.getElementById('orderDateTime');
+
+        if(orderDateTime){
+            orderDateTime.value = isoLocal;
+        }
+    }
+
+    
+
+
+function numberToThaiText(number) {
+
+    number = parseFloat(number).toFixed(2);
+
+    if (Number(number) === 0) {
+        return "ศูนย์บาท";
+    }
+
+    const txtNumArr = [
+        "ศูนย์","หนึ่ง","สอง","สาม","สี่",
+        "ห้า","หก","เจ็ด","แปด","เก้า"
+    ];
+
+    const txtDigitArr = [
+        "","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"
+    ];
+
+    function readNumber(numStr) {
+
+        let result = "";
+        let len = numStr.length;
+
+        for(let i=0; i<len; i++){
+
+            let n = parseInt(numStr.charAt(i));
+            let pos = len - i - 1;
+
+            if(n !== 0){
+
+                if(pos === 0 && n === 1 && len > 1){
+                    result += "เอ็ด";
+                }
+                else if(pos === 1 && n === 2){
+                    result += "ยี่";
+                }
+                else if(pos === 1 && n === 1){
+                    result += "";
+                }
+                else{
+                    result += txtNumArr[n];
+                }
+
+                result += txtDigitArr[pos];
+            }
+        }
+
+        return result;
+    }
+
+    let [integerPart, decimalPart] = number.split(".");
+
+    let bahtText = "";
+
+    // รองรับหลักล้าน
+    const millions = [];
+
+    while(integerPart.length > 6){
+        millions.unshift(integerPart.slice(-6));
+        integerPart = integerPart.slice(0, -6);
+    }
+
+    millions.unshift(integerPart);
+
+    millions.forEach((part, index) => {
+
+        if(part !== "000000"){
+
+            bahtText += readNumber(part);
+
+            if(index < millions.length - 1){
+                bahtText += "ล้าน";
+            }
+        }
+    });
+
+    bahtText += "บาท";
+
+    // สตางค์
+    if(decimalPart === "00"){
+        bahtText += "";
+    }else{
+        bahtText += readNumber(decimalPart) + "สตางค์";
+    }
+
+    return bahtText;
+}
+
+function printLabel(orderId) {
+
+    const order = ordersDatabase.find(o => o.id === orderId);
+
+    if(!order) return;
+
+    // เพิ่มจำนวนครั้งที่ปริ๊น
+    order.printcount = (order.printcount || 0) + 1;
+
+    saveOrdersToStorage();
+
+    renderOrders();
+
+    document.getElementById('pSource').innerText =
+        order.source + order.subSource;
+
+    document.getElementById('pProfile').innerText =
+        order.profile;
+
+    document.getElementById('pAddress').innerText =
+        order.address;
+
+    document.getElementById('pAmount').innerText =
+        Number(order.amount).toLocaleString('en-US') + ' บาท';
+
+    document.getElementById('pAmountText').innerText =
+        numberToThaiText(order.amount);
+
+    const payElement = document.getElementById('pPay');
+
+    if(order.payType === 'cod'){
+
+        payElement.innerText = 'COD';
+
+        payElement.style.borderColor = '#dc2626';
+        payElement.style.color = '#dc2626';
+
+    }else{
+
+        payElement.innerText = 'โอนแล้ว';
+
+        payElement.style.borderColor = '#16a34a';
+        payElement.style.color = '#16a34a';
+    }
+
+    document.getElementById('pOrder').innerText =
+        'Order: ' + order.remarks;
+
+    window.print();
+}
+
+
+
+    function copyToLine(profile, address, payType, amount, remarks, source, trackingNumber='-', fullDateTime='') {
+
+        let textFormat = `📦 ออเดอร์ [${source}]
+👤 โปรไฟล์: ${profile}
+📍 ข้อมูลที่อยู่จัดส่ง:
+${address}
+🗓️ วันเวลาทำรายการ: ${fullDateTime ? new Date(fullDateTime.replace('Z','')).toLocaleString('th-TH') : '-'}
+🛒 รายการ: ${remarks}\n📦 Tracking: ${trackingNumber}
+💰 ยอด: ${amount} บาท (${payType === 'cod' ? 'เก็บเงินปลายทาง' : 'โอนเงินเรียบร้อย'})`;
+
+        const encoded = encodeURIComponent(textFormat);
+
+        // มือถือ
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+
+            // เปิด LINE พร้อมข้อความทันที
+            window.location.href = `https://line.me/R/msg/text/?${encoded}`;
+
+        } else {
+
+            // Desktop
+            window.open(`https://line.me/R/msg/text/?${encoded}`, '_blank');
+
+        }
+
+        // คัดลอกสำรอง
+        if (navigator.clipboard) {
+
+            navigator.clipboard.writeText(textFormat)
+                .then(() => {
+                    showToast("📋 คัดลอกข้อความแล้ว");
+                })
+                .catch(() => {});
+
+        }
+    }
+
+function exportOrders() {
+    const data = JSON.stringify(ordersDatabase, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const thailandNow = new Date(
+        new Date().toLocaleString('en-US', {
+            timeZone:'Asia/Bangkok'
+        })
+    );
+
+    const exportDate = getThailandDateString();
+
+    a.download = 'orders-backup-' + exportDate + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+
+function importOrders(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // เก็บการอ้างอิงของ input element ไว้ก่อน
+    const fileInput = event.target; 
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+
+            // เช็กว่าเป็น array จริงไหม
+            if (!Array.isArray(importedData)) {
+                showToast('❌ ไฟล์ Backup ไม่ถูกต้อง');
+                return;
+            }
+
+            // อัปเดตข้อมูลใหม่
+            ordersDatabase = [...importedData];
+
+            // save localStorage
+            localStorage.setItem(
+                'ordersDatabase',
+                JSON.stringify(ordersDatabase)
+            );
+
+            // render ใหม่
+        renderOrders();
+
+            // success
+            showToast('✅ กู้คืนข้อมูลสำเร็จ');
+
+        } catch(err) {
+            console.error(err);
+            showToast('❌ ไฟล์ Backup ไม่ถูกต้อง');
+        }
+    };
+
+    reader.readAsText(file);
+
+    // ⭐ ย้ายมาไว้ตรงนี้ (นอก reader.onload) เพื่อรีเซ็ตค่าทันทีหลังจากเริ่มอ่านไฟล์
+    fileInput.value = ''; 
+}
+
+
+
+
+function handleEditSourceChange(){
+
+    const source = document.getElementById('editSource').value;
+
+    const fbSelect = document.getElementById('editFbPageSelect');
+
+    if(source === 'Facebook'){
+        fbSelect.classList.remove('hidden');
+    }else{
+        fbSelect.classList.add('hidden');
+    }
+}
+
+
+function openEditModal(id){
+
+    const order = ordersDatabase.find(o=>o.id===id);
+
+    if(!order) return;
+
+    document.getElementById('editOrderId').value = order.id;
+    document.getElementById('editSource').value = order.source;
+
+    const editFbPageSelect = document.getElementById('editFbPageSelect');
+
+    if(order.source === 'Facebook'){
+
+        editFbPageSelect.classList.remove('hidden');
+
+        if(order.subSource){
+            if(order.subSource.includes('ชั่วการช่าง')){
+                editFbPageSelect.value = 'ชั่วการช่าง';
+            }else{
+                editFbPageSelect.value = 'fogeasy';
+            }
+        }
+
+    }else{
+        editFbPageSelect.classList.add('hidden');
+    }
+    document.getElementById('editPayType').value = order.payType;
+    document.getElementById('editProfile').value = order.profile;
+    document.getElementById('editAddress').value = order.address;
+    document.getElementById('editAmount').value = order.amount;
+    document.getElementById('editTracking').value = order.trackingNumber || '';
+    document.getElementById('editRemarks').value = order.remarks || '';
+
+    const dt = order.fullDateTime
+        ? order.fullDateTime.slice(0,16)
+        : '';
+
+    document.getElementById('editDateTime').value = dt;
+
+    document.getElementById('editModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal(){
+    document.getElementById('editModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function saveEditedOrder(){
+
+    const id = document.getElementById('editOrderId').value;
+
+    const orderIndex = ordersDatabase.findIndex(o=>o.id===id);
+
+    if(orderIndex === -1) return;
+
+    const editDateTime = document.getElementById('editDateTime').value;
+
+    const dt = editDateTime
+        ? new Date(editDateTime)
+        : new Date();
+
+    let editSubSource = '';
+
+    if(document.getElementById('editSource').value === 'Facebook'){
+        editSubSource = ' (' + document.getElementById('editFbPageSelect').value + ')';
+    }
+
+    const localDate = new Date(
+        dt.getTime() - dt.getTimezoneOffset() * 60000
+    );
+
+    ordersDatabase[orderIndex] = {
+        ...ordersDatabase[orderIndex],
+
+        source: document.getElementById('editSource').value,
+        subSource: editSubSource,
+        payType: document.getElementById('editPayType').value,
+        profile: document.getElementById('editProfile').value,
+        address: document.getElementById('editAddress').value,
+        amount: parseFloat(document.getElementById('editAmount').value) || 0,
+        trackingNumber: document.getElementById('editTracking').value,
+        remarks: document.getElementById('editRemarks').value,
+
+        orderDate: editDateTime ? editDateTime.slice(0,10) : getThailandDateString(),
+
+        fullDateTime: editDateTime || getThailandDateTimeLocal(),
+
+        time: dt.toLocaleTimeString('th-TH', {
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit'
+        })
+    };
+
+    saveOrdersToStorage();
+
+    renderOrders();
+
+    closeEditModal();
+
+    alert('✅ แก้ไขข้อมูลเรียบร้อย');
+}
+
+
+function scrollToBottomPage(){
+    const isMobile = window.innerWidth <= 768;
+
+    if(isMobile){
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior:'smooth'
+        });
+    }else{
+        const list=document.querySelector('.order-list');
+        if(list){
+            list.scrollTo({
+                top:list.scrollHeight,
+                behavior:'smooth'
+            });
+        }
+    }
+}
+
+function updateScrollBottomButton(){
+    const btn=document.getElementById('scrollBottomBtn');
+    const list=document.querySelector('.order-list');
+
+    if(!btn) return;
+
+    const isMobile = window.innerWidth <= 768;
+
+    if(isMobile){
+        const canScroll = document.documentElement.scrollHeight > window.innerHeight + 20;
+        const isBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 20;
+
+        btn.classList.toggle('show', canScroll && !isBottom);
+    }else{
+        if(!list) return;
+
+        const canScroll = list.scrollHeight > list.clientHeight + 20;
+        const isBottom = list.scrollTop + list.clientHeight >= list.scrollHeight - 20;
+
+        btn.classList.toggle('show', canScroll && !isBottom);
+    }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+    const list=document.querySelector('.order-list');
+    if(list){
+        list.addEventListener('scroll',updateScrollBottomButton); window.addEventListener('scroll',updateScrollBottomButton);
+        setTimeout(updateScrollBottomButton,300);
+    }
+});
+
+
+function scrollToTopPage(){
+    const isMobile = window.innerWidth <= 768;
+
+    if(isMobile){
+        window.scrollTo({
+            top:0,
+            behavior:'smooth'
+        });
+    }else{
+        const list=document.querySelector('.order-list');
+        if(list){
+            list.scrollTo({
+                top:0,
+                behavior:'smooth'
+            });
+        }
+    }
+}
+
+const originalUpdateScrollBottomButton = updateScrollBottomButton;
+
+updateScrollBottomButton = function(){
+
+    originalUpdateScrollBottomButton();
+
+    const topBtn = document.getElementById('scrollTopBtn');
+    if(!topBtn) return;
+
+    const isMobile = window.innerWidth <= 768;
+
+    let showTop = false;
+
+    if(isMobile){
+        showTop = window.scrollY > 200;
+    }else{
+        const list=document.querySelector('.order-list');
+        if(list){
+            showTop = list.scrollTop > 100;
+        }
+    }
+
+    topBtn.classList.toggle('show', showTop);
+}
+
+</script>
+
+<button id="scrollBottomBtn" class="scroll-bottom-btn" onclick="scrollToBottomPage()">↓</button>
+<button id="scrollTopBtn" class="scroll-bottom-btn" onclick="scrollToTopPage()" style="bottom:84px;">↑</button>
+
+</body>
+</html>
