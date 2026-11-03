@@ -144,7 +144,7 @@
     <section id="page-fasting" class="page"><div class="page-intro"><h2>IF / Fasting</h2><p>ติดตามช่วงเวลาการอดอาหาร (Intermittent Fasting)</p></div><div class="fasting-card"><div class="eyebrow light">FASTING TIMER</div><div class="fasting-clock" id="fastClock">00:00:00</div><div id="fastStatus">ยังไม่ได้เริ่มจับเวลา</div><div class="fasting-controls"><select id="fastPlan"><option value="12">12 : 12</option><option value="14">14 : 10</option><option value="16" selected>16 : 8</option><option value="18">18 : 6</option><option value="20">20 : 4</option></select><button class="primary-btn" id="fastStart">เริ่มอดอาหาร</button><button class="secondary-btn" id="fastStop" disabled>จบช่วงอด</button></div></div><p class="muted tiny">ตัวจับเวลาเป็นเครื่องมือบันทึกพฤติกรรม ไม่ใช่คำแนะนำทางการแพทย์</p></section>
 
     <section id="page-library" class="page">
-      <div class="page-intro"><h2>คลังอาหาร</h2><p>จัดการเมนูอาหารโปรด สามารถแก้ไขทุกค่าในการ์ด Pop-up แล้วกดบันทึกได้ทันที</p></div>
+      <div class="page-intro"><h2>คลังอาหาร</h2><p>จัดการเมนูอาหารโปรด สามารถเพิ่มด้วย AI หรือเพิ่มเอง ระบุปริมาณและหน่วยได้</p></div>
       <div class="toolbar">
         <input id="librarySearch" placeholder="ค้นหาอาหาร...">
         <div style="display:flex;gap:8px;">
@@ -153,16 +153,26 @@
         </div>
       </div>
 
-      <!-- การ์ดกรอกเพิ่มอาหารเองแบบแก้ไขทุกค่าได้ทีเดียว -->
+      <!-- การ์ดเพิ่มอาหารเองในคลัง -->
       <article id="manualAddCard" class="panel" hidden style="margin-bottom:18px; border:2.5px solid var(--green);">
         <h3>+ เพิ่มอาหารใหม่ลงคลัง</h3>
         <label class="field-label">ชื่ออาหาร</label>
         <input id="manName" placeholder="เช่น ข้าวผัดอกไก่">
+        
         <div class="macro-form">
-          <label>แคลอรี (kcal)<input id="manCal" type="number" placeholder="350"></label>
-          <label>โปรตีน (g)<input id="manPro" type="number" step=".1" placeholder="30"></label>
-          <label>คาร์บ (g)<input id="manCarb" type="number" step=".1" placeholder="40"></label>
-          <label>ไขมัน (g)<input id="manFat" type="number" step=".1" placeholder="8"></label>
+          <label>ปริมาณ<input id="manAmount" type="number" min="0.1" step="any" value="1"></label>
+          <label>หน่วย
+            <select id="manUnit">
+              <option value="จาน">จาน</option><option value="ชาม">ชาม</option><option value="ถ้วย">ถ้วย</option><option value="ทัพพี">ทัพพี</option><option value="ทัพพีเล็ก">ทัพพีเล็ก</option><option value="กรัม">กรัม</option><option value="แก้ว">แก้ว</option><option value="ขวด">ขวด</option><option value="กระป๋อง">กระป๋อง</option><option value="ช้อนโต๊ะ">ช้อนโต๊ะ</option><option value="ช้อนชา">ช้อนชา</option><option value="ช้อนกินข้าว">ช้อนกินข้าว</option><option value="กระบวย">กระบวย</option><option value="กำมือ">กำมือ</option><option value="หยิบมือ">หยิบมือ</option><option value="เม็ด">เม็ด</option><option value="เมล็ด">เมล็ด</option><option value="ฟอง">ฟอง</option><option value="ชิ้น">ชิ้น</option><option value="แผ่น">แผ่น</option><option value="ลูก">ลูก</option><option value="ผล">ผล</option><option value="หัว">หัว</option><option value="กลีบ">กลีบ</option><option value="ฝัก">ฝัก</option><option value="ท่อน">ท่อน</option><option value="แท่ง">แท่ง</option><option value="สกู๊ป">สกู๊ป</option><option value="ซอง">ซอง</option><option value="ห่อ">ห่อ</option><option value="ถุง">ถุง</option><option value="มิลลิลิตร">มิลลิลิตร</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="macro-form">
+          <label>แคลอรี (kcal)<input id="manCal" type="number" min="0" placeholder="350"></label>
+          <label>โปรตีน (g)<input id="manPro" type="number" step=".1" min="0" placeholder="30"></label>
+          <label>คาร์บ (g)<input id="manCarb" type="number" step=".1" min="0" placeholder="40"></label>
+          <label>ไขมัน (g)<input id="manFat" type="number" step=".1" min="0" placeholder="8"></label>
         </div>
         <div style="display:flex; gap:10px; margin-top:14px;">
           <button class="primary-btn" id="saveManualAdd" style="flex:1;">บันทึกเข้าคลัง</button>
@@ -204,20 +214,37 @@
   </div>
 </div>
 
-<!-- 2. Modal Pop-up การ์ดแก้ไขอาหารในคลัง -->
+<!-- 2. Modal Pop-up การ์ดเพิ่ม/แก้ไขอาหารด้วย AI หรือแก้ไขเองในคลัง -->
 <div id="editLibraryModal" class="modal">
   <div class="modal-box">
-    <h3>แก้ไขข้อมูลอาหารในการ์ด</h3>
-    <p class="muted">ปรับแต่งคุณค่าทางโภชนาการแล้วกดบันทึกทีเดียว</p>
+    <h3 id="libModalTitle">แก้ไขข้อมูลอาหารในการ์ด</h3>
+    <p class="muted" id="libModalSubtitle">ปรับแต่งคุณค่าทางโภชนาการ ปริมาณ และหน่วย แล้วกดบันทึก</p>
     <input type="hidden" id="editLibId">
+    
     <label class="field-label">ชื่ออาหาร</label>
     <input id="editLibName" placeholder="ชื่ออาหาร">
+    
     <div class="macro-form">
+      <label>ปริมาณ<input id="editLibAmount" type="number" min="0.1" step="any" value="1"></label>
+      <label>หน่วย
+        <select id="editLibUnit">
+          <option value="จาน">จาน</option><option value="ชาม">ชาม</option><option value="ถ้วย">ถ้วย</option><option value="ทัพพี">ทัพพี</option><option value="ทัพพีเล็ก">ทัพพีเล็ก</option><option value="กรัม">กรัม</option><option value="แก้ว">แก้ว</option><option value="ขวด">ขวด</option><option value="กระป๋อง">กระป๋อง</option><option value="ช้อนโต๊ะ">ช้อนโต๊ะ</option><option value="ช้อนชา">ช้อนชา</option><option value="ช้อนกินข้าว">ช้อนกินข้าว</option><option value="กระบวย">กระบวย</option><option value="กำมือ">กำมือ</option><option value="หยิบมือ">หยิบมือ</option><option value="เม็ด">เม็ด</option><option value="เมล็ด">เมล็ด</option><option value="ฟอง">ฟอง</option><option value="ชิ้น">ชิ้น</option><option value="แผ่น">แผ่น</option><option value="ลูก">ลูก</option><option value="ผล">ผล</option><option value="หัว">หัว</option><option value="กลีบ">กลีบ</option><option value="ฝัก">ฝัก</option><option value="ท่อน">ท่อน</option><option value="แท่ง">แท่ง</option><option value="สกู๊ป">สกู๊ป</option><option value="ซอง">ซอง</option><option value="ห่อ">ห่อ</option><option value="ถุง">ถุง</option><option value="มิลลิลิตร">มิลลิลิตร</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- ปุ่มเรียก AI วิเคราะห์เมื่ออยู่ในโหมดเพิ่มด้วย AI -->
+    <div id="aiAnalyzeBox" style="margin-top:12px;" hidden>
+      <button class="primary-btn full" id="popupAiAnalyzeBtn" style="background:#24785c;">✦ ให้ AI วิเคราะห์โภชนาการ</button>
+    </div>
+
+    <div class="macro-form" style="margin-top:12px;">
       <label>แคลอรี (kcal)<input id="editLibCal" type="number" min="0"></label>
       <label>โปรตีน (g)<input id="editLibPro" type="number" step=".1" min="0"></label>
       <label>คาร์บ (g)<input id="editLibCarb" type="number" step=".1" min="0"></label>
       <label>ไขมัน (g)<input id="editLibFat" type="number" step=".1" min="0"></label>
     </div>
+    
     <div style="display:flex; gap:10px; margin-top:18px;">
       <button class="primary-btn" id="saveEditLibBtn" style="flex:1;">บันทึกการแก้ไข</button>
       <button class="secondary-btn" id="closeEditLibModal" style="flex:1;">ยกเลิก</button>
@@ -243,6 +270,7 @@
 <script>
 const DB_NAME='nutrilocal-db', DB_VERSION=1;
 let db, selectedImage=null, scanData=null, fastingInterval=null, activeLibIdForAdd=null, activeTargetMealForDiary=null;
+let isAiAddMode = false; // ตัวแปรบอกสถานะว่ากำลังเพิ่มผ่าน AI หรือแก้ไขปกติ
 const $=id=>document.getElementById(id);
 const today=()=>new Date().toISOString().slice(0,10);
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
@@ -348,7 +376,7 @@ $('analyzeBtn').onclick=async()=>{
   btn.textContent='กำลังวิเคราะห์ภาพ...';
   try{
     const data=await fileToBase64(selectedImage);
-    const prompt=`วิเคราะห์อาหารไทยจากภาพนี้ ประเมินอาหารที่มองเห็นและปริมาณต่อหนึ่งจาน ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณโดยประมาณ","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"ข้อจำกัดหรือความไม่แน่นอน"} ค่าโภชนาการเป็นค่าประมาณ หากระบุไม่ได้ให้ประเมินอย่างระมัดระวัง`;
+    const prompt=`วิเคราะห์อาหารไทยจากภาพนี้ ประเมินอาหารที่มองเห็นและปริมาณต่อหนึ่งจาน ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณโดยประมาณ เช่น 1 จาน","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"ข้อจำกัดหรือความไม่แน่นอน"} ค่าโภชนาการเป็นค่าประมาณ หากระบุไม่ได้ให้ประเมินอย่างระมัดระวัง`;
     
     scanData = await callGeminiApi({
       contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: selectedImage.type||'image/jpeg', data } }] }],
@@ -360,7 +388,7 @@ $('analyzeBtn').onclick=async()=>{
     $('foodProtein').value=scanData.protein||0;
     $('foodCarbs').value=scanData.carbs||0;
     $('foodFat').value=scanData.fat||0;
-    $('foodServing').value=scanData.serving||'';
+    $('foodServing').value=scanData.serving||'1 จาน';
     $('scanPlaceholder').hidden=true;
     $('scanResult').hidden=false;
     if(scanData.notes) toast(scanData.notes);
@@ -384,7 +412,7 @@ $('analyzeTextBtn').onclick=async()=>{
   btn.textContent = 'กำลังวิเคราะห์ข้อความ...';
 
   try {
-    const prompt = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${name}" ปริมาณ ${amount} ${unit} ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณที่ระบุ","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"หมายเหตุหรือข้อมูลเพิ่มเติม"} ค่าโภชนาการเป็นค่าประมาณ`;
+    const prompt = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${name}" ปริมาณ ${amount} ${unit} ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณที่ระบุเช่น ${amount} ${unit}","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"หมายเหตุหรือข้อมูลเพิ่มเติม"} ค่าโภชนาการเป็นค่าประมาณ`;
     
     scanData = await callGeminiApi({
       contents: [{ parts: [{ text: prompt }] }],
@@ -442,6 +470,7 @@ $('saveToLibraryBtn').onclick=async()=>{
   if(!$('foodName').value.trim())return toast('กรุณาระบุชื่ออาหาร');
   await add('library',{
     name:$('foodName').value.trim(),
+    serving:$('foodServing').value || '1 จาน',
     calories:+$('foodCalories').value||0,
     protein:+$('foodProtein').value||0,
     carbs:+$('foodCarbs').value||0,
@@ -491,7 +520,7 @@ async function renderPickLibList(){
     <div class="lib-select-item" data-select-food-id="${item.id}">
       <div>
         <b style="display:block;">${esc(item.name)}</b>
-        <small class="muted">P ${fmt(item.protein)}g · C ${fmt(item.carbs)}g · F ${fmt(item.fat)}g</small>
+        <small class="muted">${esc(item.serving||'1 จาน')} · P ${fmt(item.protein)}g · C ${fmt(item.carbs)}g · F ${fmt(item.fat)}g</small>
       </div>
       <strong style="color:var(--green);">${fmt(item.calories)} kcal</strong>
     </div>
@@ -514,7 +543,7 @@ $('pickLibList').addEventListener('click', async e=>{
     date: $('diaryDate').value || today(),
     meal: activeTargetMealForDiary,
     name: selectedFood.name,
-    serving: '1 ชุด',
+    serving: selectedFood.serving || '1 จาน',
     calories: selectedFood.calories,
     protein: selectedFood.protein,
     carbs: selectedFood.carbs,
@@ -595,7 +624,7 @@ $('saveApi').onclick=async()=>{
   toast('บันทึกการตั้งค่า AI ในเครื่องแล้ว');
 };
 
-// สลับเปิด/ปิดการ์ดเพิ่มอาหารเอง
+// สลับเปิด/ปิดการ์ดเพิ่มอาหารเองในหน้าคลัง
 $('showManualFormBtn').onclick=()=>{
   $('manualAddCard').hidden = !$('manualAddCard').hidden;
 };
@@ -603,13 +632,16 @@ $('cancelManualAdd').onclick=()=>{
   $('manualAddCard').hidden = true;
 };
 
-// บันทึกการเพิ่มอาหารเองจากการ์ด
+// บันทึกการเพิ่มอาหารเองลงคลัง (พร้อมปริมาณและหน่วย)
 $('saveManualAdd').onclick=async()=>{
   const name = $('manName').value.trim();
   if(!name) return toast('กรุณากรอกชื่ออาหาร');
+  const amount = $('manAmount').value || '1';
+  const unit = $('manUnit').value || 'จาน';
   
   await add('library',{
     name: name,
+    serving: `${amount} ${unit}`,
     calories: Number($('manCal').value) || 0,
     protein: Number($('manPro').value) || 0,
     carbs: Number($('manCarb').value) || 0,
@@ -617,6 +649,7 @@ $('saveManualAdd').onclick=async()=>{
   });
 
   $('manName').value = '';
+  $('manAmount').value = '1';
   $('manCal').value = '';
   $('manPro').value = '';
   $('manCarb').value = '';
@@ -627,30 +660,57 @@ $('saveManualAdd').onclick=async()=>{
   renderLibrary();
 };
 
-// เพิ่มอาหารด้วย AI ในหน้าคลัง
-$('libAddAiBtn').onclick=async()=>{
-  const foodQuery = prompt('พิมพ์ชื่ออาหารที่ต้องการให้ AI วิเคราะห์เพิ่มลงคลังอาหาร:');
-  if(!foodQuery) return;
+// เพิ่มอาหารด้วย AI ในหน้าคลัง (เปิด Pop-up พร้อมปุ่มให้ AI วิเคราะห์)
+$('libAddAiBtn').onclick=()=>{
+  isAiAddMode = true;
+  $('libModalTitle').textContent = '✦ เพิ่มอาหารด้วย AI ลงคลัง';
+  $('libModalSubtitle').textContent = 'ระบุชื่อ ปริมาณ และหน่วย แล้วกดให้ AI วิเคราะห์โภชนาการ';
+  $('editLibId').value = '';
+  $('editLibName').value = '';
+  $('editLibAmount').value = '1';
+  $('editLibUnit').value = 'จาน';
+  $('editLibCal').value = '';
+  $('editLibPro').value = '';
+  $('editLibCarb').value = '';
+  $('editLibFat').value = '';
   
+  $('aiAnalyzeBox').hidden = false; // แสดงปุ่มให้ AI ดูต่อ
+  $('editLibraryModal').classList.add('show');
+};
+
+// ปุ่มให้ AI วิเคราะห์ภายใน Pop-up หน้าคลังอาหาร
+$('popupAiAnalyzeBtn').onclick = async () => {
+  const name = $('editLibName').value.trim();
+  const amount = $('editLibAmount').value || '1';
+  const unit = $('editLibUnit').value || 'จาน';
+
+  if(!name) return toast('กรุณาระบุชื่ออาหารก่อนให้ AI วิเคราะห์');
+
+  const btn = $('popupAiAnalyzeBtn');
+  btn.disabled = true;
+  btn.textContent = 'กำลังให้ AI วิเคราะห์...';
+
   try {
-    toast('กำลังให้ AI วิเคราะห์...');
-    const promptText = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${foodQuery}" จำนวน 1 ที่ ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","calories":number,"protein":number,"carbs":number,"fat":number} ค่าโภชนาการเป็นค่าประมาณ`;
+    const promptText = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${name}" ปริมาณ ${amount} ${unit} ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"หมายเหตุ"} ค่าโภชนาการเป็นค่าประมาณ`;
+    
     const result = await callGeminiApi({
       contents: [{ parts: [{ text: promptText }] }],
       generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
     });
 
-    await add('library',{
-      name: result.name || foodQuery,
-      calories: Number(result.calories) || 0,
-      protein: Number(result.protein) || 0,
-      carbs: Number(result.carbs) || 0,
-      fat: Number(result.fat) || 0
-    });
-    toast('เพิ่มเมนูจาก AI ลงคลังอาหารแล้ว');
-    renderLibrary();
+    $('editLibCal').value = Number(result.calories) || 0;
+    $('editLibPro').value = Number(result.protein) || 0;
+    $('editLibCarb').value = Number(result.carbs) || 0;
+    $('editLibFat').value = Number(result.fat) || 0;
+    if(result.name) $('editLibName').value = result.name;
+
+    toast('AI วิเคราะห์ข้อมูลเรียบร้อยแล้ว ตรวจสอบและกดบันทึกได้เลย');
+    if(result.notes) toast(result.notes);
   } catch(e) {
     if(e.message !== 'missing_api_key') toast('วิเคราะห์ไม่สำเร็จ: '+e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✦ ให้ AI วิเคราะห์โภชนาการ';
   }
 };
 
@@ -662,7 +722,8 @@ async function renderLibrary(){
   $('libraryContent').innerHTML=rows.length?rows.map(x=>`
     <article class="library-card">
       <h3>${esc(x.name)}</h3>
-      <p>${fmt(x.calories)} kcal · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</p>
+      <p>${esc(x.serving||'1 จาน')}</p>
+      <p style="margin-top:4px;">${fmt(x.calories)} kcal · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
         <button class="secondary-btn" data-add-lib="${x.id}" style="padding:6px 10px;font-size:11px;">เพิ่มลงวันนี้</button>
         <button class="primary-btn" data-open-edit-lib="${x.id}" style="padding:6px 10px;font-size:11px;background:#397d9e;">แก้ไขการ์ด</button>
@@ -690,6 +751,11 @@ $('libraryContent').addEventListener('click',async e=>{
   // เปิด Pop-up Modal การ์ดแก้ไขอาหาร
   const editBtn=e.target.closest('[data-open-edit-lib]');
   if(editBtn){
+    isAiAddMode = false;
+    $('libModalTitle').textContent = 'แก้ไขข้อมูลอาหารในการ์ด';
+    $('libModalSubtitle').textContent = 'ปรับแต่งคุณค่าทางโภชนาการ ปริมาณ และหน่วย แล้วกดบันทึก';
+    $('aiAnalyzeBox').hidden = true; // ซ่อนปุ่ม AI ตอนแก้ไขปกติ
+
     const id=Number(editBtn.dataset.openEditLib);
     const list = await all('library');
     const item = list.find(a=>a.id===id);
@@ -697,6 +763,11 @@ $('libraryContent').addEventListener('click',async e=>{
 
     $('editLibId').value = item.id;
     $('editLibName').value = item.name;
+    
+    const parts = (item.serving || '1 จาน').split(' ');
+    $('editLibAmount').value = !isNaN(parts[0]) ? parts[0] : 1;
+    if(parts[1]) $('editLibUnit').value = parts[1];
+
     $('editLibCal').value = item.calories;
     $('editLibPro').value = item.protein;
     $('editLibCarb').value = item.carbs;
@@ -716,38 +787,50 @@ $('libraryContent').addEventListener('click',async e=>{
 // ปิด Pop-up Modal การ์ดแก้ไขอาหาร
 $('closeEditLibModal').onclick = ()=>$('editLibraryModal').classList.remove('show');
 
-// บันทึกค่าแก้ไขจากการ์ด Pop-up Modal ในคลังอาหาร พร้อมซิงค์ข้อมูลไปประวัติมื้ออาหารที่อ้างอิงถึง
+// บันทึกค่าแก้ไขหรือเพิ่มใหม่จาก Pop-up Modal ในคลังอาหาร
 $('saveEditLibBtn').onclick = async()=>{
-  const id = Number($('editLibId').value);
+  const idVal = $('editLibId').value;
   const name = $('editLibName').value.trim();
   if(!name) return toast('กรุณาระบุชื่ออาหาร');
 
-  const updatedItem = {
-    id: id,
+  const amount = $('editLibAmount').value || '1';
+  const unit = $('editLibUnit').value || 'จาน';
+
+  const itemData = {
     name: name,
+    serving: `${amount} ${unit}`,
     calories: Number($('editLibCal').value) || 0,
     protein: Number($('editLibPro').value) || 0,
     carbs: Number($('editLibCarb').value) || 0,
     fat: Number($('editLibFat').value) || 0
   };
 
-  // 1. อัปเดตในคลังอาหาร
-  await put('library', updatedItem);
+  if(isAiAddMode || !idVal) {
+    // โหมดเพิ่มรายการใหม่ด้วย AI ลงคลัง
+    await add('library', itemData);
+    toast('เพิ่มอาหารลงคลังเรียบร้อยแล้ว');
+  } else {
+    // โหมดแก้ไขรายการเดิม
+    const id = Number(idVal);
+    itemData.id = id;
+    await put('library', itemData);
 
-  // 2. ซิงค์อัปเดตข้อมูลในประวัติมื้ออาหาร (meals) ที่เคยเพิ่มมาจากคลังนี้ (อ้างอิงด้วย libraryId)
-  const allMeals = await all('meals');
-  for(const m of allMeals) {
-    if(m.libraryId === id) {
-      m.name = updatedItem.name;
-      m.calories = updatedItem.calories;
-      m.protein = updatedItem.protein;
-      m.carbs = updatedItem.carbs;
-      m.fat = updatedItem.fat;
-      await put('meals', m);
+    // ซิงค์อัปเดตข้อมูลในประวัติมื้ออาหาร (meals) ที่อ้างอิงถึง libraryId นี้
+    const allMeals = await all('meals');
+    for(const m of allMeals) {
+      if(m.libraryId === id) {
+        m.name = itemData.name;
+        m.serving = itemData.serving;
+        m.calories = itemData.calories;
+        m.protein = itemData.protein;
+        m.carbs = itemData.carbs;
+        m.fat = itemData.fat;
+        await put('meals', m);
+      }
     }
+    toast('บันทึกการแก้ไขและอัปเดตข้อมูลทุกส่วนแล้ว');
   }
 
-  toast('บันทึกการแก้ไขและอัปเดตข้อมูลทุกส่วนแล้ว');
   $('editLibraryModal').classList.remove('show');
   renderLibrary();
   renderDashboard();
@@ -771,7 +854,7 @@ $('confirmAddLib').onclick=async()=>{
     fat: x.fat,
     date: today(),
     meal: targetMeal,
-    serving: '1 ชุด',
+    serving: x.serving || '1 จาน',
     source: 'library',
     libraryId: x.id, // ผูกรหัสคลัง
     createdAt: Date.now()
