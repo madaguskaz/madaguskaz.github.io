@@ -303,7 +303,6 @@ let db, selectedImage=null, scanData=null, fastingInterval=null, activeLibIdForA
 let isAiAddMode = false;
 const $=id=>document.getElementById(id);
 
-// ฟังก์ชันดึงวันที่ปัจจุบันตามเวลาประเทศไทย (Asia/Bangkok) ในรูปแบบ YYYY-MM-DD
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
@@ -319,10 +318,30 @@ function del(store,id){return new Promise((res,rej)=>{const r=tx(store,'readwrit
 function clearStore(store){return new Promise((res,rej)=>{const r=tx(store,'readwrite').clear();r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
 function getMeta(key){return all('meta').then(a=>a.find(x=>x.key===key)?.value)}
-async function setMeta(key,value){const a=(await all('meta')).find(x=>x.key===key);return put('meta',{id:a?.id,key,value})}
+
+async function setMeta(key, value) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const items = await all('meta');
+      const existing = items.find(x => x.key === key);
+      const store = tx('meta', 'readwrite');
+      let req;
+      if (existing) {
+        req = store.put({ id: existing.id, key, value });
+      } else {
+        req = store.add({ key, value });
+      }
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
 
 async function loadSettings(){
-  settings={...defaults,...(await getMeta('settings')||{})};
+  const savedSettings = await getMeta('settings');
+  settings={...defaults,...(savedSettings||{})};
   $('goalCalories').value=settings.calories;
   $('goalProtein').value=settings.protein;
   $('goalCarbs').value=settings.carbs;
@@ -333,8 +352,12 @@ async function loadSettings(){
   $('genderInput').value=settings.gender||'male';
   $('ageInput').value=settings.age||'';
   $('activityInput').value=settings.activity||1.2;
-  $('apiKey').value=await getMeta('apiKey')||'';
-  $('geminiModel').value=await getMeta('geminiModel')||'gemini-2.5-flash';
+  
+  const savedApiKey = await getMeta('apiKey');
+  if(savedApiKey) $('apiKey').value = savedApiKey;
+
+  const savedModel = await getMeta('geminiModel');
+  if(savedModel) $('geminiModel').value = savedModel;
 }
 
 function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const names={dashboard:'ภาพรวมสุขภาพ',scanner:'เพิ่มอาหาร AI',diary:'บันทึกอาหาร',weight:'น้ำหนักและสุขภาพ',fasting:'IF / Fasting',library:'คลังอาหาร',settings:'ตั้งค่าและสำรองข้อมูล'};$('pageTitle').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='diary')renderDiary();if(page==='weight')renderWeights();if(page==='library')renderLibrary()}
@@ -703,7 +726,6 @@ $('autoCalcBtn').onclick=async()=>{
 $('weightHistory').addEventListener('click',async e=>{const b=e.target.closest('[data-del-weight]');if(b){await del('weights',Number(b.dataset.delWeight));renderWeights()}});
 $('saveGoals').onclick=async()=>{settings={...settings,calories:+$('goalCalories').value||2000,protein:+$('goalProtein').value||100,carbs:+$('goalCarbs').value||220,fat:+$('goalFat').value||65,water:+$('goalWater').value||2000};await setMeta('settings',settings);toast('บันทึกเป้าหมายแล้ว');renderDashboard()};
 
-// แก้ไขจุดนี้: ผูกการทำงานให้ปุ่มบันทึก API Key ทำงานถูกต้อง
 $('saveApi').onclick=async()=>{
   await setMeta('apiKey', $('apiKey').value.trim());
   await setMeta('geminiModel', $('geminiModel').value);
@@ -949,8 +971,19 @@ async function runFastTimer(){const start=await getMeta('fastStart');if(!start)r
 $('exportData').onclick=async()=>{const data={app:'NutriLocal',version:1,exportedAt:new Date().toISOString(),settings,stores:{}};for(const s of ['meals','weights','water','library','meta'])data.stores[s]=await all(s);const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`nutrilocal-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href);toast('ส่งออกข้อมูลแล้ว')};
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d.stores)throw Error('รูปแบบไฟล์ไม่ถูกต้อง');if(!confirm('นำเข้าข้อมูลและแทนที่ข้อมูลเดิมทั้งหมด?'))return;for(const s of ['meals','weights','water','library','meta']){await clearStore(s);for(const item of d.stores[s]||[])await put(s,item)}settings={...defaults, ...(d.settings||{})};await setMeta('settings',settings);await loadSettings();toast('นำเข้าข้อมูลสำเร็จ');renderDashboard()}catch(err){toast('นำเข้าไม่สำเร็จ: '+err.message)}e.target.value=''};
 $('clearData').onclick=async()=>{if(!confirm('ยืนยันลบข้อมูลทั้งหมดในเว็บแอปนี้? การลบไม่สามารถย้อนกลับได้'))return;for(const s of ['meals','weights','water','library','meta'])await clearStore(s);settings={...defaults};await loadSettings();renderDashboard();toast('ลบข้อมูลทั้งหมดแล้ว')};
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;u0027'}[c]))}
 $('profileBtn').onclick=()=>navigate('settings');
-(async()=>{try{db=await openDB();await loadSettings();await renderDashboard();await runFastTimer();}catch(e){console.error(e);toast('ไม่สามารถเปิดฐานข้อมูลในเบราว์เซอร์นี้ได้')}})();
+
+(async()=>{
+  try{
+    db=await openDB();
+    await loadSettings();
+    await renderDashboard();
+    await runFastTimer();
+  }catch(e){
+    console.error(e);
+    toast('ไม่สามารถเปิดฐานข้อมูลในเบราว์เซอร์นี้ได้');
+  }
+})();
 </script>
 </body></html>
