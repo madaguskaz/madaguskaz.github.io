@@ -302,14 +302,10 @@ const DB_NAME='nutrilocal-db', DB_VERSION=1;
 let db, selectedImage=null, scanData=null, fastingInterval=null, activeLibIdForAdd=null, activeTargetMealForDiary=null;
 let isAiAddMode = false;
 const $=id=>document.getElementById(id);
-const today = () => {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'Asia/Bangkok',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).format(new Date());
-};
+
+// ฟังก์ชันดึงวันที่ปัจจุบันตามเวลาประเทศไทย (Asia/Bangkok) ในรูปแบบ YYYY-MM-DD
+const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0,gender:'male',age:25,activity:1.2};
 let settings={...defaults};
@@ -344,7 +340,9 @@ async function loadSettings(){
 function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const names={dashboard:'ภาพรวมสุขภาพ',scanner:'เพิ่มอาหาร AI',diary:'บันทึกอาหาร',weight:'น้ำหนักและสุขภาพ',fasting:'IF / Fasting',library:'คลังอาหาร',settings:'ตั้งค่าและสำรองข้อมูล'};$('pageTitle').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='diary')renderDiary();if(page==='weight')renderWeights();if(page==='library')renderLibrary()}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)navigate(b.dataset.go)});
-$('todayLabel').textContent=new Intl.DateTimeFormat('th-TH',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
+
+$('todayLabel').textContent=new Intl.DateTimeFormat('th-TH',{timeZone:'Asia/Bangkok',weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
+
 $('dashDate').value=today();$('diaryDate').value=today();$('weightDate').value=today();
 $('dashDate').addEventListener('change',renderDashboard);$('diaryDate').addEventListener('change',renderDiary);
 
@@ -365,7 +363,6 @@ async function renderDashboard(){
     $(k==='carbs'?'carbProgress':k+'Progress').style.width=Math.min(100,v/settings[k]*100)+'%';
   });
 
-  // แสดงผล น้ำตาล, โซเดียม, คอเลสเตอรอล ในหน้าภาพรวม
   $('sugarVal').innerHTML = `${fmt(sugar)} <small>g</small>`;
   $('sodiumVal').innerHTML = `${fmt(sodium)} <small>mg</small>`;
   $('cholVal').innerHTML = `${fmt(chol)} <small>mg</small>`;
@@ -383,9 +380,11 @@ async function renderDashboard(){
 async function renderChart(){
   const meals=await all('meals'),days=[];
   for(let i=6;i>=0;i--){
-    const d=new Date();d.setDate(d.getDate()-i);
-    const key=d.toISOString().slice(0,10);
-    days.push({key,label:d.toLocaleDateString('th-TH',{weekday:'short'}),value:meals.filter(m=>m.date===key).reduce((s,m)=>s+Number(m.calories||0),0)})
+    const d=new Date();
+    d.setDate(d.getDate()-i);
+    const key = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+    const dayLabel = new Intl.DateTimeFormat('th-TH',{timeZone:'Asia/Bangkok',weekday:'short'}).format(d);
+    days.push({key,label:dayLabel,value:meals.filter(m=>m.date===key).reduce((s,m)=>s+Number(m.calories||0),0)})
   }
   const max=Math.max(settings.calories,...days.map(x=>x.value),1);
   $('weeklyChart').innerHTML=days.map(d=>`<div class="chart-col ${d.key===today()?'today':''}"><small>${d.value?fmt(d.value):''}</small><div class="chart-bar" style="height:${Math.max(2,d.value/max*105)}px"></div><small>${d.label}</small></div>`).join('')
@@ -528,8 +527,11 @@ function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReade
 $('saveScan').onclick=async()=>{
   const mealSelect = $('mainMealSelect').value;
   if(!$('foodName').value.trim())return toast('กรุณาระบุชื่ออาหาร');
+  
+  const currentDate = $('dashDate').value || today();
+  
   await add('meals',{
-    date:today(),
+    date: currentDate,
     meal:mealSelect,
     name:$('foodName').value.trim(),
     serving:$('foodServing').value,
@@ -551,6 +553,8 @@ $('saveScan').onclick=async()=>{
   $('imagePreview').hidden=true;
   $('scanResult').hidden=true;
   $('scanPlaceholder').hidden=false;
+  
+  renderDashboard();
   navigate('dashboard');
 };
 
@@ -625,8 +629,9 @@ $('pickLibList').addEventListener('click', async e=>{
   const selectedFood = (await all('library')).find(x=>x.id===foodId);
   if(!selectedFood) return;
 
+  const targetDate = $('diaryDate').value || today();
   await add('meals',{
-    date: $('diaryDate').value || today(),
+    date: targetDate,
     meal: activeTargetMealForDiary,
     name: selectedFood.name,
     serving: selectedFood.serving || '1 จาน',
@@ -697,6 +702,8 @@ $('autoCalcBtn').onclick=async()=>{
 
 $('weightHistory').addEventListener('click',async e=>{const b=e.target.closest('[data-del-weight]');if(b){await del('weights',Number(b.dataset.delWeight));renderWeights()}});
 $('saveGoals').onclick=async()=>{settings={...settings,calories:+$('goalCalories').value||2000,protein:+$('goalProtein').value||100,carbs:+$('goalCarbs').value||220,fat:+$('goalFat').value||65,water:+$('goalWater').value||2000};await setMeta('settings',settings);toast('บันทึกเป้าหมายแล้ว');renderDashboard()};
+
+// แก้ไขจุดนี้: ผูกการทำงานให้ปุ่มบันทึก API Key ทำงานถูกต้อง
 $('saveApi').onclick=async()=>{
   await setMeta('apiKey', $('apiKey').value.trim());
   await setMeta('geminiModel', $('geminiModel').value);
@@ -913,6 +920,7 @@ $('confirmAddLib').onclick=async()=>{
   if(!x) return;
 
   const targetMeal = $('modalMealTarget').value;
+  const targetDate = $('dashDate').value || today();
   await add('meals',{
     name: x.name,
     calories: x.calories,
@@ -922,7 +930,7 @@ $('confirmAddLib').onclick=async()=>{
     sugar: x.sugar || 0,
     sodium: x.sodium || 0,
     chol: x.chol || 0,
-    date: today(),
+    date: targetDate,
     meal: targetMeal,
     serving: x.serving || '1 จาน',
     source: 'library',
