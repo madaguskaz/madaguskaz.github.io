@@ -7,10 +7,13 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root{--ink:#172923;--muted:#7b8983;--green:#24785c;--green2:#dff2e9;--line:#e8eeea;--bg:#f5f8f6;--white:#fff;--shadow:0 8px 28px #183c2a0b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Thai',sans-serif;font-size:14px}.app-shell{min-height:100vh;display:flex}.sidebar{width:246px;background:#fff;border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:5}.brand{display:flex;align-items:center;gap:11px;padding:0 12px 32px}.brand-mark{width:38px;height:38px;border-radius:13px;background:var(--green);color:white;display:grid;place-items:center;font:800 22px Manrope}.brand b{display:block;font:800 17px Manrope}.brand small{color:var(--muted);font-size:11px}.sidebar nav{display:grid;gap:6px}.nav-item{border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:11px;color:#718078;font:500 14px 'IBM Plex Sans Thai';cursor:pointer}.nav-item span{display:inline-block;width:27px;font-size:17px}.nav-item.active,.nav-item:hover{background:#eaf5ef;color:var(--green);font-weight:600}.local-note{margin-top:auto;background:#f3f8f5;border-radius:12px;padding:13px;display:flex;gap:10px;align-items:center}.local-note b,.local-note small{display:block}.local-note small{font-size:11px;color:var(--muted)}.dot{width:8px;height:8px;background:#39a979;border-radius:50%}.main{margin-left:246px;width:calc(100% - 246px);padding:28px 38px 20px;max-width:1600px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.eyebrow{font:700 10px Manrope;letter-spacing:1.4px;color:#8a9a92}.topbar h1{font-size:25px;margin:3px 0 0;font-weight:600}.top-actions{display:flex;gap:13px;align-items:center}.privacy-pill{font-size:11px;color:var(--green);background:#e7f4ed;padding:8px 12px;border-radius:30px}.avatar{border:0;background:#dcece3;border-radius:50%;width:37px;height:37px;color:var(--green);font-weight:600}.page{display:none}.page.active{display:block}.welcome{background:linear-gradient(110deg,#1b4637,#286b51);border-radius:18px;color:white;padding:29px 34px;display:flex;justify-content:space-between;align-items:center;overflow:hidden;min-height:174px}.welcome h2{font-size:25px;line-height:1.45;margin:8px 0}.welcome p{margin:0;color:#c9ddd2}.light{color:#b3d8c4}.welcome-art{font-size:84px;filter:drop-shadow(0 10px 15px #092d1d66);padding:0 36px}.section-head,.panel-head{display:flex;justify-content:space-between;align-items:center}.section-head{margin:26px 0 13px}.section-head h3,.panel h3{font-size:16px;margin:0 0 3px}.section-head p,.panel-head p{font-size:12px;color:var(--muted);margin:0}.date-input,input,select{font:inherit}.date-input,.toolbar input{border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px 11px;color:var(--ink)}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.stat-card,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:var(--shadow)}.stat-top{display:flex;justify-content:space-between;color:#718078;font-size:12px}.stat-card strong{font:800 27px Manrope;display:block;margin:13px 0 14px}.stat-card strong small{font:500 12px 'IBM Plex Sans Thai';color:var(--muted)}.progress,.water-track{height:7px;background:#edf2ef;border-radius:20px;overflow:hidden}.progress i,.water-track i{display:block;height:100%;width:0;background:#286f53;border-radius:20px;transition:width .3s}.progress.green i{background:#49a879}.progress.orange i{background:#e5a54d}.progress.purple i{background:#9981c4}.stat-foot{display:flex;justify-content:space-between;margin-top:9px;font-size:10px;color:var(--muted)}.content-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin:15px 0}.panel{margin-bottom:15px}.text-btn{border:0;background:none;color:var(--green);font:600 12px 'IBM Plex Sans Thai';cursor:pointer}.meal-list.empty{text-align:center;padding:26px;color:var(--muted)}.small-primary,.primary-btn{background:var(--green);color:white;border:0;border-radius:9px;padding:10px 15px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.small-primary{display:block;margin:12px auto 0}.water-icon{font-size:25px}.water-number{margin:19px 0 12px}.water-number b{font:800 29px Manrope}.water-number small{color:var(--muted)}.water-track{height:9px}.water-track i{background:#59a8ce}.water-actions{display:flex;gap:8px;margin-top:17px}.water-actions button{flex:1;background:#eef6f9;border:0;border-radius:8px;padding:9px;color:#397d9e;cursor:pointer}.chart{height:155px;display:flex;align-items:end;justify-content:space-around;gap:12px;padding:18px 10px 0}.chart-col{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:7px}.chart-bar{width:min(34px,75%);background:#b8d9c7;border-radius:7px 7px 2px 2px;min-height:3px}.chart-col.today .chart-bar{background:var(--green)}.chart-col small{font-size:10px;color:var(--muted)}.page-intro{margin:5px 0 22px}.page-intro h2{font-size:23px;margin:0 0 4px}.page-intro p{margin:0;color:var(--muted)}.scanner-layout,.weight-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.upload-zone{border:1.5px dashed #cbdcd1;border-radius:13px;background:#f8fbf9;text-align:center;padding:28px 15px;margin-bottom:18px}.upload-symbol{font-size:38px}.upload-zone h3{margin:7px 0}.upload-zone p,.muted{color:var(--muted);font-size:12px}.upload-zone img{display:block;max-width:100%;max-height:270px;object-fit:contain;margin:15px auto 0;border-radius:10px}.field-label{display:block;font-size:12px;font-weight:600;margin:12px 0 6px}.panel input,.panel select,.toolbar input,.settings-fields input,.macro-form input{width:100%;border:1px solid #dfe8e2;background:#fff;border-radius:8px;padding:10px;color:var(--ink);outline:none}.panel input:focus,.panel select:focus{border-color:#66a887}.full{width:100%;margin-top:14px}.tiny{font-size:10px;line-height:1.6}.placeholder{min-height:310px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#98a79f;gap:8px}.placeholder span{font-size:45px;color:#9bc8ad}.placeholder small{font-size:11px}.ai-badge{font:700 9px Manrope;letter-spacing:1px;color:var(--green);background:#e8f5ed;padding:6px 9px;border-radius:20px}.macro-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.macro-form label,.settings-fields label{font-size:11px;color:#697971}.macro-form input,.settings-fields input{display:block;margin-top:5px}.toolbar{display:flex;gap:10px;justify-content:space-between;margin-bottom:15px}.toolbar input{max-width:260px}.meal-group{margin-bottom:14px}.meal-group h3{font-size:14px;margin:0 0 8px}.food-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.food-row:last-child{border:0}.food-row b{display:block}.food-row small{color:var(--muted);font-size:11px}.food-row .food-kcal{text-align:right;white-space:nowrap;font-weight:700}.food-row button{border:0;background:none;color:#b45c53;cursor:pointer}.weight-layout{margin-bottom:4px}.bmi-box{background:#f1f7f3;border-radius:12px;padding:14px;margin-top:18px}.bmi-box>*{display:block}.bmi-box b{font:800 27px Manrope;color:var(--green)}.bmi-box span,.bmi-box small{font-size:11px;color:var(--muted)}.table-wrap table{width:100%;border-collapse:collapse}.table-wrap td,.table-wrap th{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:12px}.table-wrap th{color:var(--muted);font-weight:500}.fasting-card{background:linear-gradient(135deg,#1b4637,#2d7455);color:white;border-radius:18px;padding:34px;text-align:center;max-width:700px;margin:auto}.fasting-clock{font:800 clamp(42px,8vw,70px) Manrope;margin:22px 0 5px}.fasting-controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:25px}.fasting-controls select{border:0;border-radius:8px;padding:10px}.secondary-btn{background:#edf5f0;color:var(--green);border:0;border-radius:9px;padding:10px 14px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.secondary-btn:disabled{opacity:.5}.library-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.library-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px}.library-card h3{margin:0 0 5px;font-size:14px}.library-card p{margin:0;color:var(--muted);font-size:11px}.library-card button{margin-top:10px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.settings-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.backup-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.file-button{cursor:pointer}.danger-btn{border:1px solid #f0d6d3;background:#fff7f6;color:#b14f47;border-radius:9px;padding:10px 14px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.warning{color:#a66a35}footer{padding:20px 2px;color:#9aa79f;font-size:10px;display:flex;justify-content:space-between;gap:12px}.toast{position:fixed;bottom:24px;right:24px;background:#193d2f;color:white;padding:12px 18px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:10}.toast.show{opacity:1;transform:translateY(0)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Thai',sans-serif;font-size:14px}.app-shell{min-height:100vh;display:flex}.sidebar{width:246px;background:#fff;border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:5}.brand{display:flex;align-items:center;gap:11px;padding:0 12px 32px}.brand-mark{width:38px;height:38px;border-radius:13px;background:var(--green);color:white;display:grid;place-items:center;font:800 22px Manrope}.brand b{display:block;font:800 17px Manrope}.brand small{color:var(--muted);font-size:11px}.sidebar nav{display:grid;gap:6px}.nav-item{border:0;background:transparent;text-align:left;padding:12px 14px;border-radius:11px;color:#718078;font:500 14px 'IBM Plex Sans Thai';cursor:pointer}.nav-item span{display:inline-block;width:27px;font-size:17px}.nav-item.active,.nav-item:hover{background:#eaf5ef;color:var(--green);font-weight:600}.local-note{margin-top:auto;background:#f3f8f5;border-radius:12px;padding:13px;display:flex;gap:10px;align-items:center}.local-note b,.local-note small{display:block}.local-note small{font-size:11px;color:var(--muted)}.dot{width:8px;height:8px;background:#39a979;border-radius:50%}.main{margin-left:246px;width:calc(100% - 246px);padding:28px 38px 20px;max-width:1600px}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.eyebrow{font:700 10px Manrope;letter-spacing:1.4px;color:#8a9a92}.topbar h1{font-size:25px;margin:3px 0 0;font-weight:600}.top-actions{display:flex;gap:13px;align-items:center}.privacy-pill{font-size:11px;color:var(--green);background:#e7f4ed;padding:8px 12px;border-radius:30px}.avatar{border:0;background:#dcece3;border-radius:50%;width:37px;height:37px;color:var(--green);font-weight:600}.page{display:none}.page.active{display:block}.welcome{background:linear-gradient(110deg,#1b4637,#286b51);border-radius:18px;color:white;padding:29px 34px;display:flex;justify-content:space-between;align-items:center;overflow:hidden;min-height:174px}.welcome h2{font-size:25px;line-height:1.45;margin:8px 0}.welcome p{margin:0;color:#c9ddd2}.light{color:#b3d8c4}.welcome-art{font-size:84px;filter:drop-shadow(0 10px 15px #092d1d66);padding:0 36px}.section-head,.panel-head{display:flex;justify-content:space-between;align-items:center}.section-head{margin:26px 0 13px}.section-head h3,.panel h3{font-size:16px;margin:0 0 3px}.section-head p,.panel-head p{font-size:12px;color:var(--muted);margin:0}.date-input,input,select{font:inherit}.date-input,.toolbar input{border:1px solid var(--line);border-radius:9px;background:#fff;padding:9px 11px;color:var(--ink)}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.stat-card,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:var(--shadow)}.stat-top{display:flex;justify-content:space-between;color:#718078;font-size:12px}.stat-card strong{font:800 27px Manrope;display:block;margin:13px 0 14px}.stat-card strong small{font:500 12px 'IBM Plex Sans Thai';color:var(--muted)}.progress,.water-track{height:7px;background:#edf2ef;border-radius:20px;overflow:hidden}.progress i,.water-track i{display:block;height:100%;width:0;background:#286f53;border-radius:20px;transition:width .3s}.progress.green i{background:#49a879}.progress.orange i{background:#e5a54d}.progress.purple i{background:#9981c4}.stat-foot{display:flex;justify-content:space-between;margin-top:9px;font-size:10px;color:var(--muted)}.content-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin:15px 0}.panel{margin-bottom:15px}.text-btn{border:0;background:none;color:var(--green);font:600 12px 'IBM Plex Sans Thai';cursor:pointer}.meal-list.empty{text-align:center;padding:26px;color:var(--muted)}.small-primary,.primary-btn{background:var(--green);color:white;border:0;border-radius:9px;padding:10px 15px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.small-primary{display:block;margin:12px auto 0}.water-icon{font-size:25px}.water-number{margin:19px 0 12px}.water-number b{font:800 29px Manrope}.water-number small{color:var(--muted)}.water-track{height:9px}.water-track i{background:#59a8ce}.water-actions{display:flex;gap:8px;margin-top:17px}.water-actions button{flex:1;background:#eef6f9;border:0;border-radius:8px;padding:9px;color:#397d9e;cursor:pointer}.chart{height:155px;display:flex;align-items:end;justify-content:space-around;gap:12px;padding:18px 10px 0}.chart-col{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;gap:7px}.chart-bar{width:min(34px,75%);background:#b8d9c7;border-radius:7px 7px 2px 2px;min-height:3px}.chart-col.today .chart-bar{background:var(--green)}.chart-col small{font-size:10px;color:var(--muted)}.page-intro{margin:5px 0 22px}.page-intro h2{font-size:23px;margin:0 0 4px}.page-intro p{margin:0;color:var(--muted)}.scanner-layout,.weight-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.upload-zone{border:1.5px dashed #cbdcd1;border-radius:13px;background:#f8fbf9;text-align:center;padding:28px 15px;margin-bottom:18px}.upload-symbol{font-size:38px}.upload-zone h3{margin:7px 0}.upload-zone p,.muted{color:var(--muted);font-size:12px}.upload-zone img{display:block;max-width:100%;max-height:270px;object-fit:contain;margin:15px auto 0;border-radius:10px}.field-label{display:block;font-size:12px;font-weight:600;margin:12px 0 6px}.panel input,.panel select,.toolbar input,.settings-fields input,.macro-form input{width:100%;border:1px solid #dfe8e2;background:#fff;border-radius:8px;padding:10px;color:var(--ink);outline:none}.panel input:focus,.panel select:focus{border-color:#66a887}.full{width:100%;margin-top:14px}.tiny{font-size:10px;line-height:1.6}.placeholder{min-height:310px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#98a79f;gap:8px}.placeholder span{font-size:45px;color:#9bc8ad}.placeholder small{font-size:11px}.ai-badge{font:700 9px Manrope;letter-spacing:1px;color:var(--green);background:#e8f5ed;padding:6px 9px;border-radius:20px}.macro-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.macro-form label,.settings-fields label{font-size:11px;color:#697971}.macro-form input,.settings-fields input{display:block;margin-top:5px}.toolbar{display:flex;gap:10px;justify-content:space-between;margin-bottom:15px}.toolbar input{max-width:260px}.meal-group{margin-bottom:14px}.meal-group h3{font-size:14px;margin:0 0 8px}.food-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.food-row:last-child{border:0}.food-row b{display:block}.food-row small{color:var(--muted);font-size:11px}.food-row .food-kcal{text-align:right;white-space:nowrap;font-weight:700}.food-row button{border:0;background:none;color:#b45c53;cursor:pointer}.weight-layout{margin-bottom:4px}.bmi-box{background:#f1f7f3;border-radius:12px;padding:14px;margin-top:18px}.bmi-box>*{display:block}.bmi-box b{font:800 27px Manrope;color:var(--green)}.bmi-box span,.bmi-box small{font-size:11px;color:var(--muted)}.calc-info-box{background:#eef7f2;border-radius:10px;padding:12px;margin-top:12px;font-size:12px;color:#245440;line-height:1.5}.calc-info-box div{display:flex;justify-content:space-between;margin-bottom:4px}.table-wrap table{width:100%}.table-wrap td,.table-wrap th{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:12px}.table-wrap th{color:var(--muted);font-weight:500}.fasting-card{background:linear-gradient(135deg,#1b4637,#2d7455);color:white;border-radius:18px;padding:34px;text-align:center;max-width:700px;margin:auto}.fasting-clock{font:800 clamp(42px,8vw,70px) Manrope;margin:22px 0 5px}.fasting-controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:25px}.fasting-controls select{border:0;border-radius:8px;padding:10px}.secondary-btn{background:#edf5f0;color:var(--green);border:0;border-radius:9px;padding:10px 14px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.secondary-btn:disabled{opacity:.5}.library-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.library-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px}.library-card h3{margin:0 0 5px;font-size:14px}.library-card p{margin:0;color:var(--muted);font-size:11px}.library-card button{margin-top:10px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.settings-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.backup-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.file-button{cursor:pointer}.danger-btn{border:1px solid #f0d6d3;background:#fff7f6;color:#b14f47;border-radius:9px;padding:10px 14px;font:600 13px 'IBM Plex Sans Thai';cursor:pointer}.warning{color:#a66a35}footer{padding:20px 2px;color:#9aa79f;font-size:10px;display:flex;justify-content:space-between;gap:12px}.toast{position:fixed;bottom:24px;right:24px;background:#193d2f;color:white;padding:12px 18px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:10}.toast.show{opacity:1;transform:translateY(0)}
+.tab-header{display:flex;gap:10px;margin-bottom:15px;border-bottom:1px solid var(--line);padding-bottom:10px}.tab-btn{background:none;border:0;font:600 14px 'IBM Plex Sans Thai';color:var(--muted);cursor:pointer;padding:6px 12px;border-radius:8px}.tab-btn.active{background:#e7f4ed;color:var(--green)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:grid;place-items:center;z-index:100;opacity:0;pointer-events:none;transition:0.2s}.modal.show{opacity:1;pointer-events:auto}.modal-box{background:white;border-radius:16px;padding:24px;width:90%;max-width:480px;box-shadow:0 12px 32px rgba(0,0,0,0.18);max-height:90vh;overflow-y:auto}
+.lib-select-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:0.2s}
+.lib-select-item:hover{background:#f0f7f3;border-color:var(--green)}
 @media(max-width:1050px){.stats-grid{grid-template-columns:repeat(2,1fr)}.main{padding:24px}.library-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.sidebar{width:auto;height:66px;inset:auto 0 0;padding:5px 7px;border-right:0;border-top:1px solid var(--line)}.brand,.local-note{display:none}.sidebar nav{display:flex;justify-content:space-around;height:100%;gap:0}.nav-item{font-size:9px;padding:5px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex:1}.nav-item span{width:auto;font-size:18px}.main{margin:0;width:100%;padding:18px 14px 85px}.topbar{margin-bottom:17px}.topbar h1{font-size:20px}.privacy-pill{display:none}.welcome{padding:22px;min-height:150px}.welcome h2{font-size:20px}.welcome p{font-size:11px}.welcome-art{font-size:58px;padding:0 5px}.stats-grid{gap:8px}.stat-card,.panel{padding:14px}.stat-card strong{font-size:22px}.stat-foot{font-size:9px}.content-grid,.scanner-layout,.weight-layout,.settings-grid{grid-template-columns:1fr;gap:0}.section-head{margin-top:20px}.library-grid{grid-template-columns:1fr 1fr}.toolbar{align-items:center}.toolbar input{min-width:0}.toolbar .primary-btn{white-space:nowrap;padding:9px}.fasting-card{padding:25px 15px}footer{display:block}footer span{display:block;margin-top:5px}.chart{gap:5px}}
-
 </style>
 <title>NutriLocal — AI Nutrition Tracker</title>
 </head>
@@ -20,7 +23,7 @@
     <div class="brand"><div class="brand-mark">N</div><div><b>NutriLocal</b><small>Nutrition & Health</small></div></div>
     <nav id="nav">
       <button class="nav-item active" data-page="dashboard"><span>▦</span> ภาพรวม</button>
-      <button class="nav-item" data-page="scanner"><span>◎</span> สแกนอาหาร AI</button>
+      <button class="nav-item" data-page="scanner"><span>◎</span> เพิ่มอาหาร AI</button>
       <button class="nav-item" data-page="diary"><span>☷</span> บันทึกอาหาร</button>
       <button class="nav-item" data-page="weight"><span>⌁</span> น้ำหนักและสุขภาพ</button>
       <button class="nav-item" data-page="fasting"><span>◷</span> IF / Fasting</button>
@@ -31,6 +34,7 @@
   </aside>
   <main class="main">
     <header class="topbar"><div><div class="eyebrow" id="todayLabel"></div><h1 id="pageTitle">ภาพรวมสุขภาพ</h1></div><div class="top-actions"><span class="privacy-pill">● ข้อมูลส่วนตัวในเครื่อง</span><button class="avatar" id="profileBtn">คุณ</button></div></header>
+    
     <section id="page-dashboard" class="page active">
       <div class="welcome"><div><div class="eyebrow light">DAILY OVERVIEW</div><h2>ดูแลสุขภาพให้ดีขึ้น<br>เริ่มจากมื้อวันนี้</h2><p>บันทึกอาหาร ติดตามสารอาหาร และค่อย ๆ สร้างสุขภาพที่ดี</p></div><div class="welcome-art">🥑</div></div>
       <div class="section-head"><div><h3>สรุปวันนี้</h3><p>ภาพรวมพลังงานและสารอาหารที่ได้รับ</p></div><input type="date" id="dashDate" class="date-input"></div>
@@ -44,31 +48,207 @@
       <article class="panel water-panel"><div class="panel-head"><div><h3>ดื่มน้ำ</h3><p>เป้าหมายรายวัน</p></div><span class="water-icon">💧</span></div><div class="water-number"><b id="waterAmount">0</b><small> / <span id="waterGoal">2,000</span> ml</small></div><div class="water-track"><i id="waterProgress"></i></div><div class="water-actions"><button data-water="-250">− 250 ml</button><button data-water="250">+ 250 ml</button></div></article></div>
       <article class="panel"><div class="panel-head"><div><h3>แนวโน้ม 7 วัน</h3><p>พลังงานที่ได้รับในแต่ละวัน</p></div></div><div id="weeklyChart" class="chart"></div></article>
     </section>
-    <section id="page-scanner" class="page"><div class="page-intro"><h2>AI Food Scanner</h2><p>ถ่ายภาพหรือเลือกรูปอาหาร ให้ Gemini ช่วยประเมินสารอาหาร</p></div>
-      <div class="scanner-layout"><article class="panel upload-panel"><div class="upload-zone" id="dropZone"><div class="upload-symbol">📷</div><h3>เพิ่มรูปอาหาร</h3><p>เลือกภาพจากอุปกรณ์ หรือถ่ายภาพด้วยกล้อง</p><input type="file" id="foodImage" accept="image/*" capture="environment" hidden><button class="primary-btn" id="chooseImage">เลือกรูปภาพ</button><img id="imagePreview" alt="ตัวอย่างรูปอาหาร" hidden></div><label class="field-label">มื้ออาหาร</label><select id="scanMeal"><option>อาหารเช้า</option><option>อาหารกลางวัน</option><option>อาหารเย็น</option><option>ของว่าง</option></select><button class="primary-btn full" id="analyzeBtn" disabled>✦ วิเคราะห์ด้วย Gemini AI</button><p class="muted tiny">รูปภาพจะถูกส่งไปยัง Google Gemini เพื่อวิเคราะห์เมื่อกดปุ่มเท่านั้น</p></article>
-      <article class="panel result-panel"><div class="panel-head"><div><h3>ผลวิเคราะห์อาหาร</h3><p>ตรวจสอบและแก้ไขก่อนบันทึก</p></div><span class="ai-badge">GEMINI AI</span></div><div id="scanPlaceholder" class="placeholder"><span>✧</span><b>รอวิเคราะห์รูปอาหาร</b><small>ผลลัพธ์จะแสดงที่นี่</small></div><div id="scanResult" hidden>
-        <label class="field-label">ชื่ออาหาร</label><input id="foodName" placeholder="ชื่ออาหาร">
-        <div class="macro-form"><label>แคลอรี (kcal)<input id="foodCalories" type="number" min="0"></label><label>โปรตีน (g)<input id="foodProtein" type="number" min="0" step=".1"></label><label>คาร์บ (g)<input id="foodCarbs" type="number" min="0" step=".1"></label><label>ไขมัน (g)<input id="foodFat" type="number" min="0" step=".1"></label></div>
-        <label class="field-label">ปริมาณ / หมายเหตุ</label><input id="foodServing" placeholder="เช่น ข้าว 1 จาน">
-        <button class="primary-btn full" id="saveScan">บันทึกอาหาร</button>
-      </div></article></div></section>
+    
+    <section id="page-scanner" class="page">
+      <div class="page-intro"><h2>AI Food Tracker</h2><p>วิเคราะห์โภชนาการด้วย Gemini AI (ภาพถ่ายหรือข้อความ)</p></div>
+      
+      <div class="tab-header">
+        <button class="tab-btn active" id="tabTextBtn">✍️ พิมพ์ชื่อและปริมาณ</button>
+        <button class="tab-btn" id="tabImgBtn">📷 สแกนจากรูปภาพ</button>
+      </div>
+
+      <div class="scanner-layout">
+        <article class="panel input-panel">
+          <label class="field-label">มื้ออาหาร</label>
+          <select id="mainMealSelect">
+            <option value="อาหารเช้า">อาหารเช้า</option>
+            <option value="อาหารกลางวัน">อาหารกลางวัน</option>
+            <option value="อาหารเย็น">อาหารเย็น</option>
+            <option value="ของว่าง">ของว่าง</option>
+          </select>
+
+          <!-- แบบพิมพ์ข้อความ -->
+          <div id="modeText" style="margin-top:10px;">
+            <h3>วิเคราะห์อาหารจากข้อความ</h3>
+            <p class="muted">พิมพ์ชื่ออาหารและเลือกปริมาณ AI จะประเมินแคลอรีและสารอาหารให้</p>
+            <label class="field-label">ชื่ออาหาร</label>
+            <input id="textFoodName" placeholder="เช่น ข้าวมันไก่, ข้าวผัดกุ้ง, ชานมไข่มุก">
+            
+            <div class="macro-form">
+              <label>ปริมาณ<input id="textFoodAmount" type="number" min="0.1" step="any" value="1"></label>
+              <label>หน่วย
+                <select id="textFoodUnit">
+                  <option value="จาน">จาน</option><option value="ชาม">ชาม</option><option value="ถ้วย">ถ้วย</option><option value="ทัพพี">ทัพพี</option><option value="ทัพพีเล็ก">ทัพพีเล็ก</option><option value="กรัม">กรัม</option><option value="แก้ว">แก้ว</option><option value="ขวด">ขวด</option><option value="กระป๋อง">กระป๋อง</option><option value="ช้อนโต๊ะ">ช้อนโต๊ะ</option><option value="ช้อนชา">ช้อนชา</option><option value="ช้อนกินข้าว">ช้อนกินข้าว</option><option value="กระบวย">กระบวย</option><option value="กำมือ">กำมือ</option><option value="หยิบมือ">หยิบมือ</option><option value="เม็ด">เม็ด</option><option value="เมล็ด">เมล็ด</option><option value="ฟอง">ฟอง</option><option value="ชิ้น">ชิ้น</option><option value="แผ่น">แผ่น</option><option value="ลูก">ลูก</option><option value="ผล">ผล</option><option value="หัว">หัว</option><option value="กลีบ">กลีบ</option><option value="ฝัก">ฝัก</option><option value="ท่อน">ท่อน</option><option value="แท่ง">แท่ง</option><option value="สกู๊ป">สกู๊ป</option><option value="ซอง">ซอง</option><option value="ห่อ">ห่อ</option><option value="ถุง">ถุง</option><option value="มิลลิลิตร">มิลลิลิตร</option>
+                </select>
+              </label>
+            </div>
+            
+            <button class="primary-btn full" id="analyzeTextBtn" style="margin-top:15px;">✦ วิเคราะห์ด้วย Gemini AI</button>
+          </div>
+
+          <!-- แบบสแกนรูปภาพ -->
+          <div id="modeImage" style="margin-top:10px;" hidden>
+            <h3>วิเคราะห์จากรูปภาพ</h3>
+            <div class="upload-zone" id="dropZone"><div class="upload-symbol">📷</div><h3>เพิ่มรูปอาหาร</h3><p>เลือกภาพจากอุปกรณ์ หรือถ่ายภาพด้วยกล้อง</p><input type="file" id="foodImage" accept="image/*" capture="environment" hidden><button class="primary-btn" id="chooseImage">เลือกรูปภาพ</button><img id="imagePreview" alt="ตัวอย่างรูปอาหาร" hidden></div>
+            <button class="primary-btn full" id="analyzeBtn" disabled style="margin-top:15px;">✦ วิเคราะห์ด้วย Gemini AI</button>
+          </div>
+        </article>
+
+        <!-- การ์ดแสดงผลลัพธ์พร้อมให้แก้ไขทุกค่าก่อนกดบันทึก -->
+        <article class="panel result-panel">
+          <div class="panel-head"><div><h3>การ์ดข้อมูลอาหาร (แก้ไขได้)</h3><p>ตรวจสอบและแก้ไขทุกค่าได้ก่อนบันทึก</p></div><span class="ai-badge">GEMINI AI</span></div>
+          <div id="scanPlaceholder" class="placeholder"><span>✧</span><b>รอวิเคราะห์อาหาร</b><small>ผลลัพธ์จะแสดงในการ์ดที่นี่</small></div>
+          <div id="scanResult" hidden>
+            <label class="field-label">ชื่ออาหาร</label><input id="foodName" placeholder="ชื่ออาหาร">
+            <div class="macro-form">
+              <label>แคลอรี (kcal)<input id="foodCalories" type="number" min="0"></label>
+              <label>โปรตีน (g)<input id="foodProtein" type="number" min="0" step=".1"></label>
+              <label>คาร์บ (g)<input id="foodCarbs" type="number" min="0" step=".1"></label>
+              <label>ไขมัน (g)<input id="foodFat" type="number" min="0" step=".1"></label>
+            </div>
+            <label class="field-label">ปริมาณ / หมายเหตุ</label><input id="foodServing" placeholder="เช่น ข้าว 1 จาน">
+            <div style="display:flex;gap:10px;margin-top:14px;">
+              <button class="primary-btn" id="saveScan" style="flex:1;">บันทึกเข้าวันนี้</button>
+              <button class="secondary-btn" id="saveToLibraryBtn" style="flex:1; background:#e7f4ed; color:var(--green);">บันทึกเข้าคลัง</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section id="page-diary" class="page"><div class="page-intro"><h2>บันทึกอาหาร</h2><p>ตรวจสอบรายการอาหารและสารอาหารย้อนหลัง</p></div><div class="toolbar"><input type="date" id="diaryDate"><button class="primary-btn" data-go="scanner">+ เพิ่มอาหาร</button></div><div id="diaryContent"></div></section>
-    <section id="page-weight" class="page"><div class="page-intro"><h2>น้ำหนักและสุขภาพ</h2><p>ติดตามการเปลี่ยนแปลงของร่างกายอย่างต่อเนื่อง</p></div><div class="weight-layout"><article class="panel"><h3>บันทึกน้ำหนัก</h3><label class="field-label">น้ำหนัก (กิโลกรัม)</label><input id="weightInput" type="number" step=".1" placeholder="เช่น 68.5"><label class="field-label">วันที่</label><input id="weightDate" type="date"><button class="primary-btn full" id="saveWeight">บันทึกน้ำหนัก</button></article><article class="panel"><h3>ข้อมูลสุขภาพ</h3><div class="macro-form"><label>ส่วนสูง (cm)<input id="heightInput" type="number" placeholder="170"></label><label>น้ำหนักเป้าหมาย (kg)<input id="targetWeight" type="number" step=".1" placeholder="60"></label></div><button class="secondary-btn full" id="saveProfile">บันทึกข้อมูล</button><div class="bmi-box"><small>BMI ล่าสุด</small><b id="bmiValue">—</b><span id="bmiLabel">กรอกส่วนสูงและน้ำหนัก</span></div></article></div><article class="panel"><div class="panel-head"><h3>ประวัติน้ำหนัก</h3></div><div id="weightHistory" class="table-wrap"></div></article></section>
+    
+    <section id="page-weight" class="page"><div class="page-intro"><h2>น้ำหนักและสุขภาพ</h2><p>ติดตามการเปลี่ยนแปลงของร่างกายอย่างต่อเนื่อง</p></div><div class="weight-layout"><article class="panel"><h3>บันทึกน้ำหนัก</h3><label class="field-label">น้ำหนัก (กิโลกรัม)</label><input id="weightInput" type="number" step=".1" placeholder="เช่น 68.5"><label class="field-label">วันที่</label><input id="weightDate" type="date"><button class="primary-btn full" id="saveWeight">บันทึกน้ำหนัก</button></article><article class="panel"><h3>ข้อมูลสุขภาพ & คำนวณ BMR / TDEE</h3>
+      <div class="macro-form">
+        <label>เพศ<select id="genderInput"><option value="male">ชาย</option><option value="female">หญิง</option></select></label>
+        <label>อายุ (ปี)<input id="ageInput" type="number" placeholder="25"></label>
+        <label>ส่วนสูง (cm)<input id="heightInput" type="number" placeholder="170"></label>
+        <label>น้ำหนักเป้าหมาย (kg)<input id="targetWeight" type="number" step=".1" placeholder="60"></label>
+      </div>
+      <label class="field-label">ระดับกิจกรรม (Activity Level)</label>
+      <select id="activityInput">
+        <option value="1.2">นั่งทำงานเป็นหลัก ไม่ค่อยออกกำลังกาย (1.2)</option>
+        <option value="1.375">ออกกำลังกายเบาๆ 1-3 วัน/สัปดาห์ (1.375)</option>
+        <option value="1.55">ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์ (1.55)</option>
+        <option value="1.725">ออกกำลังกายหนัก 6-7 วัน/สัปดาห์ (1.725)</option>
+        <option value="1.9">ออกกำลังกายหนักมาก / เป็นนักกีฬา (1.9)</option>
+      </select>
+      <button class="secondary-btn full" id="saveProfile">บันทึกข้อมูลส่วนตัว</button>
+      <div class="bmi-box"><small>BMI ล่าสุด</small><b id="bmiValue">—</b><span id="bmiLabel">กรอกส่วนสูงและน้ำหนัก</span></div>
+      <div class="calc-info-box">
+        <div><span>BMR (อัตราเผาผลาญพื้นฐาน):</span> <strong id="bmrValue">— kcal</strong></div>
+        <div><span>TDEE (พลังงานที่ใช้ต่อวัน):</span> <strong id="tdeeValue">— kcal</strong></div>
+      </div>
+    </article></div><article class="panel"><div class="panel-head"><h3>ประวัติน้ำหนัก</h3></div><div id="weightHistory" class="table-wrap"></div></article></section>
+
     <section id="page-fasting" class="page"><div class="page-intro"><h2>IF / Fasting</h2><p>ติดตามช่วงเวลาการอดอาหาร (Intermittent Fasting)</p></div><div class="fasting-card"><div class="eyebrow light">FASTING TIMER</div><div class="fasting-clock" id="fastClock">00:00:00</div><div id="fastStatus">ยังไม่ได้เริ่มจับเวลา</div><div class="fasting-controls"><select id="fastPlan"><option value="12">12 : 12</option><option value="14">14 : 10</option><option value="16" selected>16 : 8</option><option value="18">18 : 6</option><option value="20">20 : 4</option></select><button class="primary-btn" id="fastStart">เริ่มอดอาหาร</button><button class="secondary-btn" id="fastStop" disabled>จบช่วงอด</button></div></div><p class="muted tiny">ตัวจับเวลาเป็นเครื่องมือบันทึกพฤติกรรม ไม่ใช่คำแนะนำทางการแพทย์</p></section>
-    <section id="page-library" class="page"><div class="page-intro"><h2>คลังอาหาร</h2><p>บันทึกเมนูที่กินบ่อย เพื่อเพิ่มรายการได้รวดเร็ว</p></div><div class="toolbar"><input id="librarySearch" placeholder="ค้นหาอาหาร..."><button class="primary-btn" id="addFoodManual">+ เพิ่มอาหารเอง</button></div><div id="libraryContent" class="library-grid"></div></section>
-    <section id="page-settings" class="page"><div class="page-intro"><h2>ตั้งค่าและสำรองข้อมูล</h2><p>กำหนดเป้าหมายและจัดการข้อมูลในอุปกรณ์</p></div><div class="settings-grid"><article class="panel"><h3>เป้าหมายรายวัน</h3><div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div><button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article><article class="panel"><h3>Gemini API</h3><p class="muted">ใส่ API Key เพื่อเปิดใช้การวิเคราะห์ภาพอาหาร</p><label class="field-label">Gemini API Key</label><input id="apiKey" type="password" placeholder="วาง API Key ที่นี่"><label class="field-label">โมเดล</label><select id="geminiModel"><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="gemini-2.0-flash">Gemini 2.0 Flash</option></select><button class="secondary-btn full" id="saveApi">บันทึก API Key ในเครื่อง</button><p class="warning tiny">คำเตือน: API Key ที่เก็บในเบราว์เซอร์ไม่เหมาะกับเครื่องที่ใช้ร่วมกับผู้อื่น และผู้ถือ Key สามารถนำไปใช้เรียก API ได้</p></article><article class="panel"><h3>ข้อมูลและความเป็นส่วนตัว</h3><p class="muted">ข้อมูลอาหาร น้ำหนัก รูปภาพ และการตั้งค่าจะอยู่ใน IndexedDB ของเบราว์เซอร์นี้</p><div class="backup-actions"><button class="primary-btn" id="exportData">↓ Export JSON</button><label class="secondary-btn file-button">↑ Import JSON<input id="importFile" type="file" accept="application/json" hidden></label><button class="danger-btn" id="clearData">ลบข้อมูลทั้งหมด</button></div></article></div></section>
+
+    <section id="page-library" class="page">
+      <div class="page-intro"><h2>คลังอาหาร</h2><p>จัดการเมนูอาหารโปรด สามารถแก้ไขทุกค่าในการ์ด Pop-up แล้วกดบันทึกได้ทันที</p></div>
+      <div class="toolbar">
+        <input id="librarySearch" placeholder="ค้นหาอาหาร...">
+        <div style="display:flex;gap:8px;">
+          <button class="secondary-btn" id="libAddAiBtn" style="background:#e7f4ed; color:var(--green);">✦ เพิ่มอาหารด้วย AI</button>
+          <button class="primary-btn" id="showManualFormBtn">+ เพิ่มอาหารเอง</button>
+        </div>
+      </div>
+
+      <!-- การ์ดกรอกเพิ่มอาหารเองแบบแก้ไขทุกค่าได้ทีเดียว -->
+      <article id="manualAddCard" class="panel" hidden style="margin-bottom:18px; border:2.5px solid var(--green);">
+        <h3>+ เพิ่มอาหารใหม่ลงคลัง</h3>
+        <label class="field-label">ชื่ออาหาร</label>
+        <input id="manName" placeholder="เช่น ข้าวผัดอกไก่">
+        <div class="macro-form">
+          <label>แคลอรี (kcal)<input id="manCal" type="number" placeholder="350"></label>
+          <label>โปรตีน (g)<input id="manPro" type="number" step=".1" placeholder="30"></label>
+          <label>คาร์บ (g)<input id="manCarb" type="number" step=".1" placeholder="40"></label>
+          <label>ไขมัน (g)<input id="manFat" type="number" step=".1" placeholder="8"></label>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:14px;">
+          <button class="primary-btn" id="saveManualAdd" style="flex:1;">บันทึกเข้าคลัง</button>
+          <button class="secondary-btn" id="cancelManualAdd" style="flex:1;">ยกเลิก</button>
+        </div>
+      </article>
+
+      <div id="libraryContent" class="library-grid"></div>
+    </section>
+
+    <section id="page-settings" class="page"><div class="page-intro"><h2>ตั้งค่าและสำรองข้อมูล</h2><p>กำหนดเป้าหมายและจัดการข้อมูลในอุปกรณ์</p></div><div class="settings-grid"><article class="panel"><h3>เป้าหมายรายวัน</h3>
+      <button class="secondary-btn full" id="autoCalcBtn" style="margin-bottom:12px; background:#e7f4ed; color:var(--green); border:1px solid #bce1ce;">⚡ คำนวณเป้าหมายอัตโนมัติ (จาก BMR/TDEE)</button>
+      <div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div><button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article>
+
+      <article class="panel"><h3>Gemini API</h3><p class="muted">ใส่ API Key จาก Google AI Studio เพื่อเปิดใช้งาน AI ประมวลผลอาหาร</p><label class="field-label">Gemini API Key</label><input id="apiKey" type="password" placeholder="วาง API Key ที่นี่"><label class="field-label">โมเดล</label><select id="geminiModel"><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="gemini-2.0-flash">Gemini 2.0 Flash</option></select><button class="secondary-btn full" id="saveApi">บันทึก API Key ในเครื่อง</button><p class="warning tiny">คำเตือน: API Key ที่เก็บในเบราว์เซอร์ไม่เหมาะกับเครื่องที่ใช้ร่วมกับผู้อื่น และผู้ถือ Key สามารถนำไปใช้เรียก API ได้</p></article>
+
+      <article class="panel"><h3>ข้อมูลและความเป็นส่วนตัว</h3><p class="muted">ข้อมูลอาหาร น้ำหนัก รูปภาพ และการตั้งค่าจะอยู่ใน IndexedDB ของเบราว์เซอร์นี้</p><div class="backup-actions"><button class="primary-btn" id="exportData">↓ Export JSON</button><label class="secondary-btn file-button">↑ Import JSON<input id="importFile" type="file" accept="application/json" hidden></label><button class="danger-btn" id="clearData">ลบข้อมูลทั้งหมด</button></div></article></div></section>
+
     <footer>NutriLocal · Local-first health tracker <span>ข้อมูลโภชนาการจาก AI เป็นค่าประมาณ ควรตรวจสอบก่อนบันทึก</span></footer>
   </main>
 </div>
+
+<!-- 1. Modal เลือกมื้ออาหารเมื่อเพิ่มจากคลังในหน้า Library -->
+<div id="mealSelectModal" class="modal">
+  <div class="modal-box">
+    <h3>เลือกมื้ออาหาร</h3>
+    <p class="muted">เลือกมื้อที่ต้องการบันทึกอาหารนี้ลงไป</p>
+    <label class="field-label">มื้ออาหาร</label>
+    <select id="modalMealTarget" style="width:100%; padding:10px; border-radius:8px; border:1px solid #dfe8e2; margin-bottom:16px;">
+      <option value="อาหารเช้า">อาหารเช้า</option>
+      <option value="อาหารกลางวัน">อาหารกลางวัน</option>
+      <option value="อาหารเย็น">อาหารเย็น</option>
+      <option value="ของว่าง">ของว่าง</option>
+    </select>
+    <div style="display:flex; gap:10px;">
+      <button class="primary-btn" id="confirmAddLib" style="flex:1;">ยืนยันเพิ่มอาหาร</button>
+      <button class="secondary-btn" id="closeModal" style="flex:1;">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Modal Pop-up การ์ดแก้ไขอาหารในคลัง -->
+<div id="editLibraryModal" class="modal">
+  <div class="modal-box">
+    <h3>แก้ไขข้อมูลอาหารในการ์ด</h3>
+    <p class="muted">ปรับแต่งคุณค่าทางโภชนาการแล้วกดบันทึกทีเดียว</p>
+    <input type="hidden" id="editLibId">
+    <label class="field-label">ชื่ออาหาร</label>
+    <input id="editLibName" placeholder="ชื่ออาหาร">
+    <div class="macro-form">
+      <label>แคลอรี (kcal)<input id="editLibCal" type="number" min="0"></label>
+      <label>โปรตีน (g)<input id="editLibPro" type="number" step=".1" min="0"></label>
+      <label>คาร์บ (g)<input id="editLibCarb" type="number" step=".1" min="0"></label>
+      <label>ไขมัน (g)<input id="editLibFat" type="number" step=".1" min="0"></label>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:18px;">
+      <button class="primary-btn" id="saveEditLibBtn" style="flex:1;">บันทึกการแก้ไข</button>
+      <button class="secondary-btn" id="closeEditLibModal" style="flex:1;">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Modal Pop-up เลือกอาหารจากคลังเข้ามาในหน้า Diary -->
+<div id="pickFromLibModal" class="modal">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="margin:0;">เลือกอาหารจากคลัง</h3>
+      <button class="text-btn" id="closePickLibModal" style="font-size:18px; color:var(--muted);">✕</button>
+    </div>
+    <p class="muted" id="pickLibSubtitle">เลือกเมนูที่บันทึกไว้เข้ามื้ออาหาร</p>
+    <input id="pickLibSearch" placeholder="ค้นหาในคลัง..." style="margin-bottom:12px;">
+    <div id="pickLibList" style="max-height:300px; overflow-y:auto;"></div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
+
 <script>
 const DB_NAME='nutrilocal-db', DB_VERSION=1;
-let db, selectedImage=null, scanData=null, fastingInterval=null;
+let db, selectedImage=null, scanData=null, fastingInterval=null, activeLibIdForAdd=null, activeTargetMealForDiary=null;
 const $=id=>document.getElementById(id);
 const today=()=>new Date().toISOString().slice(0,10);
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
-const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0};
+const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0,gender:'male',age:25,activity:1.2};
 let settings={...defaults};
+
 function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=()=>{const d=req.result;['meals','weights','water','library','meta'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id',autoIncrement:true})})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
 function tx(store,mode='readonly'){return db.transaction(store,mode).objectStore(store)}
 function all(store){return new Promise((res,rej)=>{const r=tx(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
@@ -79,42 +259,537 @@ function clearStore(store){return new Promise((res,rej)=>{const r=tx(store,'read
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
 function getMeta(key){return all('meta').then(a=>a.find(x=>x.key===key)?.value)}
 async function setMeta(key,value){const a=(await all('meta')).find(x=>x.key===key);return put('meta',{id:a?.id,key,value})}
-async function loadSettings(){settings={...defaults,...(await getMeta('settings')||{})};$('goalCalories').value=settings.calories;$('goalProtein').value=settings.protein;$('goalCarbs').value=settings.carbs;$('goalFat').value=settings.fat;$('goalWater').value=settings.water;$('heightInput').value=settings.height||'';$('targetWeight').value=settings.targetWeight||'';$('apiKey').value=await getMeta('apiKey')||'';$('geminiModel').value=await getMeta('geminiModel')||'gemini-2.5-flash'}
-function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const names={dashboard:'ภาพรวมสุขภาพ',scanner:'สแกนอาหาร AI',diary:'บันทึกอาหาร',weight:'น้ำหนักและสุขภาพ',fasting:'IF / Fasting',library:'คลังอาหาร',settings:'ตั้งค่าและสำรองข้อมูล'};$('pageTitle').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='diary')renderDiary();if(page==='weight')renderWeights();if(page==='library')renderLibrary()}
+
+async function loadSettings(){
+  settings={...defaults,...(await getMeta('settings')||{})};
+  $('goalCalories').value=settings.calories;
+  $('goalProtein').value=settings.protein;
+  $('goalCarbs').value=settings.carbs;
+  $('goalFat').value=settings.fat;
+  $('goalWater').value=settings.water;
+  $('heightInput').value=settings.height||'';
+  $('targetWeight').value=settings.targetWeight||'';
+  $('genderInput').value=settings.gender||'male';
+  $('ageInput').value=settings.age||'';
+  $('activityInput').value=settings.activity||1.2;
+  $('apiKey').value=await getMeta('apiKey')||'';
+  $('geminiModel').value=await getMeta('geminiModel')||'gemini-2.5-flash';
+}
+
+function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const names={dashboard:'ภาพรวมสุขภาพ',scanner:'เพิ่มอาหาร AI',diary:'บันทึกอาหาร',weight:'น้ำหนักและสุขภาพ',fasting:'IF / Fasting',library:'คลังอาหาร',settings:'ตั้งค่าและสำรองข้อมูล'};$('pageTitle').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='diary')renderDiary();if(page==='weight')renderWeights();if(page==='library')renderLibrary()}
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)navigate(b.dataset.go)});
 $('todayLabel').textContent=new Intl.DateTimeFormat('th-TH',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
 $('dashDate').value=today();$('diaryDate').value=today();$('weightDate').value=today();
 $('dashDate').addEventListener('change',renderDashboard);$('diaryDate').addEventListener('change',renderDiary);
+
 async function renderDashboard(){const date=$('dashDate').value||today(),meals=(await all('meals')).filter(x=>x.date===date),sum=k=>meals.reduce((s,x)=>s+Number(x[k]||0),0);const c=sum('calories'),p=sum('protein'),cb=sum('carbs'),f=sum('fat');$('calConsumed').innerHTML=`${fmt(c)} <small>kcal</small>`;$('calGoal').textContent=fmt(settings.calories);$('calRemain').textContent=c>settings.calories?`เกิน ${fmt(c-settings.calories)}`:`เหลือ ${fmt(settings.calories-c)}`;$('calProgress').style.width=Math.min(100,c/settings.calories*100)+'%';[['protein',p],['carbs',cb],['fat',f]].forEach(([k,v])=>{$(k==='carbs'?'carbVal':k+'Val').innerHTML=`${fmt(v)} <small>g</small>`;$(k==='carbs'?'carbGoal':k+'Goal').textContent=fmt(settings[k]);$(k==='carbs'?'carbProgress':k+'Progress').style.width=Math.min(100,v/settings[k]*100)+'%'});
 $('todayMeals').className='meal-list'+(meals.length?'':' empty');$('todayMeals').innerHTML=meals.length?meals.map(m=>`<div class="food-row"><div><b>${esc(m.name)}</b><small>${esc(m.meal)} · ${esc(m.serving||'')}</small></div><div class="food-kcal">${fmt(m.calories)} kcal</div></div>`).join(''):'ยังไม่มีรายการอาหาร <button class="small-primary" data-go="scanner">+ เพิ่มอาหาร</button>';
 const waters=(await all('water')).filter(x=>x.date===date).reduce((s,x)=>s+x.amount,0);$('waterAmount').textContent=fmt(waters);$('waterGoal').textContent=fmt(settings.water);$('waterProgress').style.width=Math.min(100,waters/settings.water*100)+'%';await renderChart()}
 async function renderChart(){const meals=await all('meals'),days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const key=d.toISOString().slice(0,10);days.push({key,label:d.toLocaleDateString('th-TH',{weekday:'short'}),value:meals.filter(m=>m.date===key).reduce((s,m)=>s+Number(m.calories||0),0)})}const max=Math.max(settings.calories,...days.map(x=>x.value),1);$('weeklyChart').innerHTML=days.map(d=>`<div class="chart-col ${d.key===today()?'today':''}"><small>${d.value?fmt(d.value):''}</small><div class="chart-bar" style="height:${Math.max(2,d.value/max*105)}px"></div><small>${d.label}</small></div>`).join('')}
 document.querySelectorAll('[data-water]').forEach(b=>b.addEventListener('click',async()=>{const n=Number(b.dataset.water);const rows=(await all('water')).filter(x=>x.date===today());if(n>0)await add('water',{date:today(),amount:n,createdAt:Date.now()});else{let left=-n;for(const r of rows.reverse()){if(left<=0)break;const take=Math.min(left,r.amount);r.amount-=take;left-=take;if(r.amount===0)await del('water',r.id);else await put('water',r)}}renderDashboard()}));
-$('chooseImage').onclick=()=>$('foodImage').click();$('foodImage').onchange=e=>{const f=e.target.files[0];if(!f)return;selectedImage=f;const url=URL.createObjectURL(f);$('imagePreview').src=url;$('imagePreview').hidden=false;$('analyzeBtn').disabled=false;$('scanPlaceholder').hidden=false;$('scanResult').hidden=true};
-$('analyzeBtn').onclick=async()=>{const key=await getMeta('apiKey');if(!key){toast('กรุณาใส่ Gemini API Key ในเมนูตั้งค่าก่อน');navigate('settings');return}if(!selectedImage)return;const btn=$('analyzeBtn');btn.disabled=true;btn.textContent='กำลังวิเคราะห์...';try{const data=await fileToBase64(selectedImage),model=await getMeta('geminiModel')||'gemini-2.5-flash';const prompt=`วิเคราะห์อาหารไทยจากภาพนี้ ประเมินอาหารที่มองเห็นและปริมาณต่อหนึ่งจาน ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณโดยประมาณ","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"ข้อจำกัดหรือความไม่แน่นอน"} ค่าโภชนาการเป็นค่าประมาณ หากระบุไม่ได้ให้ประเมินอย่างระมัดระวัง`;const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt},{inline_data:{mime_type:selectedImage.type||'image/jpeg',data}}]}],generationConfig:{responseMimeType:'application/json',temperature:.2}})});if(!response.ok)throw new Error((await response.json()).error?.message||'Gemini API error');const result=await response.json(),raw=result.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'{}';scanData=JSON.parse(raw.replace(/```json|```/g,''));$('foodName').value=scanData.name||'';$('foodCalories').value=scanData.calories||0;$('foodProtein').value=scanData.protein||0;$('foodCarbs').value=scanData.carbs||0;$('foodFat').value=scanData.fat||0;$('foodServing').value=scanData.serving||'';$('scanPlaceholder').hidden=true;$('scanResult').hidden=false;if(scanData.notes)toast(scanData.notes)}catch(e){toast('วิเคราะห์ไม่สำเร็จ: '+e.message)}finally{btn.disabled=false;btn.textContent='✦ วิเคราะห์ด้วย Gemini AI'}};
+
+// Tab Switching ในหน้า Scanner
+$('tabTextBtn').onclick=()=>{
+  $('tabTextBtn').classList.add('active');
+  $('tabImgBtn').classList.remove('active');
+  $('modeText').hidden = false;
+  $('modeImage').hidden = true;
+};
+$('tabImgBtn').onclick=()=>{
+  $('tabImgBtn').classList.add('active');
+  $('tabTextBtn').classList.remove('active');
+  $('modeImage').hidden = false;
+  $('modeText').hidden = true;
+};
+
+$('chooseImage').onclick=()=>$('foodImage').click();
+$('foodImage').onchange=e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  selectedImage=f;
+  const url=URL.createObjectURL(f);
+  $('imagePreview').src=url;
+  $('imagePreview').hidden=false;
+  $('analyzeBtn').disabled=false;
+  $('scanPlaceholder').hidden=false;
+  $('scanResult').hidden=true;
+};
+
+async function callGeminiApi(payload) {
+  let key = $('apiKey').value.trim();
+  if(!key) key = await getMeta('apiKey');
+  if(!key) {
+    toast('กรุณาใส่ Gemini API Key ในเมนูตั้งค่าก่อน');
+    navigate('settings');
+    throw new Error('missing_api_key');
+  }
+
+  const model = $('geminiModel').value || await getMeta('geminiModel') || 'gemini-2.5-flash';
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || 'Gemini API Error');
+  }
+  const result = await response.json();
+  const raw = result.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '{}';
+  return JSON.parse(raw.replace(/```json|```/g, ''));
+}
+
+$('analyzeBtn').onclick=async()=>{
+  if(!selectedImage)return;
+  const btn=$('analyzeBtn');
+  btn.disabled=true;
+  btn.textContent='กำลังวิเคราะห์ภาพ...';
+  try{
+    const data=await fileToBase64(selectedImage);
+    const prompt=`วิเคราะห์อาหารไทยจากภาพนี้ ประเมินอาหารที่มองเห็นและปริมาณต่อหนึ่งจาน ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณโดยประมาณ","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"ข้อจำกัดหรือความไม่แน่นอน"} ค่าโภชนาการเป็นค่าประมาณ หากระบุไม่ได้ให้ประเมินอย่างระมัดระวัง`;
+    
+    scanData = await callGeminiApi({
+      contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: selectedImage.type||'image/jpeg', data } }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+    });
+
+    $('foodName').value=scanData.name||'';
+    $('foodCalories').value=scanData.calories||0;
+    $('foodProtein').value=scanData.protein||0;
+    $('foodCarbs').value=scanData.carbs||0;
+    $('foodFat').value=scanData.fat||0;
+    $('foodServing').value=scanData.serving||'';
+    $('scanPlaceholder').hidden=true;
+    $('scanResult').hidden=false;
+    if(scanData.notes) toast(scanData.notes);
+  }catch(e){
+    if(e.message !== 'missing_api_key') toast('วิเคราะห์ไม่สำเร็จ: '+e.message);
+  }finally{
+    btn.disabled=false;
+    btn.textContent='✦ วิเคราะห์ด้วย Gemini AI';
+  }
+};
+
+$('analyzeTextBtn').onclick=async()=>{
+  const name = $('textFoodName').value.trim();
+  const amount = $('textFoodAmount').value;
+  const unit = $('textFoodUnit').value;
+
+  if(!name) return toast('กรุณากรอกชื่ออาหาร');
+
+  const btn = $('analyzeTextBtn');
+  btn.disabled = true;
+  btn.textContent = 'กำลังวิเคราะห์ข้อความ...';
+
+  try {
+    const prompt = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${name}" ปริมาณ ${amount} ${unit} ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","serving":"ปริมาณที่ระบุ","calories":number,"protein":number,"carbs":number,"fat":number,"notes":"หมายเหตุหรือข้อมูลเพิ่มเติม"} ค่าโภชนาการเป็นค่าประมาณ`;
+    
+    scanData = await callGeminiApi({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+    });
+
+    $('foodName').value = scanData.name || name;
+    $('foodCalories').value = scanData.calories || 0;
+    $('foodProtein').value = scanData.protein || 0;
+    $('foodCarbs').value = scanData.carbs || 0;
+    $('foodFat').value = scanData.fat || 0;
+    $('foodServing').value = scanData.serving || `${amount} ${unit}`;
+    $('scanPlaceholder').hidden = true;
+    $('scanResult').hidden = false;
+    if(scanData.notes) toast(scanData.notes);
+  } catch(e) {
+    if(e.message !== 'missing_api_key') toast('วิเคราะห์ไม่สำเร็จ: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✦ วิเคราะห์ด้วย Gemini AI';
+  }
+};
+
 function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file)})}
-$('saveScan').onclick=async()=>{if(!$('foodName').value.trim())return toast('กรุณาระบุชื่ออาหาร');await add('meals',{date:today(),meal:$('scanMeal').value,name:$('foodName').value.trim(),serving:$('foodServing').value,calories:+$('foodCalories').value,protein:+$('foodProtein').value,carbs:+$('foodCarbs').value,fat:+$('foodFat').value,source:'gemini',image:selectedImage?await fileToBase64(selectedImage):null,mime:selectedImage?.type||null,createdAt:Date.now()});toast('บันทึกอาหารแล้ว');selectedImage=null;$('foodImage').value='';$('imagePreview').hidden=true;$('scanResult').hidden=true;$('scanPlaceholder').hidden=false;navigate('dashboard')};
-async function renderDiary(){const date=$('diaryDate').value||today(),rows=(await all('meals')).filter(x=>x.date===date),groups=['อาหารเช้า','อาหารกลางวัน','อาหารเย็น','ของว่าง'];$('diaryContent').innerHTML=groups.map(g=>{const a=rows.filter(x=>x.meal===g);return `<article class="panel meal-group"><h3>${g} · ${fmt(a.reduce((s,x)=>s+x.calories,0))} kcal</h3>${a.length?a.map(x=>`<div class="food-row"><div><b>${esc(x.name)}</b><small>${esc(x.serving||'')} · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</small></div><div class="food-kcal">${fmt(x.calories)} kcal<br><button data-delete-meal="${x.id}">ลบ</button></div></div>`).join(''):'<p class="muted">ยังไม่มีรายการ</p>'}</article>`}).join('')||'<p>ไม่มีข้อมูล</p>'}
-$('diaryContent').addEventListener('click',async e=>{const b=e.target.closest('[data-delete-meal]');if(b&&confirm('ลบรายการอาหารนี้?')){await del('meals',Number(b.dataset.deleteMeal));renderDiary();renderDashboard()}});
+
+// บันทึกอาหารเข้าวันนี้จากการ์ดในหน้า Scanner
+$('saveScan').onclick=async()=>{
+  const mealSelect = $('mainMealSelect').value;
+  if(!$('foodName').value.trim())return toast('กรุณาระบุชื่ออาหาร');
+  await add('meals',{
+    date:today(),
+    meal:mealSelect,
+    name:$('foodName').value.trim(),
+    serving:$('foodServing').value,
+    calories:+$('foodCalories').value,
+    protein:+$('foodProtein').value,
+    carbs:+$('foodCarbs').value,
+    fat:+$('foodFat').value,
+    source:'gemini',
+    image:selectedImage?await fileToBase64(selectedImage):null,
+    mime:selectedImage?.type||null,
+    createdAt:Date.now()
+  });
+  toast('บันทึกอาหารเข้าวันนี้แล้ว');
+  selectedImage=null;
+  $('foodImage').value='';
+  $('imagePreview').hidden=true;
+  $('scanResult').hidden=true;
+  $('scanPlaceholder').hidden=false;
+  navigate('dashboard');
+};
+
+// บันทึกอาหารเข้าคลังจากการ์ดในหน้า Scanner
+$('saveToLibraryBtn').onclick=async()=>{
+  if(!$('foodName').value.trim())return toast('กรุณาระบุชื่ออาหาร');
+  await add('library',{
+    name:$('foodName').value.trim(),
+    calories:+$('foodCalories').value||0,
+    protein:+$('foodProtein').value||0,
+    carbs:+$('foodCarbs').value||0,
+    fat:+$('foodFat').value||0
+  });
+  toast('บันทึกเมนูลงคลังอาหารเรียบร้อย');
+};
+
+// หน้าบันทึกอาหาร (Diary)
+async function renderDiary(){
+  const date=$('diaryDate').value||today(),rows=(await all('meals')).filter(x=>x.date===date),groups=['อาหารเช้า','อาหารกลางวัน','อาหารเย็น','ของว่าง'];
+  $('diaryContent').innerHTML=groups.map(g=>{
+    const a=rows.filter(x=>x.meal===g);
+    return `<article class="panel meal-group">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h3 style="margin:0;">${g} · ${fmt(a.reduce((s,x)=>s+x.calories,0))} kcal</h3>
+        <button class="secondary-btn" data-pick-lib-meal="${g}" style="font-size:11px; padding:5px 10px; background:#e7f4ed; color:var(--green);">+ เพิ่มจากคลัง</button>
+      </div>
+      ${a.length?a.map(x=>`<div class="food-row"><div><b>${esc(x.name)}</b><small>${esc(x.serving||'')} · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</small></div><div class="food-kcal">${fmt(x.calories)} kcal<br><button data-delete-meal="${x.id}">ลบ</button></div></div>`).join(''):'<p class="muted">ยังไม่มีรายการ</p>'}
+    </article>`
+  }).join('')||'<p>ไม่มีข้อมูล</p>';
+}
+
+// คลิกปุ่มในหน้า Diary
+$('diaryContent').addEventListener('click',async e=>{
+  const delBtn=e.target.closest('[data-delete-meal]');
+  if(delBtn && confirm('ลบรายการอาหารนี้?')){
+    await del('meals',Number(delBtn.dataset.deleteMeal));
+    renderDiary();renderDashboard();
+    return;
+  }
+  const pickBtn=e.target.closest('[data-pick-lib-meal]');
+  if(pickBtn){
+    activeTargetMealForDiary = pickBtn.dataset.pickLibMeal;
+    $('pickLibSubtitle').textContent = `เลือกเมนูอาหารบันทึกเข้ามื้อ [${activeTargetMealForDiary}]`;
+    $('pickLibSearch').value = '';
+    renderPickLibList();
+    $('pickFromLibModal').classList.add('show');
+  }
+});
+
+// แสดงรายการคลังอาหารใน Modal เพื่อกดเลือกเข้า Diary
+async function renderPickLibList(){
+  const q = ($('pickLibSearch').value||'').toLowerCase();
+  const libItems = (await all('library')).filter(x=>x.name.toLowerCase().includes(q));
+  $('pickLibList').innerHTML = libItems.length ? libItems.map(item=>`
+    <div class="lib-select-item" data-select-food-id="${item.id}">
+      <div>
+        <b style="display:block;">${esc(item.name)}</b>
+        <small class="muted">P ${fmt(item.protein)}g · C ${fmt(item.carbs)}g · F ${fmt(item.fat)}g</small>
+      </div>
+      <strong style="color:var(--green);">${fmt(item.calories)} kcal</strong>
+    </div>
+  `).join('') : '<p class="muted" style="text-align:center; padding:15px;">ไม่พบรายการในคลัง</p>';
+}
+
+$('pickLibSearch').oninput = renderPickLibList;
+$('closePickLibModal').onclick = ()=>$('pickFromLibModal').classList.remove('show');
+
+// คลิกเลือกอาหารจาก Modal เข้าไปใน Diary (เชื่อมโยงกับ Library ID)
+$('pickLibList').addEventListener('click', async e=>{
+  const itemEl = e.target.closest('[data-select-food-id]');
+  if(!itemEl) return;
+  const foodId = Number(itemEl.dataset.selectFoodId);
+  const foodList = await all('library');
+  const selectedFood = foodList.find(x=>x.id===foodId);
+  if(!selectedFood) return;
+
+  await add('meals',{
+    date: $('diaryDate').value || today(),
+    meal: activeTargetMealForDiary,
+    name: selectedFood.name,
+    serving: '1 ชุด',
+    calories: selectedFood.calories,
+    protein: selectedFood.protein,
+    carbs: selectedFood.carbs,
+    fat: selectedFood.fat,
+    source: 'library',
+    libraryId: selectedFood.id, // ผูกรหัสคลังอาหารเพื่อให้อัปเดตตามได้
+    createdAt: Date.now()
+  });
+
+  toast(`เพิ่ม "${selectedFood.name}" ลงมื้อ ${activeTargetMealForDiary} แล้ว`);
+  $('pickFromLibModal').classList.remove('show');
+  renderDiary();
+  renderDashboard();
+});
+
+$('diaryDate').addEventListener('change',renderDiary);
 $('saveWeight').onclick=async()=>{const w=+$('weightInput').value;if(!w)return toast('กรุณากรอกน้ำหนัก');await add('weights',{date:$('weightDate').value||today(),weight:w});$('weightInput').value='';toast('บันทึกน้ำหนักแล้ว');renderWeights()};
-$('saveProfile').onclick=async()=>{settings.height=+$('heightInput').value||0;settings.targetWeight=+$('targetWeight').value||0;await setMeta('settings',settings);renderWeights();toast('บันทึกข้อมูลแล้ว')};
-async function renderWeights(){const rows=(await all('weights')).sort((a,b)=>b.date.localeCompare(a.date));$('weightHistory').innerHTML=rows.length?`<table><thead><tr><th>วันที่</th><th>น้ำหนัก</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.date}</td><td>${r.weight} kg</td><td><button data-del-weight="${r.id}" class="text-btn">ลบ</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">ยังไม่มีประวัติน้ำหนัก</p>';const w=rows[0]?.weight,bmi=settings.height&&w?w/((settings.height/100)**2):0;$('bmiValue').textContent=bmi?bmi.toFixed(1):'—';$('bmiLabel').textContent=bmi?(bmi<18.5?'ต่ำกว่าเกณฑ์':bmi<23?'อยู่ในช่วงอ้างอิงสำหรับคนเอเชีย':bmi<25?'น้ำหนักเกิน':'อ้วน'): 'กรอกส่วนสูงและบันทึกน้ำหนัก'}
+
+function calculateBmrTdee(weight, height, age, gender, activity) {
+  if (!weight || !height || !age) return { bmr: 0, tdee: 0 };
+  let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+  bmr = gender === 'male' ? bmr + 5 : bmr - 161;
+  const tdee = bmr * Number(activity);
+  return { bmr: Math.round(bmr), tdee: Math.round(tdee) };
+}
+
+$('saveProfile').onclick=async()=>{
+  settings.gender=$('genderInput').value;
+  settings.age=+$('ageInput').value||0;
+  settings.height=+$('heightInput').value||0;
+  settings.targetWeight=+$('targetWeight').value||0;
+  settings.activity=+$('activityInput').value||1.2;
+  await setMeta('settings',settings);
+  renderWeights();
+  toast('บันทึกข้อมูลส่วนตัวแล้ว');
+};
+
+async function renderWeights(){
+  const rows=(await all('weights')).sort((a,b)=>b.date.localeCompare(a.date));
+  $('weightHistory').innerHTML=rows.length?`<table><thead><tr><th>วันที่</th><th>น้ำหนัก</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r.date}</td><td>${r.weight} kg</td><td><button data-del-weight="${r.id}" class="text-btn">ลบ</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">ยังไม่มีประวัติน้ำหนัก</p>';
+  const w=rows[0]?.weight;
+  const bmi=settings.height&&w?w/((settings.height/100)**2):0;
+  $('bmiValue').textContent=bmi?bmi.toFixed(1):'—';
+  $('bmiLabel').textContent=bmi?(bmi<18.5?'ต่ำกว่าเกณฑ์':bmi<23?'อยู่ในช่วงอ้างอิงสำหรับคนเอเชีย':bmi<25?'น้ำหนักเกิน':'อ้วน'): 'กรอกส่วนสูงและบันทึกน้ำหนัก';
+  const { bmr, tdee } = calculateBmrTdee(w, settings.height, settings.age, settings.gender, settings.activity);
+  $('bmrValue').textContent = bmr ? `${fmt(bmr)} kcal` : '— kcal';
+  $('tdeeValue').textContent = tdee ? `${fmt(tdee)} kcal` : '— kcal';
+}
+
+$('autoCalcBtn').onclick=async()=>{
+  const rows=(await all('weights')).sort((a,b)=>b.date.localeCompare(a.date));
+  const w=rows[0]?.weight;
+  const h=settings.height || +$('heightInput').value;
+  const a=settings.age || +$('ageInput').value;
+  const g=settings.gender || $('genderInput').value;
+  const act=settings.activity || +$('activityInput').value;
+  if(!w || !h || !a) return toast('กรุณากรอกข้อมูล อายุ, ส่วนสูง และบันทึกน้ำหนักในหน้า "น้ำหนักและสุขภาพ" ก่อน');
+  const { bmr, tdee } = calculateBmrTdee(w, h, a, g, act);
+  if(!tdee) return toast('คำนวณไม่สำเร็จ กรุณาตรวจสอบข้อมูลส่วนตัว');
+  const calories = tdee;
+  const protein = Math.round((calories * 0.25) / 4);
+  const carbs = Math.round((calories * 0.50) / 4);
+  const fat = Math.round((calories * 0.25) / 9);
+  const water = Math.round(w * 35);
+  $('goalCalories').value = calories;
+  $('goalProtein').value = protein;
+  $('goalCarbs').value = carbs;
+  $('goalFat').value = fat;
+  $('goalWater').value = water;
+  toast(`คำนวณเป้าหมายจาก TDEE (${calories} kcal) เรียบร้อยแล้ว`);
+};
+
 $('weightHistory').addEventListener('click',async e=>{const b=e.target.closest('[data-del-weight]');if(b){await del('weights',Number(b.dataset.delWeight));renderWeights()}});
 $('saveGoals').onclick=async()=>{settings={...settings,calories:+$('goalCalories').value||2000,protein:+$('goalProtein').value||100,carbs:+$('goalCarbs').value||220,fat:+$('goalFat').value||65,water:+$('goalWater').value||2000};await setMeta('settings',settings);toast('บันทึกเป้าหมายแล้ว');renderDashboard()};
-$('saveApi').onclick=async()=>{await setMeta('apiKey',$('apiKey').value.trim());await setMeta('geminiModel',$('geminiModel').value);toast('บันทึกการตั้งค่า AI ในเครื่องแล้ว')};
-$('addFoodManual').onclick=async()=>{const name=prompt('ชื่ออาหาร');if(!name)return;const cal=Number(prompt('แคลอรี (kcal)','0'));const protein=Number(prompt('โปรตีน (g)','0'));const carbs=Number(prompt('คาร์โบไฮเดรต (g)','0'));const fat=Number(prompt('ไขมัน (g)','0'));await add('library',{name,calories:cal,protein,carbs,fat});renderLibrary()};
-async function renderLibrary(){const q=($('librarySearch').value||'').toLowerCase(),rows=(await all('library')).filter(x=>x.name.toLowerCase().includes(q));$('libraryContent').innerHTML=rows.length?rows.map(x=>`<article class="library-card"><h3>${esc(x.name)}</h3><p>${fmt(x.calories)} kcal · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary-btn" data-add-lib="${x.id}">เพิ่มลงวันนี้</button><button class="danger-btn" data-delete-lib="${x.id}">ลบอาหาร</button></div></article>`).join(''):'<p class="muted">ยังไม่มีอาหารในคลัง</p>'}
-$('librarySearch').oninput=renderLibrary;$('libraryContent').addEventListener('click',async e=>{const delBtn=e.target.closest('[data-delete-lib]');if(delBtn){const id=Number(delBtn.dataset.deleteLib);const x=(await all('library')).find(a=>a.id===id);if(!x)return;if(!confirm(`ยืนยันลบ \"${x.name}\" ออกจากคลังอาหาร?\nรายการที่บันทึกลงไดอารี่ไปแล้วจะไม่ถูกลบ`))return;await del('library',id);toast('ลบอาหารออกจากคลังแล้ว');await renderLibrary();return}const b=e.target.closest('[data-add-lib]');if(!b)return;const x=(await all('library')).find(a=>a.id===Number(b.dataset.addLib));if(!x)return;const {id,...food}=x;await add('meals',{...food,date:today(),meal:'ของว่าง',serving:'',source:'library',createdAt:Date.now()});toast('เพิ่มอาหารแล้ว');renderDashboard()});
+$('saveApi').onclick=async()=>{
+  await setMeta('apiKey', $('apiKey').value.trim());
+  await setMeta('geminiModel', $('geminiModel').value);
+  toast('บันทึกการตั้งค่า AI ในเครื่องแล้ว');
+};
+
+// สลับเปิด/ปิดการ์ดเพิ่มอาหารเอง
+$('showManualFormBtn').onclick=()=>{
+  $('manualAddCard').hidden = !$('manualAddCard').hidden;
+};
+$('cancelManualAdd').onclick=()=>{
+  $('manualAddCard').hidden = true;
+};
+
+// บันทึกการเพิ่มอาหารเองจากการ์ด
+$('saveManualAdd').onclick=async()=>{
+  const name = $('manName').value.trim();
+  if(!name) return toast('กรุณากรอกชื่ออาหาร');
+  
+  await add('library',{
+    name: name,
+    calories: Number($('manCal').value) || 0,
+    protein: Number($('manPro').value) || 0,
+    carbs: Number($('manCarb').value) || 0,
+    fat: Number($('manFat').value) || 0
+  });
+
+  $('manName').value = '';
+  $('manCal').value = '';
+  $('manPro').value = '';
+  $('manCarb').value = '';
+  $('manFat').value = '';
+  $('manualAddCard').hidden = true;
+
+  toast('เพิ่มอาหารลงคลังเรียบร้อยแล้ว');
+  renderLibrary();
+};
+
+// เพิ่มอาหารด้วย AI ในหน้าคลัง
+$('libAddAiBtn').onclick=async()=>{
+  const foodQuery = prompt('พิมพ์ชื่ออาหารที่ต้องการให้ AI วิเคราะห์เพิ่มลงคลังอาหาร:');
+  if(!foodQuery) return;
+  
+  try {
+    toast('กำลังให้ AI วิเคราะห์...');
+    const promptText = `วิเคราะห์คุณค่าทางโภชนาการของอาหาร: "${foodQuery}" จำนวน 1 ที่ ตอบเป็น JSON เท่านั้น ห้ามใส่ markdown รูปแบบ {"name":"ชื่ออาหารภาษาไทย","calories":number,"protein":number,"carbs":number,"fat":number} ค่าโภชนาการเป็นค่าประมาณ`;
+    const result = await callGeminiApi({
+      contents: [{ parts: [{ text: promptText }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+    });
+
+    await add('library',{
+      name: result.name || foodQuery,
+      calories: Number(result.calories) || 0,
+      protein: Number(result.protein) || 0,
+      carbs: Number(result.carbs) || 0,
+      fat: Number(result.fat) || 0
+    });
+    toast('เพิ่มเมนูจาก AI ลงคลังอาหารแล้ว');
+    renderLibrary();
+  } catch(e) {
+    if(e.message !== 'missing_api_key') toast('วิเคราะห์ไม่สำเร็จ: '+e.message);
+  }
+};
+
+// แสดงรายการคลังอาหาร
+async function renderLibrary(){
+  const q=($('librarySearch').value||'').toLowerCase();
+  const rows=(await all('library')).filter(x=>x.name.toLowerCase().includes(q));
+  
+  $('libraryContent').innerHTML=rows.length?rows.map(x=>`
+    <article class="library-card">
+      <h3>${esc(x.name)}</h3>
+      <p>${fmt(x.calories)} kcal · P ${fmt(x.protein)}g · C ${fmt(x.carbs)}g · F ${fmt(x.fat)}g</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;">
+        <button class="secondary-btn" data-add-lib="${x.id}" style="padding:6px 10px;font-size:11px;">เพิ่มลงวันนี้</button>
+        <button class="primary-btn" data-open-edit-lib="${x.id}" style="padding:6px 10px;font-size:11px;background:#397d9e;">แก้ไขการ์ด</button>
+        <button class="danger-btn" data-delete-lib="${x.id}" style="padding:6px 10px;font-size:11px;">ลบ</button>
+      </div>
+    </article>`).join(''):'<p class="muted">ยังไม่มีอาหารในคลัง</p>';
+}
+
+$('librarySearch').oninput=renderLibrary;
+
+// จัดการการ์ดในคลังอาหาร
+$('libraryContent').addEventListener('click',async e=>{
+  const delBtn=e.target.closest('[data-delete-lib]');
+  if(delBtn){
+    const id=Number(delBtn.dataset.deleteLib);
+    const x=(await all('library')).find(a=>a.id===id);
+    if(!x)return;
+    if(!confirm(`ยืนยันลบ "${x.name}" ออกจากคลังอาหาร?`))return;
+    await del('library',id);
+    toast('ลบอาหารออกจากคลังแล้ว');
+    await renderLibrary();
+    return;
+  }
+
+  // เปิด Pop-up Modal การ์ดแก้ไขอาหาร
+  const editBtn=e.target.closest('[data-open-edit-lib]');
+  if(editBtn){
+    const id=Number(editBtn.dataset.openEditLib);
+    const list = await all('library');
+    const item = list.find(a=>a.id===id);
+    if(!item) return;
+
+    $('editLibId').value = item.id;
+    $('editLibName').value = item.name;
+    $('editLibCal').value = item.calories;
+    $('editLibPro').value = item.protein;
+    $('editLibCarb').value = item.carbs;
+    $('editLibFat').value = item.fat;
+
+    $('editLibraryModal').classList.add('show');
+    return;
+  }
+
+  const addBtn=e.target.closest('[data-add-lib]');
+  if(addBtn){
+    activeLibIdForAdd = Number(addBtn.dataset.addLib);
+    $('mealSelectModal').classList.add('show');
+  }
+});
+
+// ปิด Pop-up Modal การ์ดแก้ไขอาหาร
+$('closeEditLibModal').onclick = ()=>$('editLibraryModal').classList.remove('show');
+
+// บันทึกค่าแก้ไขจากการ์ด Pop-up Modal ในคลังอาหาร พร้อมซิงค์ข้อมูลไปประวัติมื้ออาหารที่อ้างอิงถึง
+$('saveEditLibBtn').onclick = async()=>{
+  const id = Number($('editLibId').value);
+  const name = $('editLibName').value.trim();
+  if(!name) return toast('กรุณาระบุชื่ออาหาร');
+
+  const updatedItem = {
+    id: id,
+    name: name,
+    calories: Number($('editLibCal').value) || 0,
+    protein: Number($('editLibPro').value) || 0,
+    carbs: Number($('editLibCarb').value) || 0,
+    fat: Number($('editLibFat').value) || 0
+  };
+
+  // 1. อัปเดตในคลังอาหาร
+  await put('library', updatedItem);
+
+  // 2. ซิงค์อัปเดตข้อมูลในประวัติมื้ออาหาร (meals) ที่เคยเพิ่มมาจากคลังนี้ (อ้างอิงด้วย libraryId)
+  const allMeals = await all('meals');
+  for(const m of allMeals) {
+    if(m.libraryId === id) {
+      m.name = updatedItem.name;
+      m.calories = updatedItem.calories;
+      m.protein = updatedItem.protein;
+      m.carbs = updatedItem.carbs;
+      m.fat = updatedItem.fat;
+      await put('meals', m);
+    }
+  }
+
+  toast('บันทึกการแก้ไขและอัปเดตข้อมูลทุกส่วนแล้ว');
+  $('editLibraryModal').classList.remove('show');
+  renderLibrary();
+  renderDashboard();
+  renderDiary();
+};
+
+// Modal ควบคุมการเพิ่มอาหารจากคลังไปเลือกมื้อ
+$('closeModal').onclick=()=>$('mealSelectModal').classList.remove('show');
+$('confirmAddLib').onclick=async()=>{
+  if(!activeLibIdForAdd) return;
+  const list = await all('library');
+  const x = list.find(a=>a.id===activeLibIdForAdd);
+  if(!x) return;
+
+  const targetMeal = $('modalMealTarget').value;
+  await add('meals',{
+    name: x.name,
+    calories: x.calories,
+    protein: x.protein,
+    carbs: x.carbs,
+    fat: x.fat,
+    date: today(),
+    meal: targetMeal,
+    serving: '1 ชุด',
+    source: 'library',
+    libraryId: x.id, // ผูกรหัสคลัง
+    createdAt: Date.now()
+  });
+  toast(`เพิ่ม "${x.name}" ไปยัง ${targetMeal} แล้ว`);
+  $('mealSelectModal').classList.remove('show');
+  activeLibIdForAdd = null;
+  renderDashboard();
+};
+
 $('fastStart').onclick=async()=>{await setMeta('fastStart',Date.now());$('fastStart').disabled=true;$('fastStop').disabled=false;runFastTimer();toast('เริ่มจับเวลาแล้ว')};
 $('fastStop').onclick=async()=>{const start=await getMeta('fastStart');if(start){const duration=Date.now()-start;await add('meta',{key:'fastHistory',value:{start,end:Date.now(),duration}});await setMeta('fastStart',null)}clearInterval(fastingInterval);$('fastStart').disabled=false;$('fastStop').disabled=true;$('fastClock').textContent='00:00:00';$('fastStatus').textContent='จบช่วงอดอาหารแล้ว';toast('บันทึกช่วงเวลาแล้ว')};
 async function runFastTimer(){const start=await getMeta('fastStart');if(!start)return;const tick=()=>{let s=Math.floor((Date.now()-start)/1000);$('fastClock').textContent=[Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(x=>String(x).padStart(2,'0')).join(':');$('fastStatus').textContent='กำลังอดอาหาร · เป้าหมาย '+$('fastPlan').value+' ชั่วโมง'};tick();clearInterval(fastingInterval);fastingInterval=setInterval(tick,1000)}
 $('exportData').onclick=async()=>{const data={app:'NutriLocal',version:1,exportedAt:new Date().toISOString(),settings,stores:{}};for(const s of ['meals','weights','water','library','meta'])data.stores[s]=await all(s);const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`nutrilocal-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href);toast('ส่งออกข้อมูลแล้ว')};
-$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d.stores)throw Error('รูปแบบไฟล์ไม่ถูกต้อง');if(!confirm('นำเข้าข้อมูลและแทนที่ข้อมูลเดิมทั้งหมด?'))return;for(const s of ['meals','weights','water','library','meta']){await clearStore(s);for(const item of d.stores[s]||[])await put(s,item)}settings={...defaults,...(d.settings||{})};await setMeta('settings',settings);await loadSettings();toast('นำเข้าข้อมูลสำเร็จ');renderDashboard()}catch(err){toast('นำเข้าไม่สำเร็จ: '+err.message)}e.target.value=''};
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d.stores)throw Error('รูปแบบไฟล์ไม่ถูกต้อง');if(!confirm('นำเข้าข้อมูลและแทนที่ข้อมูลเดิมทั้งหมด?'))return;for(const s of ['meals','weights','water','library','meta']){await clearStore(s);for(const item of d.stores[s]||[])await put(s,item)}settings={...defaults, ...(d.settings||{})};await setMeta('settings',settings);await loadSettings();toast('นำเข้าข้อมูลสำเร็จ');renderDashboard()}catch(err){toast('นำเข้าไม่สำเร็จ: '+err.message)}e.target.value=''};
 $('clearData').onclick=async()=>{if(!confirm('ยืนยันลบข้อมูลทั้งหมดในเว็บแอปนี้? การลบไม่สามารถย้อนกลับได้'))return;for(const s of ['meals','weights','water','library','meta'])await clearStore(s);settings={...defaults};await loadSettings();renderDashboard();toast('ลบข้อมูลทั้งหมดแล้ว')};
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 $('profileBtn').onclick=()=>navigate('settings');
-(async()=>{try{db=await openDB();await loadSettings();await renderDashboard();await runFastTimer();/* Service Worker is unavailable for a file:// page */}catch(e){console.error(e);toast('ไม่สามารถเปิดฐานข้อมูลในเบราว์เซอร์นี้ได้')}})();
-
+(async()=>{try{db=await openDB();await loadSettings();await renderDashboard();await runFastTimer();}catch(e){console.error(e);toast('ไม่สามารถเปิดฐานข้อมูลในเบราว์เซอร์นี้ได้')}})();
 </script>
 </body></html>
