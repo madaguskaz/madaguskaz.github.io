@@ -302,7 +302,14 @@ const DB_NAME='nutrilocal-db', DB_VERSION=1;
 let db, selectedImage=null, scanData=null, fastingInterval=null, activeLibIdForAdd=null, activeTargetMealForDiary=null;
 let isAiAddMode = false;
 const $=id=>document.getElementById(id);
-const today=()=>new Date().toISOString().slice(0,10);
+const today = () => {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Bangkok',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(new Date());
+};
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0,gender:'male',age:25,activity:1.2};
 let settings={...defaults};
