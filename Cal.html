@@ -230,11 +230,16 @@
       <button class="secondary-btn full" id="autoCalcBtn" style="margin-bottom:12px; background:#e7f4ed; color:var(--green); border:1px solid #bce1ce;">⚡ คำนวณเป้าหมายอัตโนมัติ (จาก BMR/TDEE)</button>
       <div style="background:#f4f9f6; border:1px solid #d5e8dd; border-radius:10px; padding:12px; margin-bottom:14px;">
         <label style="font-size:12px; font-weight:600; color:var(--green); display:block; margin-bottom:6px;">🎯 กำหนดแคลอรีเป้าหมาย (เช่น ทำ Calorie Deficit)</label>
+        <select id="deficitModeSelect" style="width:100%; padding:8px; font-size:12px; border-radius:8px; border:1px solid #cfe3d7; background:#fff; margin-bottom:8px;">
+          <option value="keep_protein_recomp">คงโปรตีนเดิม + เติมคาร์บซ้อมเวท (ลดไขมันส่วนเกิน — แนะนำ)</option>
+          <option value="keep_protein_balanced">คงโปรตีนเดิม + ลดคาร์บและไขมันตามสัดส่วน</option>
+          <option value="proportional">ลดทุกสารอาหารตามสัดส่วนแคลอรี</option>
+        </select>
         <div style="display:flex; gap:8px;">
           <input id="targetKcalInput" type="number" min="500" placeholder="เช่น 1900" style="flex:1;">
           <button class="primary-btn" id="applyTargetKcalBtn" style="white-space:nowrap;">คำนวณสารอาหารตามแคล</button>
         </div>
-        <small class="muted" style="display:block; margin-top:5px; font-size:11px;">ปรับสัดส่วนโปรตีน คาร์บ และไขมันให้อัตโนมัติตามแคลอรีที่กำหนด (คงค่าเป้าหมายน้ำดื่มไว้ตามน้ำหนักตัว)</small>
+        <small class="muted" id="deficitModeHint" style="display:block; margin-top:5px; font-size:11px;">คงค่าโปรตีนเดิมไว้ และจัดคาร์บ ~1.3 เท่าของโปรตีนเพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)</small>
       </div>
       <div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div><button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article>
 
@@ -763,17 +768,57 @@ $('autoCalcBtn').onclick=async()=>{
   toast(`คำนวณเป้าหมายจาก TDEE (${tdee} kcal) เรียบร้อยแล้ว`);
 };
 
+$('deficitModeSelect').addEventListener('change', () => {
+  const mode = $('deficitModeSelect').value;
+  const hints = {
+    keep_protein_recomp: 'คงค่าโปรตีนเดิมไว้ และจัดคาร์บ ~1.3 เท่าของโปรตีนเพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)',
+    keep_protein_balanced: 'คงค่าโปรตีนเดิมไว้ แล้วหักลบพลังงานที่ลดลงจากคาร์บและไขมันตามสัดส่วน',
+    proportional: 'ปรับลดโปรตีน คาร์บ และไขมันลงตามสัดส่วนแคลอรีที่เปลี่ยนไป'
+  };
+  $('deficitModeHint').textContent = hints[mode] || '';
+});
+
 $('applyTargetKcalBtn').onclick=()=>{
   const targetKcal = Number($('targetKcalInput').value);
   if(!targetKcal || targetKcal < 500) return toast('กรุณากรอกแคลอรีเป้าหมายที่ถูกต้อง (อย่างน้อย 500 kcal)');
   
+  const mode = $('deficitModeSelect').value;
   const prevKcal = Number($('goalCalories').value) || settings.calories || 0;
   const prevPro = Number($('goalProtein').value) || 0;
   const prevCarb = Number($('goalCarbs').value) || 0;
   const prevFat = Number($('goalFat').value) || 0;
 
   $('goalCalories').value = Math.round(targetKcal);
-  if (prevKcal > 0 && (prevPro > 0 || prevCarb > 0 || prevFat > 0)) {
+
+  if (mode === 'keep_protein_recomp' && prevPro > 0) {
+    const proKcal = prevPro * 4;
+    const remKcal = Math.max(0, targetKcal - proKcal);
+    // Target carbs at ~1.3x protein to support glycogen & protein sparing, keeping fat at least ~0.5g/kg (or min 30g)
+    const minFat = Math.max(30, Math.round((settings.height ? 38 : 35)));
+    let carbG = Math.round(prevPro * 1.32);
+    let fatG = Math.round((remKcal - (carbG * 4)) / 9);
+    if (fatG < minFat) {
+      fatG = minFat;
+      carbG = Math.max(0, Math.round((remKcal - (fatG * 9)) / 4));
+    }
+    $('goalProtein').value = Math.round(prevPro);
+    $('goalCarbs').value = carbG;
+    $('goalFat').value = fatG;
+  } else if (mode === 'keep_protein_balanced' && prevPro > 0) {
+    const proKcal = prevPro * 4;
+    const remKcal = Math.max(0, targetKcal - proKcal);
+    const prevNonProKcal = (prevCarb * 4) + (prevFat * 9);
+    $('goalProtein').value = Math.round(prevPro);
+    if (prevNonProKcal > 0) {
+      const carbShare = (prevCarb * 4) / prevNonProKcal;
+      const fatShare = (prevFat * 9) / prevNonProKcal;
+      $('goalCarbs').value = Math.round((remKcal * carbShare) / 4);
+      $('goalFat').value = Math.round((remKcal * fatShare) / 9);
+    } else {
+      $('goalCarbs').value = Math.round((remKcal * 0.65) / 4);
+      $('goalFat').value = Math.round((remKcal * 0.35) / 9);
+    }
+  } else if (prevKcal > 0 && (prevPro > 0 || prevCarb > 0 || prevFat > 0)) {
     const ratio = targetKcal / prevKcal;
     $('goalProtein').value = Math.round(prevPro * ratio);
     $('goalCarbs').value = Math.round(prevCarb * ratio);
@@ -783,7 +828,7 @@ $('applyTargetKcalBtn').onclick=()=>{
     $('goalCarbs').value = Math.round((targetKcal * 0.50) / 4);
     $('goalFat').value = Math.round((targetKcal * 0.25) / 9);
   }
-  toast(`ปรับสัดส่วนสารอาหารตามเป้าหมาย ${Math.round(targetKcal)} kcal แล้ว (อย่าลืมกดบันทึกเป้าหมาย)`);
+  toast(`คำนวณสารอาหารสำหรับ ${Math.round(targetKcal)} kcal แล้ว (อย่าลืมกดบันทึกเป้าหมาย)`);
 };
 
 $('mealSortField').addEventListener('change', () => {
