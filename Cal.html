@@ -37,7 +37,7 @@
     
     <section id="page-dashboard" class="page active">
       <div class="welcome"><div><div class="eyebrow light">DAILY OVERVIEW</div><h2>ดูแลสุขภาพให้ดีขึ้น<br>เริ่มจากมื้อวันนี้</h2><p>บันทึกอาหาร ติดตามสารอาหาร และค่อย ๆ สร้างสุขภาพที่ดี</p></div><div class="welcome-art">🥑</div></div>
-      <div class="section-head"><div><h3>สรุปวันนี้</h3><p>ภาพรวมพลังงานและสารอาหารที่ได้รับ</p></div><input type="date" id="dashDate" class="date-input"></div>
+      <div class="section-head"><div><div style="display:flex; align-items:center; gap:8px;"><h3 style="margin:0;">สรุปวันนี้</h3><span id="dayModeBadge" style="font-size:11px; font-weight:600; padding:3px 9px; border-radius:20px; background:#e7f4ed; color:var(--green);">วันฝึก (Training Day)</span></div><p>ภาพรวมพลังงานและสารอาหารที่ได้รับ</p></div><input type="date" id="dashDate" class="date-input"></div>
       <div class="stats-grid">
         <article class="stat-card calories"><div class="stat-top"><span>พลังงานที่ได้รับ</span><span>◉</span></div><strong id="calConsumed">0 <small>kcal</small></strong><div class="progress"><i id="calProgress"></i></div><div class="stat-foot"><span>เป้าหมาย <b id="calGoal">2,000</b> kcal</span><span id="calRemain">เหลือ 2,000</span></div></article>
         <article class="stat-card"><div class="stat-top"><span>โปรตีน</span><span>◈</span></div><strong id="proteinVal">0 <small>g</small></strong><div class="progress green"><i id="proteinProgress"></i></div><div class="stat-foot"><span>เป้าหมาย <b id="proteinGoal">100</b> g</span></div></article>
@@ -239,9 +239,32 @@
           <input id="targetKcalInput" type="number" min="500" placeholder="เช่น 1900" style="flex:1;">
           <button class="primary-btn" id="applyTargetKcalBtn" style="white-space:nowrap;">คำนวณสารอาหารตามแคล</button>
         </div>
-        <small class="muted" id="deficitModeHint" style="display:block; margin-top:5px; font-size:11px;">คงค่าโปรตีนเดิมไว้ และจัดคาร์บ ~1.3 เท่าของโปรตีนเพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)</small>
+        <small class="muted" id="deficitModeHint" style="display:block; margin-top:5px; font-size:11px;">คงค่าโปรตีนเดิมไว้ และจัดคาร์บ 1.4 เท่าของโปรตีน (1.4 : 1)เพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)</small>
       </div>
-      <div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div><button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article>
+      <div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div>
+
+      <div style="background:#f6f9fb; border:1px solid #dce7ee; border-radius:10px; padding:12px; margin-top:14px;">
+        <label style="font-size:12px; font-weight:600; color:#2b5c78; display:block; margin-bottom:6px;">🛌 กำหนดวันพัก (Rest Days) และอัตราส่วนวันพัก</label>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px;" id="restDaysCheckboxes">
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="1" style="width:auto; margin:0;"> จันทร์</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="2" style="width:auto; margin:0;"> อังคาร</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="3" style="width:auto; margin:0;"> พุธ</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="4" style="width:auto; margin:0;"> พฤหัสฯ</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="5" style="width:auto; margin:0;"> ศุกร์</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="6" style="width:auto; margin:0;"> เสาร์</label>
+          <label style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:#fff; border:1px solid #d5e2ea; padding:5px 9px; border-radius:7px; cursor:pointer;"><input type="checkbox" value="0" style="width:auto; margin:0;"> อาทิตย์</label>
+        </div>
+        <label style="font-size:11px; color:#5a6e7a; display:block; margin-bottom:4px;">รูปแบบวันพัก (คงโปรตีนเดิม + ไขมันเดิม ปรับลดคาร์บตามอัตราส่วน)</label>
+        <select id="restDayTypeSelect" style="width:100%; padding:8px; font-size:12px; border-radius:8px; border:1px solid #d5e2ea; background:#fff;">
+          <option value="active">วันพักแบบขยับตัวบ้าง (Active Rest) — คาร์บ 1.2 : โปรตีน 1</option>
+          <option value="full">วันพักสนิท / นั่งทำงานทั้งวัน (Full Rest) — คาร์บ 1.0 : โปรตีน 1</option>
+        </select>
+        <div id="restDayPreviewBox" style="margin-top:8px; padding:8px 10px; background:#fff; border-radius:8px; border:1px dashed #c8dae6; font-size:11px; color:#2b5c78;">
+          ตัวอย่างเป้าหมายวันพัก: —
+        </div>
+      </div>
+
+      <button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article>
 
       <article class="panel"><h3>Gemini API</h3><p class="muted">ใส่ API Key จาก Google AI Studio เพื่อเปิดใช้งาน AI ประมวลผลอาหาร</p><label class="field-label">Gemini API Key</label><input id="apiKey" type="password" placeholder="วาง API Key ที่นี่"><label class="field-label">โมเดล</label><select id="geminiModel"><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="gemini-2.0-flash">Gemini 2.0 Flash</option></select><button class="secondary-btn full" id="saveApi">บันทึก API Key ในเครื่อง</button><p class="warning tiny">คำเตือน: API Key ที่เก็บในเบราว์เซอร์ไม่เหมาะกับเครื่องที่ใช้ร่วมกับผู้อื่น และผู้ถือ Key สามารถนำไปใช้เรียก API ได้</p></article>
 
@@ -339,7 +362,7 @@ const $=id=>document.getElementById(id);
 const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
-const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0,gender:'male',age:25,activity:1.2};
+const defaults={calories:2000,protein:100,carbs:220,fat:65,water:2000,height:0,targetWeight:0,gender:'male',age:25,activity:1.2,restDays:[],restType:'active'};
 let settings={...defaults};
 
 function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,DB_VERSION);req.onupgradeneeded=()=>{const d=req.result;['meals','weights','water','library','meta'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id',autoIncrement:true})})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
@@ -391,6 +414,56 @@ async function loadSettings(){
 
   const savedModel = await getMeta('geminiModel');
   if(savedModel) $('geminiModel').value = savedModel;
+
+  const restDays = Array.isArray(settings.restDays) ? settings.restDays.map(Number) : [];
+  document.querySelectorAll('#restDaysCheckboxes input[type="checkbox"]').forEach(cb => {
+    cb.checked = restDays.includes(Number(cb.value));
+  });
+  $('restDayTypeSelect').value = settings.restType || 'active';
+  updateRestDayPreview();
+}
+
+function getRestDayTargets(basePro, baseFat, baseWater, restType) {
+  const ratio = restType === 'full' ? 1.0 : 1.2;
+  const p = Math.round(Number(basePro || 0));
+  const f = Math.round(Number(baseFat || 0));
+  const c = Math.round(p * ratio);
+  const kcal = Math.round((p * 4) + (c * 4) + (f * 9));
+  return { calories: kcal, protein: p, carbs: c, fat: f, water: Number(baseWater || 2000), ratio };
+}
+
+function getGoalsForDate(dateStr) {
+  const parts = (dateStr || today()).split('-').map(Number);
+  const dt = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]));
+  const dow = dt.getUTCDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+  const restDays = Array.isArray(settings.restDays) ? settings.restDays.map(Number) : [];
+  const isRest = restDays.includes(dow);
+  if (!isRest) {
+    return {
+      isRest: false,
+      restType: null,
+      calories: Number(settings.calories || 2000),
+      protein: Number(settings.protein || 100),
+      carbs: Number(settings.carbs || 220),
+      fat: Number(settings.fat || 65),
+      water: Number(settings.water || 2000)
+    };
+  }
+  const restType = settings.restType || 'active';
+  const t = getRestDayTargets(settings.protein, settings.fat, settings.water, restType);
+  return { isRest: true, restType, ...t };
+}
+
+function updateRestDayPreview() {
+  const p = Number($('goalProtein')?.value) || settings.protein || 0;
+  const f = Number($('goalFat')?.value) || settings.fat || 0;
+  const w = Number($('goalWater')?.value) || settings.water || 2000;
+  const type = $('restDayTypeSelect')?.value || 'active';
+  const t = getRestDayTargets(p, f, w, type);
+  const label = type === 'full' ? 'Full Rest (1.0 : 1)' : 'Active Rest (1.2 : 1)';
+  if ($('restDayPreviewBox')) {
+    $('restDayPreviewBox').innerHTML = `<b>เป้าหมาย${label}:</b> พลังงาน ~<b>${fmt(t.calories)}</b> kcal · โปรตีน <b>${t.protein}g</b> · คาร์บ <b>${t.carbs}g</b> · ไขมัน <b>${t.fat}g</b>`;
+  }
 }
 
 function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id==='page-'+page));document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));const names={dashboard:'ภาพรวมสุขภาพ',scanner:'เพิ่มอาหาร AI',diary:'บันทึกอาหาร',weight:'น้ำหนักและสุขภาพ',fasting:'IF / Fasting',library:'คลังอาหาร',settings:'ตั้งค่าและสำรองข้อมูล'};$('pageTitle').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='diary')renderDiary();if(page==='weight')renderWeights();if(page==='library')renderLibrary()}
@@ -404,19 +477,34 @@ $('dashDate').addEventListener('change',renderDashboard);$('diaryDate').addEvent
 
 async function renderDashboard(){
   const date=$('dashDate').value||today(), meals=(await all('meals')).filter(x=>x.date===date);
+  const dayGoal = getGoalsForDate(date);
+  const badge = $('dayModeBadge');
+  if (badge) {
+    if (dayGoal.isRest) {
+      const modeName = dayGoal.restType === 'full' ? 'วันพักสนิท (Full Rest 1.0:1)' : 'วันพักขยับตัวบ้าง (Active Rest 1.2:1)';
+      badge.textContent = `🛌 ${modeName}`;
+      badge.style.background = '#e6f1f8';
+      badge.style.color = '#2b5c78';
+    } else {
+      badge.textContent = '💪 วันฝึก (Training Day)';
+      badge.style.background = '#e7f4ed';
+      badge.style.color = 'var(--green)';
+    }
+  }
+
   const sum=k=>meals.reduce((s,x)=>s+Number(x[k]||0),0);
   const c=sum('calories'), p=sum('protein'), cb=sum('carbs'), f=sum('fat');
   const sugar=sum('sugar'), sodium=sum('sodium'), chol=sum('chol');
 
   $('calConsumed').innerHTML=`${fmt(c)} <small>kcal</small>`;
-  $('calGoal').textContent=fmt(settings.calories);
-  $('calRemain').textContent=c>settings.calories?`เกิน ${fmt(c-settings.calories)}`:`เหลือ ${fmt(settings.calories-c)}`;
-  $('calProgress').style.width=Math.min(100,c/settings.calories*100)+'%';
+  $('calGoal').textContent=fmt(dayGoal.calories);
+  $('calRemain').textContent=c>dayGoal.calories?`เกิน ${fmt(c-dayGoal.calories)}`:`เหลือ ${fmt(dayGoal.calories-c)}`;
+  $('calProgress').style.width=Math.min(100,c/Math.max(1,dayGoal.calories)*100)+'%';
   
   [['protein',p],['carbs',cb],['fat',f]].forEach(([k,v])=>{
     $(k==='carbs'?'carbVal':k+'Val').innerHTML=`${fmt(v)} <small>g</small>`;
-    $(k==='carbs'?'carbGoal':k+'Goal').textContent=fmt(settings[k]);
-    $(k==='carbs'?'carbProgress':k+'Progress').style.width=Math.min(100,v/settings[k]*100)+'%';
+    $(k==='carbs'?'carbGoal':k+'Goal').textContent=fmt(dayGoal[k]);
+    $(k==='carbs'?'carbProgress':k+'Progress').style.width=Math.min(100,v/Math.max(1,dayGoal[k])*100)+'%';
   });
 
   $('sugarVal').innerHTML = `${fmt(sugar)} <small>g</small>`;
@@ -439,8 +527,8 @@ async function renderDashboard(){
   
   const waters=(await all('water')).filter(x=>x.date===date).reduce((s,x)=>s+x.amount,0);
   $('waterAmount').textContent=fmt(waters);
-  $('waterGoal').textContent=fmt(settings.water);
-  $('waterProgress').style.width=Math.min(100,waters/settings.water*100)+'%';
+  $('waterGoal').textContent=fmt(dayGoal.water);
+  $('waterProgress').style.width=Math.min(100,waters/Math.max(1,dayGoal.water)*100)+'%';
   await renderChart();
 }
 
@@ -765,13 +853,14 @@ $('autoCalcBtn').onclick=async()=>{
   $('goalCarbs').value = Math.round((tdee * 0.50) / 4);
   $('goalFat').value = Math.round((tdee * 0.25) / 9);
   $('goalWater').value = Math.round(w * 35);
+  updateRestDayPreview();
   toast(`คำนวณเป้าหมายจาก TDEE (${tdee} kcal) เรียบร้อยแล้ว`);
 };
 
 $('deficitModeSelect').addEventListener('change', () => {
   const mode = $('deficitModeSelect').value;
   const hints = {
-    keep_protein_recomp: 'คงค่าโปรตีนเดิมไว้ และจัดคาร์บ ~1.3 เท่าของโปรตีนเพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)',
+    keep_protein_recomp: 'คงค่าโปรตีนเดิมไว้ และจัดคาร์บ 1.4 เท่าของโปรตีน (1.4 : 1)เพื่อสงวนกล้ามเนื้อและมีแรงซ้อมเวท (ปรับลดไขมันส่วนเกิน)',
     keep_protein_balanced: 'คงค่าโปรตีนเดิมไว้ แล้วหักลบพลังงานที่ลดลงจากคาร์บและไขมันตามสัดส่วน',
     proportional: 'ปรับลดโปรตีน คาร์บ และไขมันลงตามสัดส่วนแคลอรีที่เปลี่ยนไป'
   };
@@ -795,7 +884,7 @@ $('applyTargetKcalBtn').onclick=()=>{
     const remKcal = Math.max(0, targetKcal - proKcal);
     // Target carbs at ~1.3x protein to support glycogen & protein sparing, keeping fat at least ~0.5g/kg (or min 30g)
     const minFat = Math.max(30, Math.round((settings.height ? 38 : 35)));
-    let carbG = Math.round(prevPro * 1.32);
+    let carbG = Math.round(prevPro * 1.4);
     let fatG = Math.round((remKcal - (carbG * 4)) / 9);
     if (fatG < minFat) {
       fatG = minFat;
@@ -828,6 +917,7 @@ $('applyTargetKcalBtn').onclick=()=>{
     $('goalCarbs').value = Math.round((targetKcal * 0.50) / 4);
     $('goalFat').value = Math.round((targetKcal * 0.25) / 9);
   }
+  updateRestDayPreview();
   toast(`คำนวณสารอาหารสำหรับ ${Math.round(targetKcal)} kcal แล้ว (อย่าลืมกดบันทึกเป้าหมาย)`);
 };
 
@@ -849,7 +939,29 @@ $('clearMealSortBtn').addEventListener('click', () => {
 });
 
 $('weightHistory').addEventListener('click',async e=>{const b=e.target.closest('[data-del-weight]');if(b){await del('weights',Number(b.dataset.delWeight));renderWeights()}});
-$('saveGoals').onclick=async()=>{settings={...settings,calories:+$('goalCalories').value||2000,protein:+$('goalProtein').value||100,carbs:+$('goalCarbs').value||220,fat:+$('goalFat').value||65,water:+$('goalWater').value||2000};await setMeta('settings',settings);toast('บันทึกเป้าหมายแล้ว');renderDashboard()};
+['goalProtein', 'goalFat', 'goalWater'].forEach(id => {
+  $(id).addEventListener('input', updateRestDayPreview);
+});
+$('restDayTypeSelect').addEventListener('change', updateRestDayPreview);
+
+$('saveGoals').onclick=async()=>{
+  const checkedRestDays = Array.from(document.querySelectorAll('#restDaysCheckboxes input[type="checkbox"]:checked')).map(cb => Number(cb.value));
+  const restType = $('restDayTypeSelect').value || 'active';
+  settings={
+    ...settings,
+    calories:+$('goalCalories').value||2000,
+    protein:+$('goalProtein').value||100,
+    carbs:+$('goalCarbs').value||220,
+    fat:+$('goalFat').value||65,
+    water:+$('goalWater').value||2000,
+    restDays: checkedRestDays,
+    restType: restType
+  };
+  await setMeta('settings',settings);
+  updateRestDayPreview();
+  toast('บันทึกเป้าหมายและวันพักแล้ว');
+  renderDashboard();
+};
 
 $('saveApi').onclick=async()=>{
   await setMeta('apiKey', $('apiKey').value.trim());
