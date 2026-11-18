@@ -52,7 +52,27 @@
         <article class="panel" style="padding:15px; margin:0;"><div class="stat-top"><span>คอเลสเตอรอล</span><span>🥚</span></div><strong id="cholVal" style="font-size:20px; margin:8px 0 4px;">0 <small>mg</small></strong><small class="muted">คอเลสเตอรอลรวมวันนี้</small></article>
       </div>
 
-      <div class="content-grid"><article class="panel"><div class="panel-head"><div><h3>มื้ออาหารวันนี้</h3><p>รายการที่บันทึกในวันนี้</p></div><button class="text-btn" data-go="diary">ดูทั้งหมด →</button></div><div id="todayMeals" class="meal-list empty">ยังไม่มีรายการอาหาร <button class="small-primary" data-go="scanner">+ เพิ่มอาหาร</button></div></article>
+      <div class="content-grid"><article class="panel">
+        <div class="panel-head" style="flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <div><h3>มื้ออาหารวันนี้</h3><p>รายการที่บันทึกในวันนี้</p></div>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <select id="mealSortField" style="padding:5px 8px; font-size:12px; border-radius:8px; border:1px solid var(--line); background:#f8fbf9;">
+              <option value="">เรียงตามลำดับบันทึก</option>
+              <option value="calories">แคลอรี (kcal)</option>
+              <option value="protein">โปรตีน (g)</option>
+              <option value="carbs">คาร์บ (g)</option>
+              <option value="fat">ไขมัน (g)</option>
+            </select>
+            <select id="mealSortDir" style="padding:5px 8px; font-size:12px; border-radius:8px; border:1px solid var(--line); background:#f8fbf9;" hidden>
+              <option value="desc">มาก → น้อย</option>
+              <option value="asc">น้อย → มาก</option>
+            </select>
+            <button class="secondary-btn" id="clearMealSortBtn" style="padding:5px 9px; font-size:11px; background:#fff3f2; color:#b14f47; border:1px solid #f0d6d3;" hidden>✕ ยกเลิกเรียง</button>
+            <button class="text-btn" data-go="diary" style="margin-left:4px;">ดูทั้งหมด →</button>
+          </div>
+        </div>
+        <div id="todayMeals" class="meal-list empty">ยังไม่มีรายการอาหาร <button class="small-primary" data-go="scanner">+ เพิ่มอาหาร</button></div>
+      </article>
       <article class="panel water-panel"><div class="panel-head"><div><h3>ดื่มน้ำ</h3><p>เป้าหมายรายวัน</p></div><span class="water-icon">💧</span></div><div class="water-number"><b id="waterAmount">0</b><small> / <span id="waterGoal">2,000</span> ml</small></div><div class="water-track"><i id="waterProgress"></i></div><div class="water-actions"><button data-water="-250">− 250 ml</button><button data-water="250">+ 250 ml</button></div></article></div>
       <article class="panel"><div class="panel-head"><div><h3>แนวโน้ม 7 วัน</h3><p>พลังงานที่ได้รับในแต่ละวัน</p></div></div><div id="weeklyChart" class="chart"></div></article>
     </section>
@@ -208,6 +228,14 @@
 
     <section id="page-settings" class="page"><div class="page-intro"><h2>ตั้งค่าและสำรองข้อมูล</h2><p>กำหนดเป้าหมายและจัดการข้อมูลในอุปกรณ์</p></div><div class="settings-grid"><article class="panel"><h3>เป้าหมายรายวัน</h3>
       <button class="secondary-btn full" id="autoCalcBtn" style="margin-bottom:12px; background:#e7f4ed; color:var(--green); border:1px solid #bce1ce;">⚡ คำนวณเป้าหมายอัตโนมัติ (จาก BMR/TDEE)</button>
+      <div style="background:#f4f9f6; border:1px solid #d5e8dd; border-radius:10px; padding:12px; margin-bottom:14px;">
+        <label style="font-size:12px; font-weight:600; color:var(--green); display:block; margin-bottom:6px;">🎯 กำหนดแคลอรีเป้าหมาย (เช่น ทำ Calorie Deficit)</label>
+        <div style="display:flex; gap:8px;">
+          <input id="targetKcalInput" type="number" min="500" placeholder="เช่น 1900" style="flex:1;">
+          <button class="primary-btn" id="applyTargetKcalBtn" style="white-space:nowrap;">คำนวณสารอาหารตามแคล</button>
+        </div>
+        <small class="muted" style="display:block; margin-top:5px; font-size:11px;">ปรับสัดส่วนโปรตีน คาร์บ และไขมันให้อัตโนมัติตามแคลอรีที่กำหนด (คงค่าเป้าหมายน้ำดื่มไว้ตามน้ำหนักตัว)</small>
+      </div>
       <div class="settings-fields"><label>พลังงาน (kcal)<input id="goalCalories" type="number"></label><label>โปรตีน (g)<input id="goalProtein" type="number"></label><label>คาร์โบไฮเดรต (g)<input id="goalCarbs" type="number"></label><label>ไขมัน (g)<input id="goalFat" type="number"></label><label>น้ำดื่ม (ml)<input id="goalWater" type="number"></label></div><button class="primary-btn full" id="saveGoals">บันทึกเป้าหมาย</button></article>
 
       <article class="panel"><h3>Gemini API</h3><p class="muted">ใส่ API Key จาก Google AI Studio เพื่อเปิดใช้งาน AI ประมวลผลอาหาร</p><label class="field-label">Gemini API Key</label><input id="apiKey" type="password" placeholder="วาง API Key ที่นี่"><label class="field-label">โมเดล</label><select id="geminiModel"><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="gemini-2.0-flash">Gemini 2.0 Flash</option></select><button class="secondary-btn full" id="saveApi">บันทึก API Key ในเครื่อง</button><p class="warning tiny">คำเตือน: API Key ที่เก็บในเบราว์เซอร์ไม่เหมาะกับเครื่องที่ใช้ร่วมกับผู้อื่น และผู้ถือ Key สามารถนำไปใช้เรียก API ได้</p></article>
@@ -390,8 +418,19 @@ async function renderDashboard(){
   $('sodiumVal').innerHTML = `${fmt(sodium)} <small>mg</small>`;
   $('cholVal').innerHTML = `${fmt(chol)} <small>mg</small>`;
 
-  $('todayMeals').className='meal-list'+(meals.length?'':' empty');
-  $('todayMeals').innerHTML=meals.length?meals.map(m=>`<div class="food-row"><div><b>${esc(m.name)}</b><small>${esc(m.meal)} · ${esc(m.serving||'')} · น้ำตาล ${fmt(m.sugar)}g · โซเดียม ${fmt(m.sodium)}mg</small></div><div class="food-kcal">${fmt(m.calories)} kcal</div></div>`).join(''):'ยังไม่มีรายการอาหาร <button class="small-primary" data-go="scanner">+ เพิ่มอาหาร</button>';
+  const sortField = $('mealSortField')?.value || '';
+  const sortDir = $('mealSortDir')?.value || 'desc';
+  let displayMeals = [...meals];
+  if (sortField) {
+    displayMeals.sort((a, b) => {
+      const va = Number(a[sortField] || 0);
+      const vb = Number(b[sortField] || 0);
+      return sortDir === 'desc' ? vb - va : va - vb;
+    });
+  }
+
+  $('todayMeals').className='meal-list'+(displayMeals.length?'':' empty');
+  $('todayMeals').innerHTML=displayMeals.length?displayMeals.map(m=>`<div class="food-row"><div><b>${esc(m.name)}</b><small>${esc(m.meal)} · ${esc(m.serving||'')} · P ${fmt(m.protein)}g · C ${fmt(m.carbs)}g · F ${fmt(m.fat)}g</small></div><div class="food-kcal">${fmt(m.calories)} kcal</div></div>`).join(''):'ยังไม่มีรายการอาหาร <button class="small-primary" data-go="scanner">+ เพิ่มอาหาร</button>';
   
   const waters=(await all('water')).filter(x=>x.date===date).reduce((s,x)=>s+x.amount,0);
   $('waterAmount').textContent=fmt(waters);
@@ -716,12 +755,53 @@ $('autoCalcBtn').onclick=async()=>{
   const { tdee } = calculateBmrTdee(w, h, a, g, act);
   if(!tdee) return toast('คำนวณไม่สำเร็จ');
   $('goalCalories').value = tdee;
+  $('targetKcalInput').value = tdee;
   $('goalProtein').value = Math.round((tdee * 0.25) / 4);
   $('goalCarbs').value = Math.round((tdee * 0.50) / 4);
   $('goalFat').value = Math.round((tdee * 0.25) / 9);
   $('goalWater').value = Math.round(w * 35);
   toast(`คำนวณเป้าหมายจาก TDEE (${tdee} kcal) เรียบร้อยแล้ว`);
 };
+
+$('applyTargetKcalBtn').onclick=()=>{
+  const targetKcal = Number($('targetKcalInput').value);
+  if(!targetKcal || targetKcal < 500) return toast('กรุณากรอกแคลอรีเป้าหมายที่ถูกต้อง (อย่างน้อย 500 kcal)');
+  
+  const prevKcal = Number($('goalCalories').value) || settings.calories || 0;
+  const prevPro = Number($('goalProtein').value) || 0;
+  const prevCarb = Number($('goalCarbs').value) || 0;
+  const prevFat = Number($('goalFat').value) || 0;
+
+  $('goalCalories').value = Math.round(targetKcal);
+  if (prevKcal > 0 && (prevPro > 0 || prevCarb > 0 || prevFat > 0)) {
+    const ratio = targetKcal / prevKcal;
+    $('goalProtein').value = Math.round(prevPro * ratio);
+    $('goalCarbs').value = Math.round(prevCarb * ratio);
+    $('goalFat').value = Math.round(prevFat * ratio);
+  } else {
+    $('goalProtein').value = Math.round((targetKcal * 0.25) / 4);
+    $('goalCarbs').value = Math.round((targetKcal * 0.50) / 4);
+    $('goalFat').value = Math.round((targetKcal * 0.25) / 9);
+  }
+  toast(`ปรับสัดส่วนสารอาหารตามเป้าหมาย ${Math.round(targetKcal)} kcal แล้ว (อย่าลืมกดบันทึกเป้าหมาย)`);
+};
+
+$('mealSortField').addEventListener('change', () => {
+  const hasSort = Boolean($('mealSortField').value);
+  $('mealSortDir').hidden = !hasSort;
+  $('clearMealSortBtn').hidden = !hasSort;
+  renderDashboard();
+});
+
+$('mealSortDir').addEventListener('change', renderDashboard);
+
+$('clearMealSortBtn').addEventListener('click', () => {
+  $('mealSortField').value = '';
+  $('mealSortDir').value = 'desc';
+  $('mealSortDir').hidden = true;
+  $('clearMealSortBtn').hidden = true;
+  renderDashboard();
+});
 
 $('weightHistory').addEventListener('click',async e=>{const b=e.target.closest('[data-del-weight]');if(b){await del('weights',Number(b.dataset.delWeight));renderWeights()}});
 $('saveGoals').onclick=async()=>{settings={...settings,calories:+$('goalCalories').value||2000,protein:+$('goalProtein').value||100,carbs:+$('goalCarbs').value||220,fat:+$('goalFat').value||65,water:+$('goalWater').value||2000};await setMeta('settings',settings);toast('บันทึกเป้าหมายแล้ว');renderDashboard()};
@@ -971,7 +1051,7 @@ async function runFastTimer(){const start=await getMeta('fastStart');if(!start)r
 $('exportData').onclick=async()=>{const data={app:'NutriLocal',version:1,exportedAt:new Date().toISOString(),settings,stores:{}};for(const s of ['meals','weights','water','library','meta'])data.stores[s]=await all(s);const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`nutrilocal-backup-${today()}.json`;a.click();URL.revokeObjectURL(a.href);toast('ส่งออกข้อมูลแล้ว')};
 $('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d.stores)throw Error('รูปแบบไฟล์ไม่ถูกต้อง');if(!confirm('นำเข้าข้อมูลและแทนที่ข้อมูลเดิมทั้งหมด?'))return;for(const s of ['meals','weights','water','library','meta']){await clearStore(s);for(const item of d.stores[s]||[])await put(s,item)}settings={...defaults, ...(d.settings||{})};await setMeta('settings',settings);await loadSettings();toast('นำเข้าข้อมูลสำเร็จ');renderDashboard()}catch(err){toast('นำเข้าไม่สำเร็จ: '+err.message)}e.target.value=''};
 $('clearData').onclick=async()=>{if(!confirm('ยืนยันลบข้อมูลทั้งหมดในเว็บแอปนี้? การลบไม่สามารถย้อนกลับได้'))return;for(const s of ['meals','weights','water','library','meta'])await clearStore(s);settings={...defaults};await loadSettings();renderDashboard();toast('ลบข้อมูลทั้งหมดแล้ว')};
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;u0027'}[c]))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 $('profileBtn').onclick=()=>navigate('settings');
 
 (async()=>{
